@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sylfie - best experience here</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+<header class="site-header" >
+  <div class="container header-inner">
+    <a href="#" class="logo">
+      <img src="/img/logo.svg" alt="Sylfie Logo"/>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Tours</a></li>
+        <li><a href="#">Support</a></li>
+      </ul>
+    </nav>
+    <div class="user-info">
+      <div class="balances">
+        <span>Balance: <span class="money" th:text="${user.getBalance()}"> €</span></span>
+        <span>Bonus balance: <span class="money" th:text="${user.getBonusBalance()}"> €</span></span>
+      </div>
+      <div class="profile">
+        <img class="avatar" src="/img/test_pfp.jpg" alt="User Avatar"/>
+        <div class="profile-text">
+        <span class="user-name"
+              th:text="${user.firstName + ' ' + user.lastName}">
+          Имя Фамилия
+        </span>
+          <span class="user-email" th:text="${user.getEmail()}"}></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <img class="hero-bg" src="/img/hero_bg.jpg" alt="Hero background"/>
+    <div class="hero-content container">
+      <div class="hero-branding">
+        <img class="hero-logo" src="/img/logo_white.svg" alt="Sylfie Logo"/>
+        <h1 class="hero-title">Sylfie</h1>
+      </div>
+      <p class="hero-subtitle">
+        Your guide to the world of active travel in the mountains and forests
+      </p>
+      <a href="#" class="hero-button">See more</a>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="features container">
+    <h2 class="section-title">Why Choose Sylfie?</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <img src="/img/backpack-01.svg" alt="Gear Icon"/>
+        <h3>Quality Equipment</h3>
+        <p>Top-brand gear for every adventure, tested and trusted by pros.</p>
+      </div>
+      <div class="feature">
+        <img src="/img/windrose-01.svg" alt="Guide Icon"/>
+        <h3>Expert Guides</h3>
+        <p>Certified instructors lead you safely off the beaten path.</p>
+      </div>
+      <div class="feature">
+        <img src="/img/help-01.svg" alt="Support Icon"/>
+        <h3>24/7 Support</h3>
+        <p>From booking to return, our team is here for you around the clock.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOURS -->
+  <section id="tours" class="tours container">
+    <h2 class="section-title">Popular Tours</h2>
+    <div class="tour-cards">
+      <article class="tour-card">
+        <img src="/img/hiking1.jpg" alt="Alps Tour"/>
+        <h3>Alpine Hiking</h3>
+        <p>5 days of breathtaking peaks and crystal lakes. Level: Moderate.</p>
+        <a href="#" class="btn">Book Now</a>
+      </article>
+      <article class="tour-card">
+        <img src="/img/camp3.jpg" alt="Forest Tour"/>
+        <h3>Forest Retreat</h3>
+        <p>3 days of tranquil trails and wildlife watching. Level: Easy.</p>
+        <a href="#" class="btn">Book Now</a>
+      </article>
+      <article class="tour-card">
+        <img src="/img/kayaking.jpg" alt="Lake Tour"/>
+        <h3>Lake Kayaking</h3>
+        <p>Paddle through crystal-clear waters surrounded by mountain views.</p>
+        <a href="#" class="btn">Book Now</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title">What Our Travelers Say</h2>
+      <div class="testimonials-slider">
+        <div class="testimonial">
+          <p>“Sylfie made our trip unforgettable. The guide knew all the hidden spots!”</p>
+          <span>— Anna K.</span>
+        </div>
+        <div class="testimonial">
+          <p>“Top-notch equipment and service. Highly recommend to any adventure seeker.”</p>
+          <span>— Marco R.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact container">
+    <h2 class="section-title">Get in Touch</h2>
+    <form class="contact-form">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" type="text" placeholder="Your Name" required/>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" required/>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" rows="4" placeholder="How can we help?" required></textarea>
+      </div>
+      <button type="submit" class="btn form-btn">Send Message</button>
+    </form>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <h4>About Sylfie</h4>
+      <p>We’re dedicated to bringing you closer to nature with safe and exciting outdoor tours.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#tours">Tours</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <p>support@sylfie.com</p>
+      <p>+1 (555) 123-4567</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Sylfie. All rights reserved.</span>
+  </div>
+</footer>
+</body>
+</html>

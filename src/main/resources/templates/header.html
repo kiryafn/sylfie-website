@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Header Test</title>
+  <!-- Подключаем ваш скомпилированный CSS -->
+  <link rel="stylesheet" href="/css/header-style.css">
+  <style>
+    /* Немного отступов, чтобы было видно */
+    body { margin: 0; padding: 0; }
+    main { padding: 2rem; }
+  </style>
+</head>
+<body>
+
+<!-- ==== Начало хедера ==== -->
+<header class="header">
+  <div class="header__logo">
+    <a href="/">MySite</a>
+  </div>
+
+  <nav class="header__nav">
+    <ul class="header__nav-list">
+      <li class="header__nav-item"><a href="/home">Home</a></li>
+      <li class="header__nav-item"><a href="/dashboard">Dashboard</a></li>
+      <li class="header__nav-item"><a href="/transactions">Transactions</a></li>
+      <li class="header__nav-item"><a href="/support">Support</a></li>
+    </ul>
+  </nav>
+
+  <div class="header__balance">
+    Balance: <strong>1 023.45</strong> USD
+  </div>
+  <div class="header__bonus">
+    Bonus: <strong>120.50</strong> USD
+  </div>
+
+  <button class="header__btn" onclick="window.location='/top-up'">Top Up</button>
+  <button class="header__btn" onclick="window.location='/rewards'">Rewards</button>
+
+  <div class="header__profile" onclick="window.location='/profile'">
+    <img class="header__profile-avatar"
+         src="https://via.placeholder.com/32"
+         alt="Avatar">
+    <span class="header__profile-name">John Doe</span>
+  </div>
+</header>
+<!-- ==== Конец хедера ==== -->
+
+<main>
+  <h1>Главная страница</h1>
+  <p>Здесь будет основной контент вашего сайта.</p>
+</main>
+
+</body>
+</html>

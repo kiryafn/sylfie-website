@@ -1,106 +1,100 @@
 package com.sylfie.model.entity;
 
 import com.sylfie.exception.InsufficientBalanceException;
+import com.sylfie.model.dto.UserRegisterDTO;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class)
-@EqualsAndHashCode(of = "id")
-@ToString(exclude = "passwordHash")
+@Table(name = "USERS")
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Username is mandatory")
     @Column(nullable = false, unique = true, length = 50)
-    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
-    @Pattern(regexp = "^[A-Za-z0-9._-]+$", message = "Username can contain letters, numbers, dots, underscores and hyphens only")
     private String username;
 
-    @NotBlank(message = "Email is mandatory")
-    @Email(message = "Email should be valid")
-    @Size(max = 100, message = "Email must not exceed 100 characters")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @NotBlank(message = "Password hash is mandatory")
-    @Size(min = 60, max = 60, message = "Password hash must be a BCrypt hash of length 60")
-    @Column(nullable = false)
+    @Column(nullable = false, length = 60)
     private String passwordHash;
 
-    @NotBlank(message = "First name is mandatory")
-    @Size(max = 50, message = "First name must not exceed 50 characters")
-    @Pattern(regexp = "^[\\p{L} '–-]+$", message = "First name contains invalid characters")
+    @Column(nullable = false, length = 50)
     private String firstName;
 
-    @NotBlank(message = "Last name is mandatory")
-    @Size(max = 50, message = "Last name must not exceed 50 characters")
-    @Pattern(regexp = "^[\\p{L} '–-]+$", message = "Last name contains invalid characters")
+    @Column(length = 50)
     private String lastName;
 
-    @NotBlank(message = "Phone number is mandatory")
-    @Pattern(regexp = "^\\+?[0-9]{7,15}$", message = "Phone number must be between 7 and 15 digits, optional leading +")
+    @Column(nullable = false, length = 16)
     private String phoneNumber;
 
-    @NotNull(message = "Role is mandatory")
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+    @Column(length = 50)
+    private String address;
 
-    @NotNull(message = "Balance is mandatory")
-    @DecimalMin(value = "0.0", message = "Balance must be non-negative")
-    @Column(precision = 19, scale = 2)
+    private LocalDate dateOfBirth;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "USER_ROLE",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
+
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
-    @NotNull(message = "Bonus balance is mandatory")
-    @DecimalMin(value = "0.0", message = "Bonus balance must be non-negative")
-    @Column(precision = 19, scale = 2)
+    @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal bonusBalance;
 
-    @CreatedDate
-    @PastOrPresent(message = "Creation timestamp cannot be in the future")
-    @Column(nullable = false, updatable = false)
-    private Instant createdAt;
+    private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    @PastOrPresent(message = "Update timestamp cannot be in the future")
-    @Column(nullable = false)
-    private Instant updatedAt;
-
-    public User(String username, String email, String passwordHash, String firstName, String lastName, String phoneNumber, UserRole role) {
-        this.username = username;
-        this.email = email;
-        this.passwordHash = passwordHash;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
-        this.balance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-        this.bonusBalance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+    public User(String username, String email, String passwordHash, String firstName, String lastName, String phoneNumber, String address, LocalDate dateOfBirth) {
+        this.username      = username;
+        this.email         = email;
+        this.passwordHash  = passwordHash;
+        this.firstName     = firstName;
+        this.lastName      = lastName;
+        this.phoneNumber   = phoneNumber;
+        this.address       = address;
+        this.dateOfBirth   = dateOfBirth;
+        this.balance       = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+        this.bonusBalance  = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+        this.createdAt = LocalDateTime.now();
     }
+
+    public User(UserRegisterDTO userRegisterDTO) {
+        this.username      = userRegisterDTO.getUsername();
+        this.email         = userRegisterDTO.getEmail();
+        this.passwordHash  = userRegisterDTO.getPassword();
+        this.firstName     = userRegisterDTO.getFirstName();
+        this.lastName      = userRegisterDTO.getLastName();
+        this.phoneNumber   = userRegisterDTO.getPhoneNumber();
+        this.address       = userRegisterDTO.getAddress();
+        this.dateOfBirth   = userRegisterDTO.getDateOfBirth();
+        this.balance       = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+        this.bonusBalance  = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+        this.createdAt = LocalDateTime.now();
+
+    }
+
+    public User() {}
 
     public void credit(BigDecimal amount) {
         requirePositive(amount);
-
         this.balance = this.balance.add(amount).setScale(2, RoundingMode.HALF_UP);
     }
 
     public void debit(BigDecimal amount) {
         requirePositive(amount);
-
         if (this.balance.compareTo(amount) < 0) {
             throw new InsufficientBalanceException("Insufficient funds on balance");
         }
@@ -110,7 +104,127 @@ public class User {
     private static void requirePositive(BigDecimal amount) {
         if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException(
-                    String.format("Amount must be positive, but was %s", amount));
+                    String.format("Amount must be positive, but was %s", amount)
+            );
         }
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public void removeRole(Role role) {
+        roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
+    public boolean hasRole(String roleName) {
+        return roles.stream().anyMatch(r -> r.getName().equals(roleName));
+    }
+
+
+    //GETTERS AND SETTERS
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public BigDecimal getBonusBalance() {
+        return bonusBalance;
+    }
+
+    public void setBonusBalance(BigDecimal bonusBalance) {
+        this.bonusBalance = bonusBalance;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id != null && id.equals(user.id);
     }
 }

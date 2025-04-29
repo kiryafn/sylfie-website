@@ -1,0 +1,152 @@
+// styles.scss
+
+// ============ переменные ============
+$brand-color:       #389F29;
+$brand-color-dark:  darken($brand-color, 10%);
+$header-bg:         #ffffff;
+$font-family-base:  'Helvetica Neue', Arial, sans-serif;
+$text-color:        #333333;
+$text-light:        #777777;
+
+$header-height:     80px;
+$avatar-size:       40px;
+$logo-height:       40px;
+$max-width:         1200px;
+$gutter:            20px;
+
+// миксин для флексов
+@mixin flex($dir: row, $justify: center, $align: center) {
+  display: flex;
+  flex-direction: $dir;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+// ============ глобал ============
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
+
+body {
+  font-family: $font-family-base;
+  color: $text-color;
+}
+
+.container {
+  width: calc(100% - 2 * #{$gutter});
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+// ============ header ============
+.site-header {
+  background: $header-bg;
+  border-bottom: 1px solid #eaeaea;
+  height: $header-height;
+  @include flex(row, space-between, center);
+
+  .header-inner {
+    @include flex(row, space-between, center);
+    width: 100%;
+  }
+
+  .logo img {
+    height: $logo-height;
+  }
+
+  .main-nav ul {
+    @include flex;
+    list-style: none;
+
+    li {
+      margin: 0 20px;
+      a {
+        text-decoration: none;
+        color: $brand-color;
+        font-size: 16px;
+        font-weight: 600;
+        transition: color 0.3s;
+
+        &:hover {
+          color: $brand-color-dark;
+        }
+      }
+    }
+  }
+
+  .user-info {
+    @include flex;
+
+    .balance {
+      margin-right: 30px;
+      font-size: 16px;
+      color: $brand-color;
+    }
+
+    .profile {
+      @include flex;
+
+      .avatar {
+        width: $avatar-size;
+        height: $avatar-size;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 10px;
+      }
+
+      .profile-text {
+        display: flex;
+        flex-direction: column;
+
+        .user-name {
+          font-size: 14px;
+          font-weight: 600;
+          color: $text-color;
+        }
+        .user-email {
+          font-size: 12px;
+          color: $text-light;
+        }
+      }
+    }
+  }
+}
+
+// ============ hero ============
+.hero {
+  position: relative;
+  .hero-bg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .hero-content {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: left;
+
+    .hero-logo {
+      width: 50px;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: 72px;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      max-width: 500px;
+      font-size: 18px;
+      line-height: 1.5;
+      color: #ffffff;
+    }
+  }
+}
