@@ -1,7 +1,8 @@
 package com.sylfie.service;
 
-import com.sylfie.model.entity.User;
 import com.sylfie.exception.InsufficientBalanceException;
+import com.sylfie.model.dto.UserRegisterDTO;
+import com.sylfie.model.entity.User;
 import com.sylfie.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -33,10 +34,15 @@ public class UserService {
 
     @Transactional
     public User create(User user) {
-        // здесь можно добавить логику хеширования пароля, установки ролей по умолчанию и т.п.
+        // Тут можно добавить хеширование пароля, присвоение ролей и др.
         return userRepository.save(user);
     }
 
+    @Transactional
+    public User create(UserRegisterDTO userRegisterDTO) {
+        User user = new User(userRegisterDTO);
+        return userRepository.save(user);
+    }
 
     @Transactional
     public User update(User user) {
@@ -62,7 +68,6 @@ public class UserService {
         try {
             user.debit(amount);
         } catch (IllegalArgumentException e) {
-            // если вы хотите использовать своё исключение
             throw new InsufficientBalanceException(e.getMessage());
         }
         return userRepository.save(user);

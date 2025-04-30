@@ -12,7 +12,6 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "tour_category")
-@EntityListeners(AuditingEntityListener.class)
 public class TourCategory {
 
     @Id

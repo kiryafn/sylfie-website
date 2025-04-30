@@ -1,0 +1,50 @@
+<footer th:fragment="footer" class="site-footer">
+    <div class="footer-container">
+        <div class="footer-logo-col">
+            <img src="/img/logos/logo_white.svg" alt="Sylfie Logo" class="footer-logo">
+            <div class="footer-slogan" th:text="#{footer.slogan}">Your trusted guide in nature.</div>
+        </div>
+        <nav class="footer-nav">
+            <div class="footer-col">
+                <span class="footer-col-title" th:text="#{footer.product}">Product</span>
+                <ul>
+                    <li><a href="#features" th:text="#{footer.link.features}">Features</a></li>
+                    <li><a href="#tours" th:text="#{footer.link.tours}">Tours</a></li>
+                    <li><a href="#contact" th:text="#{footer.link.contact}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <span class="footer-col-title" th:text="#{footer.company}">Company</span>
+                <ul>
+                    <li><a href="#about" th:text="#{footer.link.about}">About</a></li>
+                    <li><a href="#careers" th:text="#{footer.link.careers}">Careers</a></li>
+                    <li><a href="#blog" th:text="#{footer.link.blog}">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <span class="footer-col-title" th:text="#{footer.support}">Support</span>
+                <ul>
+                    <li><a href="#faq" th:text="#{footer.link.faq}">FAQ</a></li>
+                    <li><a href="#help" th:text="#{footer.link.help}">Help Center</a></li>
+                    <li><a href="mailto:support@sylfie.com" class="footer-link-light">support@sylfie.com</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="footer-socials">
+            <a href="https://t.me/sylfie" target="_blank" aria-label="Telegram" class="footer-social-link">
+                <img src="/img/icons/telegram_white.svg" alt="Telegram" />
+            </a>
+            <a href="https://twitter.com/sylfie" target="_blank" aria-label="X" class="footer-social-link">
+                <img src="/img/icons/twitter_white.svg" alt="Twitter" />
+            </a>
+            <a href="https://www.facebook.com/sylfie" target="_blank" aria-label="Facebook" class="footer-social-link">
+                <img src="/img/icons/facebook_white.svg" alt="Facebook" />
+            </a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; <span th:text="${#dates.format(#dates.createNow(),'yyyy')}">2025</span> Sylfie.</span>
+        <a href="/privacy" class="footer-bottom-link" th:text="#{footer.privacy}">Privacy Policy</a>
+        <a href="/terms" class="footer-bottom-link" th:text="#{footer.terms}">Terms of Use</a>
+    </div>
+</footer>

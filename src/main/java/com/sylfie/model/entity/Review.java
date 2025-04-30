@@ -1,14 +1,12 @@
 package com.sylfie.model.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "rewiew")
+@Table(name = "review")
 public class Review {
 
     @Id
@@ -20,8 +18,8 @@ public class Review {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tour_id", nullable = false)
-    private Tour tour;
+    @JoinColumn(name = "tour_template_id", nullable = false)
+    private TourTemplate tour;
 
     @Column(nullable = false, precision = 3, scale = 2)
     private BigDecimal rating;
@@ -34,14 +32,19 @@ public class Review {
 
     public Review() {}
 
-    public Review(User user, Tour tour, BigDecimal rating, String comment) {
+    public Review(User user, TourTemplate tour, BigDecimal rating, String comment) {
         this.user    = user;
         this.tour    = tour;
         this.rating  = rating;
         this.comment = comment;
-        this.createdAt = LocalDateTime.now();
     }
 
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdAt == null)
+            this.createdAt = LocalDateTime.now();
+    }
+    
     //GETTERS AND SETTERS
     public Long getId() {
         return id;
@@ -55,11 +58,11 @@ public class Review {
         this.user = user;
     }
 
-    public Tour getTour() {
+    public TourTemplate getTour() {
         return tour;
     }
 
-    public void setTour(Tour tour) {
+    public void setTour(TourTemplate tour) {
         this.tour = tour;
     }
 

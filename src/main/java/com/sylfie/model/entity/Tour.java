@@ -2,8 +2,6 @@ package com.sylfie.model.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "tour")
@@ -14,7 +12,7 @@ public class Tour {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tour_id", nullable = false)
+    @JoinColumn(name = "tour_template_id", nullable = false)
     private TourTemplate template;
 
     @Column(name = "start_date", nullable = false)
@@ -26,14 +24,7 @@ public class Tour {
     @Column(name = "booked_count", nullable = false)
     private Integer bookedCount;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "tour_location",
-            joinColumns =  @JoinColumn(name = "tour_id"),
-            inverseJoinColumns = @JoinColumn(name = "location_id")
-    )
-    @OrderColumn(name = "sequence")
-    private List<Location> locations = new ArrayList<>();
+    private LocalDateTime createdAt;
 
     public Tour() {
     }
@@ -45,14 +36,7 @@ public class Tour {
         this.startDate   = startDate;
         this.endDate     = endDate;
         this.bookedCount = 0;
-    }
-
-    public void addLocation(Location location) {
-        locations.add(location);
-    }
-
-    public void deleteLocation(Location location) {
-        locations.remove(location);
+        this.createdAt   = LocalDateTime.now();
     }
 
     //GETTERS AND SETTERS
@@ -94,9 +78,5 @@ public class Tour {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
     }
 }
