@@ -1,16 +1,20 @@
 package com.sylfie.controller;
 
 import com.sylfie.model.entity.User;
+import com.sylfie.service.TourTemplateService;
 import com.sylfie.service.UserService;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@org.springframework.stereotype.Controller
+@Controller
 public class HomeController {
     UserService userService;
+    TourTemplateService tourTemplateService;
 
-    public HomeController(UserService userService) {
+    public HomeController(UserService userService, TourTemplateService tourTemplateService) {
         this.userService = userService;
+        this.tourTemplateService = tourTemplateService;
     }
 
     @GetMapping("/")
@@ -22,7 +26,13 @@ public class HomeController {
     public String home(Model model) {
         User user = userService.getById(1L);
         model.addAttribute("user", user);
-        return "index";
+        model.addAttribute("tourTemplates", tourTemplateService.getTop3Popular());
+        return "home";
+    }
+
+    @GetMapping("/autorization")
+    public String autorization() {
+        return "autorization";
     }
 
 

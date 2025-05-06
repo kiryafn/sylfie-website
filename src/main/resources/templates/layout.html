@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title layout:fragment="title">Sylfie</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/all-tour-templates.css" />
+</head>
+<body>
+
+<header layout:fragment="header" th:replace="fragments/header :: header"></header>
+
+<main layout:fragment="content"></main>
+
+<footer layout:fragment="footer" th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>

@@ -49,6 +49,10 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
+
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
@@ -219,6 +223,17 @@ public class User {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+        if (avatar != null && avatar.getUser() != this) {
+            avatar.setUser(this);
+        }
     }
 
     @Override

@@ -1,12 +1,12 @@
 <header th:fragment="header" class="site-header" >
   <div class="container header-inner">
-    <a href="#" class="logo">
+    <a href="/home" class="logo">
       <img src="/img/logos/logo.svg" alt="Sylfie Logo"/>
     </a>
     <nav class="main-nav">
       <ul>
         <li><a href="#">Home</a></li>
-        <li><a href="#">Tours</a></li>
+        <li><a th:href="@{/tours}">Tours</a></li>
         <li><a href="#">Support</a></li>
       </ul>
     </nav>
@@ -20,9 +20,8 @@
         <div class="profile-text">
         <span class="user-name"
               th:text="${user.firstName + ' ' + user.lastName}">
-          Имя Фамилия
         </span>
-          <span class="user-email" th:text="${user.getEmail()}"}></span>
+          <span class="user-email" th:text="${user.getEmail()}"></span>
         </div>
       </div>
     </div>

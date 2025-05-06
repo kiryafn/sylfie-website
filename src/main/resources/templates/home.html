@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title layout:fragment="title" th:text="#{main.title}">Sylfie - best experience here</title>
+</head>
+<body>
+<main layout:fragment="content">
+
+  <section class="hero">
+    <img class="hero-bg" src="/img/hero_bg.jpg" alt="Hero background"/>
+    <div class="hero-content container">
+      <img class="hero-branding hero-logo" src="/img/logos/full_logo_white.svg" alt="Sylfie Logo с текстом"/>
+      <p class="hero-subtitle" th:utext="#{hero.subtitle}">
+      </p>
+      <a href="#" class="hero-button" th:text="#{hero.button}">See more</a>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="features container">
+    <h2 class="section-title" th:text="#{features.title}">Why Choose Sylfie?</h2>
+    <div class="features-grid">
+      <div class="feature">
+        <img src="/img/icons/backpack.svg" alt="Gear Icon"/>
+        <h3 th:text="#{feature1.title}">Quality Equipment</h3>
+        <p th:text="#{feature1.desc}">Top-brand gear for every adventure, tested and trusted by pros.</p>
+      </div>
+      <div class="feature">
+        <img src="/img/icons/windrose.svg" alt="Guide Icon"/>
+        <h3 th:text="#{feature2.title}">Expert Guides</h3>
+        <p th:text="#{feature2.desc}">Certified instructors lead you safely off the beaten path.</p>
+      </div>
+      <div class="feature">
+        <img src="/img/icons/help.svg" alt="Support Icon"/>
+        <h3 th:text="#{feature3.title}">24/7 Support</h3>
+        <p th:text="#{feature3.desc}">From booking to return, our team is here for you around the clock.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOURS -->
+  <section id="tours" class="tours container">
+    <h2 class="section-title" th:text="#{tours.title}">Popular Tours</h2>
+    <div class="tour-cards">
+      <article class="tour-card" th:each="template : ${tourTemplates}">
+<!--        <img th:src="@{${template.imagePath}}" th:alt="${template.title}" class="tour-image"/>-->
+        <h3 th:text="${template.name}">Tour Title</h3>
+        <p th:text="${template.description}">Tour description</p>
+        <a th:href="@{/tours/{id}(id=${template.id})}"
+           class="btn"
+           th:text="#{tour.book}">Book Now</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title" th:text="#{testimonials.title}">What Our Travelers Say</h2>
+      <div class="testimonials-slider">
+        <div class="testimonial">
+          <p th:text="#{testimonial1.text}">“Sylfie made our trip unforgettable. The guide knew all the hidden spots!”</p>
+          <span th:text="#{testimonial1.author}">— Anna K.</span>
+        </div>
+        <div class="testimonial">
+          <p th:text="#{testimonial2.text}">“Top-notch equipment and service. Highly recommend to any adventure seeker.”</p>
+          <span th:text="#{testimonial2.author}">— Marco R.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact container">
+    <h2 class="section-title" th:text="#{contact.title}">Get in Touch</h2>
+    <form class="contact-form">
+      <div class="form-group">
+        <label for="name" th:text="#{contact.label.name}">Name</label>
+        <input id="name" type="text" th:placeholder="#{contact.placeholder.name}" required/>
+      </div>
+      <div class="form-group">
+        <label for="email" th:text="#{contact.label.email}">Email</label>
+        <input id="email" type="email" th:placeholder="#{contact.placeholder.email}" required/>
+      </div>
+      <div class="form-group">
+        <label for="message" th:text="#{contact.label.message}">Message</label>
+        <textarea id="message" rows="4" th:placeholder="#{contact.placeholder.message}" required></textarea>
+      </div>
+      <button type="submit" class="btn form-btn" th:text="#{contact.button}">Send Message</button>
+    </form>
+  </section>
+</main>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <footer th:fragment="footer" class="site-footer">
     <div class="footer-container">
         <div class="footer-logo-col">
-            <img src="/img/logos/logo_white.svg" alt="Sylfie Logo" class="footer-logo">
+            <img src="/img/logos/full_logo_white.svg" alt="Sylfie Logo" class="footer-logo">
             <div class="footer-slogan" th:text="#{footer.slogan}">Your trusted guide in nature.</div>
         </div>
         <nav class="footer-nav">
@@ -9,7 +9,7 @@
                 <span class="footer-col-title" th:text="#{footer.product}">Product</span>
                 <ul>
                     <li><a href="#features" th:text="#{footer.link.features}">Features</a></li>
-                    <li><a href="#tours" th:text="#{footer.link.tours}">Tours</a></li>
+                    <li><a th:href="@{/tours}" th:text="#{footer.link.tours}">Tours</a></li>
                     <li><a href="#contact" th:text="#{footer.link.contact}">Contact</a></li>
                 </ul>
             </div>

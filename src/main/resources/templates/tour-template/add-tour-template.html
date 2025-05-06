@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <title layout:fragment="title">Админ — Создание тура</title>
+</head>
+<body>
+<main layout:fragment="content">
+  <section class="container">
+    <h2 class="section-title">Создание нового шаблона тура</h2>
+    <form th:action="@{/admin/tour-templates/save}"
+          th:object="${template}"
+          method="post"
+          enctype="multipart/form-data"
+          class="tour-form">
+
+      <div class="form-group">
+        <label for="name">Название тура</label>
+        <input type="text" id="name" th:field="*{name}" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea id="description" th:field="*{description}" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="difficulty">Сложность</label>
+        <select id="difficulty" th:field="*{difficulty}" required>
+          <option th:each="d : ${difficulties}"
+                  th:value="${d}"
+                  th:text="${d.name().toLowerCase()}">
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="maxParticipants">Максимум участников</label>
+        <input type="number" id="maxParticipants" th:field="*{maxParticipants}"
+               min="1" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="capacity">Вместимость</label>
+        <input type="number" id="capacity" th:field="*{capacity}"
+               min="1" required/>
+      </div>
+
+      <div class="form-group">
+        <label for="category">Категория тура</label>
+        <select id="category" th:field="*{category}" required>
+          <option value="" disabled selected>-- Выберите категорию --</option>
+          <option th:each="cat : ${categories}"
+                  th:value="${cat.id}"
+                  th:text="${cat.name}">
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="pictures">Изображения тура (до 10)</label>
+        <input type="file"
+               id="pictures"
+               name="pictures"
+               accept="image/*"
+               multiple onchange="limitFiles(this)"/>
+        <small>Максимум 10 файлов. JPG, PNG, GIF.</small>
+      </div>
+
+      <button type="submit" class="btn">Создать шаблон</button>
+    </form>
+  </section>
+</main>
+
+<script>
+  function limitFiles(input) {
+    if (input.files.length > 10) {
+      alert("Можно загрузить не более 10 изображений");
+      input.value = "";
+    }
+  }
+</script>
+</body>
+</html>

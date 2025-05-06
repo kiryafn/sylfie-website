@@ -12,34 +12,34 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ReviewService {
 
-    private final ReviewRepository rewiewRepository;
+    private final ReviewRepository reviewRepository;
 
-    public ReviewService(ReviewRepository rewiewRepository) {
-        this.rewiewRepository = rewiewRepository;
+    public ReviewService(ReviewRepository reviewRepository) {
+        this.reviewRepository = reviewRepository;
     }
 
     public List<Review> getAll() {
-        return rewiewRepository.findAll();
+        return reviewRepository.findAll();
     }
 
     public Review getById(Long id) {
-        return rewiewRepository.findById(id)
+        return reviewRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + id));
     }
 
     @Transactional
     public Review create(Review review) {
-        return rewiewRepository.save(review);
+        return reviewRepository.save(review);
     }
 
     @Transactional
     public Review update(Review review) {
-        return rewiewRepository.save(review);
+        return reviewRepository.save(review);
     }
 
     @Transactional
     public void delete(Long id) {
         Review review = getById(id);
-        rewiewRepository.delete(review);
+        reviewRepository.delete(review);
     }
 }

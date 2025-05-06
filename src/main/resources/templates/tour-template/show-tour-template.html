@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title layout:fragment="title" th:text="${tourTemplate.name}">Tour Template</title>
+</head>
+<body>
+<main layout:fragment="content" class="container">
+
+    <section class="tour-detail">
+        <h1 th:text="${tourTemplate.name}">Tour Name</h1>
+        <!-- ... блок с мета-данными ... -->
+
+        <div class="tour-description">
+            <h2>Description</h2>
+            <p th:text="${tourTemplate.description}"></p>
+        </div>
+
+        <div class="tour-images" th:if="${tourTemplate.pictures}" th:with="pictures = ${tourTemplate.pictures}">
+            <h2>Gallery</h2>
+            <div class="images-grid">
+                <img th:each="pic : ${pictures}"
+                     th:src="@{/tours/{tid}/pictures/{pid}(tid=${tourTemplate.id}, pid=${pic.id})}"
+                     alt="Tour image"
+                     class="tour-image"/>
+            </div>
+        </div>
+
+        <div class="tour-action">
+            <a th:href="@{/booking/{id}(id=${tourTemplate.id})}"
+               class="btn btn-primary">Book</a>
+        </div>
+    </section>
+
+</main>
+</body>
+</html>

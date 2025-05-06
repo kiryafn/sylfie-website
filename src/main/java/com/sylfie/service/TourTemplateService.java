@@ -1,8 +1,10 @@
 package com.sylfie.service;
 
 import com.sylfie.model.entity.TourTemplate;
+import com.sylfie.repository.TourHistoryRepository;
 import com.sylfie.repository.TourTemplateRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,9 +15,12 @@ import java.util.List;
 public class TourTemplateService {
 
     private final TourTemplateRepository tourTemplateRepository;
+    private final TourHistoryRepository tourHistoryRepository;
 
-    public TourTemplateService(TourTemplateRepository tourTemplateRepository) {
+
+    public TourTemplateService(TourTemplateRepository tourTemplateRepository, TourHistoryRepository tourHistoryRepository) {
         this.tourTemplateRepository = tourTemplateRepository;
+        this.tourHistoryRepository = tourHistoryRepository;
     }
 
     public List<TourTemplate> getAll() {
@@ -42,4 +47,11 @@ public class TourTemplateService {
         TourTemplate template = getById(id);
         tourTemplateRepository.delete(template);
     }
+
+    public List<TourTemplate> getTop3Popular() {
+        List<Long> topIds = tourHistoryRepository.findTopTourIds(PageRequest.of(0, 3));
+        return tourTemplateRepository.findAllById(topIds);
+
+    }
+
 }

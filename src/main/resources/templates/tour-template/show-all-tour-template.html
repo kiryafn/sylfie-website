@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title layout:fragment="title">Все туры Sylfie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <!-- Заголовок страницы -->
+    <section class="page-header container">
+        <h1 class="section-title">All tours</h1>
+        <p class="subtitle">Choose any outdoor adventure this summer</p>
+    </section>
+
+    <!-- Сетка всех темплейтов -->
+    <section class="tour-templates container">
+        <div class="tour-cards">
+            <article class="tour-card" th:each="template : ${tourTemplates}">
+                <div class="tour-image-wrapper">
+                    <!-- Показываем картинку, если она есть -->
+                    <img th:unless="${template.getPictures().isEmpty()}"
+                         th:src="@{/tours/{tid}/pictures/{pid}(tid=${template.id}, pid=${template.getPreviewPicture().id})}"
+                         class="tour-image"/>
+                    <!-- Иначе плейсхолдер -->
+                    <div th:if="${template.getPictures().isEmpty()}" class="tour-image-placeholder">
+                        <span>Нет изображения</span>
+                    </div>
+                </div>
+                <div class="tour-info">
+                    <h3 th:text="${template.name}">Название тура</h3>
+                    <p th:text="${template.description != null ? #strings.abbreviate(template.description,120) : ''}">
+                        Краткое описание тура...
+                    </p>
+                </div>
+                <a th:href="@{/tours/{id}(id=${template.id})}"
+                   class="btn tour-detail-btn">Details</a>
+            </article>
+
+        </div>
+    </section>
+</main>
+</body>
+</html>

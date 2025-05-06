@@ -11,7 +11,7 @@ import java.util.Set;
  * Категория тура.
  */
 @Entity
-@Table(name = "tour_category")
+@Table(name = "tour_categories")
 public class TourCategory {
 
     @Id
@@ -30,7 +30,7 @@ public class TourCategory {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     public TourCategory() {}
