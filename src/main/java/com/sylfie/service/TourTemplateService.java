@@ -1,5 +1,6 @@
 package com.sylfie.service;
 
+import com.github.slugify.Slugify;
 import com.sylfie.model.entity.TourTemplate;
 import com.sylfie.repository.TourHistoryRepository;
 import com.sylfie.repository.TourTemplateRepository;
@@ -12,15 +13,17 @@ import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
-public class TourTemplateService {
+public class TourTemplateService{
 
     private final TourTemplateRepository tourTemplateRepository;
     private final TourHistoryRepository tourHistoryRepository;
+    private final Slugify slugify;
 
 
-    public TourTemplateService(TourTemplateRepository tourTemplateRepository, TourHistoryRepository tourHistoryRepository) {
+    public TourTemplateService(TourTemplateRepository tourTemplateRepository, TourHistoryRepository tourHistoryRepository, Slugify slugify) {
         this.tourTemplateRepository = tourTemplateRepository;
         this.tourHistoryRepository = tourHistoryRepository;
+        this.slugify = slugify;
     }
 
     public List<TourTemplate> getAll() {
@@ -32,13 +35,24 @@ public class TourTemplateService {
                 .orElseThrow(() -> new EntityNotFoundException("Tour template not found with id: " + id));
     }
 
+    public TourTemplate getBySlug(String slug) {
+        return tourTemplateRepository.findBySlug(slug)
+                .orElseThrow(() -> new EntityNotFoundException("Tour template not found with slug: " + slug));
+    }
+
     @Transactional
     public TourTemplate create(TourTemplate template) {
+        template.setSlug(generateSlug(template));
         return tourTemplateRepository.save(template);
     }
 
     @Transactional
     public TourTemplate update(TourTemplate template) {
+        TourTemplate existing = getById(template.getId());
+
+        if (!existing.getName().equals(template.getName())) {
+            template.setSlug(generateSlug(template));
+        }
         return tourTemplateRepository.save(template);
     }
 
@@ -51,7 +65,16 @@ public class TourTemplateService {
     public List<TourTemplate> getTop3Popular() {
         List<Long> topIds = tourHistoryRepository.findTopTourIds(PageRequest.of(0, 3));
         return tourTemplateRepository.findAllById(topIds);
+    }
 
+    private String generateSlug(TourTemplate template) {
+        String base = slugify.slugify(template.getName());
+        String slug = base;
+        int i = 1;
+        while (tourTemplateRepository.existsBySlug(slug)) {
+            slug = base + "-" + i++;
+        }
+        return slug;
     }
 
 }

@@ -20,8 +20,11 @@ public class TourTemplate {
     @JoinColumn(name = "tour_category", nullable = false)
     private TourCategory category;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false, unique = true)
+    private String slug;
 
     @Column(columnDefinition = "text")
     private String description;
@@ -187,5 +190,13 @@ public class TourTemplate {
 
     public void setDurationDays(Integer durationDays) {
         this.durationDays = durationDays;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 }

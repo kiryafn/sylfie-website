@@ -30,9 +30,9 @@ public class TourTemplateController {
         this.tourCategoryService = new TourCategoryService(tourCategoryRepository);
     }
 
-    @GetMapping("/{id}")
-    public String showTour(@PathVariable Long id, Model model) {
-        TourTemplate tourTemplate = tourTemplateService.getById(id);
+    @GetMapping("/{slug}")
+    public String showTour(@PathVariable String slug, Model model) {
+        TourTemplate tourTemplate = tourTemplateService.getBySlug(slug);
         model.addAttribute("tourTemplate", tourTemplate);
         model.addAttribute("user", userService.getById(1L));
         return "tour-template/show-tour-template";

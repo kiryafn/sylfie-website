@@ -1,242 +1,201 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-/* 1. RESET & BASE */
+/* 1. RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Poppins', sans-serif;
     background: #f9f9f9;
     color: #333;
-    line-height: 1.6;
+    line-height: 1.5;
 }
-
 a {
     text-decoration: none;
     color: inherit;
 }
-
-/* 2. CONTAINER */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 8px;
+    padding: 0 16px;
 }
 
-/* 3. BANNER */
-.banner-container {
+/* 2. HERO */
+.tour-hero {
     position: relative;
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-    margin-bottom: 40px;
+    height: 450px;
+    /* позволяем панели выступать за границы */
+    overflow: visible;
 }
-
-.banner-img {
+.tour-hero__img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 57%;
-    display: block;
 }
 
-.banner-overlay {
+/* ← Browse All Trips */
+.tour-hero__back {
     position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.banner-title {
+    top: 16px;
+    left: 16px;
+    background: rgba(0,0,0,0.5);
     color: #fff;
-    font-size: 60px;
-    font-weight: 600;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-}
-
-.banner-subtitle {
-    color: #fff;
-    font-size: 20px;
-    font-weight: 400;
-    margin-top: 8px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    font-family: "Julius Sans One", sans-serif;
-    white-space: pre-wrap;
-}
-
-/* --- TOP SECTION --- */
-.tour-detail__top {
-    display: flex;
-    gap: 32px;
-    align-items: flex-start;
-}
-
-/* --- SUMMARY --- */
-.tour-summary {
-    flex: 0 0 300px;
-    background: #fff;
-    border-radius: 8px;
-    padding: 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.tour-summary__header {
-    font-size: 20px;
-    font-weight: 600;
-    color: #222;
-}
-
-.tour-summary__info {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.tour-summary__info li {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    color: #555;
-}
-
-.tour-summary__info li i {
-    color: #4B0082;
-    font-size: 18px;
-}
-
-.btn--primary {
-    display: block;
-    width: 100%;
-    padding: 12px 0;
-    text-align: center;
-    background: #4B0082;
-    color: #fff;
-    border: none;
+    padding: 6px 12px;
     border-radius: 4px;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background .2s, transform .1s;
-}
-
-.btn--primary:hover {
-    background: #37006b;
-    transform: translateY(-2px);
-}
-
-/* --- SLIDER --- */
-.tour-slider {
-    flex: 1;
-}
-
-.slider-container {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.slider-track {
-    display: flex;
-    transition: transform .5s ease;
-}
-
-.slide {
-    min-width: 100%;
-}
-
-.slide img {
-    width: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-.slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.4);
-    border: none;
-    color: #fff;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
+    font-size: 14px;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    z-index: 2;
+    gap: 6px;
     transition: background .2s;
 }
-
-.slider-btn--prev {
-    left: 8px;
+.tour-hero__back:hover {
+    background: rgba(0,0,0,0.7);
+}
+.tour-hero__back i {
+    font-size: 12px;
 }
 
-.slider-btn--next {
-    right: 8px;
-}
-
-.slider-btn:hover {
-    background: rgba(0, 0, 0, 0.6);
-}
-
-/* --- DOTS --- */
-.slider-dots {
+/* Панель поверх баннера */
+.tour-hero__panel {
+    position: absolute;
+    bottom: -120px; /* выступ на 120px */
+    left: 0;
+    width: 100%;
     display: flex;
-    gap: 8px;
     justify-content: center;
-    margin-top: 12px;
+}
+.tour-hero__panel .container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    padding: 32px 24px;
 }
 
-.dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #ccc;
-    border: none;
+/* Подзаголовок */
+.tour-hero__subline {
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #666;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+/* Заголовок */
+.tour-hero__title {
+    font-size: 36px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 24px;
+    line-height: 1.2;
+}
+
+/* Meta-блок */
+.tour-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px 48px;
+    margin-bottom: 32px;
+    font-size: 15px;
+    color: #555;
+}
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.meta-item i {
+    color: #986f28;
+    font-size: 18px;
+}
+.tooltip-icon {
+    font-size: 14px;
+    color: #999;
+    cursor: help;
+}
+
+/* Кнопки действий */
+.tour-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+}
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
     cursor: pointer;
-    transition: background .3s;
+}
+.btn--primary {
+    background: #0d3b66;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: background .2s;
+}
+.btn--primary:hover {
+    background: #092a4a;
+}
+.btn--outline {
+    border: 2px solid #0d3b66;
+    color: #0d3b66;
+    padding: 10px 26px;
+    border-radius: 4px;
+    transition: background .2s, color .2s;
+}
+.btn--outline:hover {
+    background: #0d3b66;
+    color: #fff;
+}
+.btn--link {
+    display: inline-flex;
+    gap: 8px;
+    color: #0d3b66;
+}
+.btn--link i {
+    font-size: 16px;
 }
 
-.dot.active, .dot:hover {
-    background: #4B0082;
-}
-
-/* --- DESCRIPTION --- */
+/* Описание тура */
 .tour-detail__description {
-    margin-top: 32px;
+    margin: 160px 0 48px;
 }
-
 .tour-detail__description h2 {
     font-size: 20px;
     color: #222;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
-
 .tour-detail__description p {
     font-size: 15px;
     color: #444;
     white-space: pre-line;
 }
 
-/* --- RESPONSIVE --- */
+/* 3. RESPONSIVE */
 @media (max-width: 768px) {
-    .tour-detail__top {
-        flex-direction: column;
+    .tour-hero {
+        height: 350px;
     }
-
-    .tour-summary {
-        width: 100%;
+    .tour-hero__back {
+        top: 8px;
+        left: 8px;
+        padding: 4px 8px;
+        font-size: 13px;
+    }
+    .tour-hero__panel .container {
+        padding: 24px 16px;
+    }
+    .tour-hero__title {
+        font-size: 28px;
+        margin-bottom: 16px;
+    }
+    .tour-hero__meta {
+        gap: 16px 24px;
+        margin-bottom: 24px;
+    }
+    .btn--primary {
+        padding: 10px 24px;
     }
 }

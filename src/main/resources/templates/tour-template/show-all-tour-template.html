@@ -98,7 +98,7 @@
                             <span class="tour-price"><span th:text="${'$' + template.price}"></span></span>
                             <span class="tour-per-person">per person</span>
                         </div>
-                        <a th:href="@{/tours/{id}(id=${template.id})}" class="btn-more">Details</a>
+                        <a th:href="@{/tours/{slug}(slug=${template.slug})}" class="btn-more">Details</a>
                     </div>
                 </article>
             </div>
