@@ -7,88 +7,77 @@
     <meta charset="UTF-8">
     <title layout:fragment="title" th:text="${tourTemplate.name}">Tour Name</title>
 
-    <!-- Google Fonts -->
+    <!-- Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
           rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Наш CSS -->
-    <link rel="stylesheet" th:href="@{/css/tour-template.css}">
 </head>
 <body>
-<main layout:fragment="content">
+<main layout:fragment="content" class="tour-page">
+    <link rel="stylesheet" th:href="@{/css/tour-template.css}">
 
-    <!-- HERO-БАННЕР -->
-    <div class="tour-hero">
-        <!-- Фоновое изображение -->
+
+    <!-- HERO -->
+    <section class="tour-hero">
         <img class="tour-hero__img"
-             th:src="@{/tours/{tid}/pictures/{pid}(tid=${tourTemplate.id},pid=${tourTemplate.pictures[0].id})}"
-             alt="Hero image">
+             th:src="@{/tours/{tid}/pictures/{pid}(tid=${tourTemplate.id}, pid=${tourTemplate.previewPicture.id})}"
+             alt="Banner">
 
-        <!-- Ссылка «← Browse All Trips» -->
-        <a href="/tours" class="tour-hero__back">
-            <i class="fas fa-chevron-left"></i>
-            Browse All Trips
-        </a>
+        <button class="tour-hero__back" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i> Browse All Trips
+        </button>
 
-        <!-- Панель с инфо -->
         <div class="tour-hero__panel">
-            <div class="container">
-                <p class="tour-hero__subline"
-                   th:text="${tourTemplate.category.name}">Категория</p>
-                <h1 class="tour-hero__title"
-                    th:text="${tourTemplate.name}">Название тура</h1>
-
-                <div class="tour-hero__meta">
-                    <div class="meta-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span th:text="${tourTemplate.location}">Местоположение</span>
-                    </div>
-                    <div class="meta-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span th:text="${tourTemplate.durationDays + (tourTemplate.durationDays>1?' DAYS':' DAY')}">
-              Длительность
-            </span>
-                    </div>
-                    <div class="meta-item">
-                        <i class="fas fa-dollar-sign"></i>
-                        <span>
-              From&nbsp;<span th:text="${tourTemplate.price} + '$'">Цена</span>
-            </span>
-                    </div>
-                    <div class="meta-item">
-                        <i class="fas fa-signal"></i>
-                        <span th:text="'Level ' + ${tourTemplate.difficulty}">Сложность</span>
-                        <i class="fas fa-info-circle tooltip-icon"
-                           title="1 = easy, 5 = hard"></i>
+            <div class="container tour-panel">
+                <!-- Левый столбец: инфо -->
+                <div class="tour-panel__info">
+                    <div class="tour-hero__subline"
+                         th:text="${tourTemplate.difficulty.name()}">Medium</div>
+                    <h1 class="tour-hero__title"
+                        th:text="${tourTemplate.name}">Shark Swimming</h1>
+                    <div class="tour-hero__meta">
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span th:text="${tourTemplate.location}">Cuba</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span th:text="${tourTemplate.durationDays + ' Day'}">1 Day</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span th:text="${'From ' + tourTemplate.price + '$'}">From 6120.00$</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-chart-line"></i>
+                            <span th:text="${'Level ' + tourTemplate.difficulty.name()}">Level HARD</span>
+                            <i class="fas fa-info-circle tooltip-icon" title="Difficulty level"></i>
+                        </div>
                     </div>
                 </div>
-
-                <div class="tour-hero__actions">
+                <!-- Правый столбец: действия -->
+                <div class="tour-panel__actions">
                     <a th:href="@{/booking/{id}(id=${tourTemplate.id})}" class="btn btn--primary">
                         Book Online
                     </a>
-                    <a th:href="@{/tours/{id}/itinerary(id=${tourTemplate.id})}" class="btn btn--outline">
-                        Download Itinerary
-                    </a>
-                    <a href="tel:1-800-368-2794" class="btn btn--link">
-                        <i class="fas fa-phone"></i>
-                        Call 1-800-368-2794
+                    <a href="tel:+18003682794" class="btn btn--link">
+                        <i class="fas fa-phone"></i> Call 1-800-368-2794
                     </a>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Описание -->
+    <!-- DESCRIPTION -->
     <section class="tour-detail__description container">
         <h2>Описание тура</h2>
         <p th:utext="${tourTemplate.description}">
-            Подробное описание тура…
+            Здесь будет подробное описание тура…
         </p>
     </section>
-
 </main>
 </body>
 </html>
