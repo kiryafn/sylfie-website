@@ -3,6 +3,7 @@ package com.sylfie.model.entity;
 import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +26,6 @@ public class TourTemplate {
     @Column(columnDefinition = "text")
     private String description;
 
-    @Column(columnDefinition = "text")
-    private String shortDescription;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Difficulty difficulty;
@@ -43,6 +41,13 @@ public class TourTemplate {
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(precision = 19, scale = 2)
+    private BigDecimal price;
+
+    private String location;
+
+    private Integer durationDays;
 
     public TourTemplate() {}
 
@@ -158,5 +163,29 @@ public class TourTemplate {
         }
         if (pictures.size() > 0) {return pictures.getFirst();}
         else return null;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Integer getDurationDays() {
+        return durationDays;
+    }
+
+    public void setDurationDays(Integer durationDays) {
+        this.durationDays = durationDays;
     }
 }

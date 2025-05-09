@@ -29,11 +29,4 @@ public class HomeController {
         model.addAttribute("tourTemplates", tourTemplateService.getTop3Popular());
         return "home";
     }
-
-    @GetMapping("/autorization")
-    public String autorization() {
-        return "autorization";
-    }
-
-
 }

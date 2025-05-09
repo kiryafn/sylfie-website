@@ -45,7 +45,8 @@
     <h2 class="section-title" th:text="#{tours.title}">Popular Tours</h2>
     <div class="tour-cards">
       <article class="tour-card" th:each="template : ${tourTemplates}">
-<!--        <img th:src="@{${template.imagePath}}" th:alt="${template.title}" class="tour-image"/>-->
+        <img th:unless="${template.getPictures().isEmpty()}"
+             th:src="@{/tours/{tid}/pictures/{pid}(tid=${template.id}, pid=${template.getPreviewPicture().id})}">
         <h3 th:text="${template.name}">Tour Title</h3>
         <p th:text="${template.description}">Tour description</p>
         <a th:href="@{/tours/{id}(id=${template.id})}"

@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface TourPictureMapper {
 
-    @Mapping(target = "filename", source = "file.originalFilename")
-    @Mapping(target = "contentType", source = "file.contentType")
+    @Mapping(target = "filename", expression = "java(file.getOriginalFilename())")
+    @Mapping(target = "contentType", expression = "java(file.getContentType())")
     @Mapping(target = "data",      expression = "java(file.getBytes())")
     @Mapping(target = "tourTemplate", ignore = true)
     TourPicture toEntity(MultipartFile file) throws IOException;

@@ -1,29 +1,41 @@
-<header th:fragment="header" class="site-header" >
-  <div class="container header-inner">
-    <a href="/home" class="logo">
-      <img src="/img/logos/logo.svg" alt="Sylfie Logo"/>
+<header th:fragment="header" class="header">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <a th:href="@{/home}" class="logo">
+    <img src="/img/logos/full_logo.svg" alt="Logo">
+  </a>
+
+  <!-- Центр: пункты меню -->
+  <nav class="nav">
+    <ul>
+      <li class="has-dropdown"><a th:href="@{/destinations}">Destinations</a></li>
+      <li class="has-dropdown"><a th:href="@{/tours}">Tours</a></li>
+      <li class="has-dropdown"><a th:href="@{/why-g}">Why Sylfie</a></li>
+      <li class="has-dropdown"><a th:href="@{/deals}">Deals</a></li>
+    </ul>
+  </nav>
+
+  <!-- Правый блок: иконки -->
+  <div class="header-actions">
+    <!-- Поиск -->
+    <button class="action-btn" aria-label="Search">
+      <i class="fas fa-search"></i>
+    </button>
+    <!-- Телефон -->
+    <a href="tel:+1234567890" class="action-btn" aria-label="Call us">
+      <i class="fas fa-phone"></i>
     </a>
-    <nav class="main-nav">
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a th:href="@{/tours}">Tours</a></li>
-        <li><a href="#">Support</a></li>
+    <!-- Пользователь -->
+    <div class="user-dropdown">
+      <button class="action-btn" aria-label="User menu">
+        <i class="fas fa-user"></i>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a th:href="@{/profile}">Profile</a></li>
+        <li><a th:href="@{/favorites}">Saved Items</a></li>
       </ul>
-    </nav>
-    <div class="user-info">
-      <div class="balances">
-        <span>Balance: <span class="money" th:text="${user.getBalance()}"> €</span></span>
-        <span>Bonus balance: <span class="money" th:text="${user.getBonusBalance()}"> €</span></span>
-      </div>
-      <div class="profile">
-        <img class="avatar" src="/img/test_pfp.jpg" alt="User Avatar"/>
-        <div class="profile-text">
-        <span class="user-name"
-              th:text="${user.firstName + ' ' + user.lastName}">
-        </span>
-          <span class="user-email" th:text="${user.getEmail()}"></span>
-        </div>
-      </div>
     </div>
   </div>
 </header>

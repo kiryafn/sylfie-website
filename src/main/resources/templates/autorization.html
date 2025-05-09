@@ -1,81 +1,84 @@
-<!-- autorization.html -->
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Вход / Регистрация</title>
-    <link rel="stylesheet" href="/css/auth.css" />
-
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body>
-<div class="background-overlay"></div>
 
-<div class="auth-container">
+<main class="auth-container">
     <div class="tabs">
-        <div id="tab-login" class="tab active">Sign in</div>
-        <div id="tab-register" class="tab">Sing up</div>
+        <button th:classappend="${activeTab=='login'} ? ' active' : ''"
+                onclick="location.href='?type=login'">
+            Вход
+        </button>
+        <button th:classappend="${activeTab=='register'} ? ' active' : ''"
+                onclick="location.href='?type=register'">
+            Регистрация
+        </button>
     </div>
 
-    <div class="form-wrap" id="form-login">
-        <div class="form-group">
-            <label for="login-email">Email</label>
-            <input type="email" id="login-email" placeholder="you@example.com" />
-        </div>
-        <div class="form-group">
-            <label for="login-password">Password</label>
-            <input type="password" id="login-password" placeholder="••••••••" />
-        </div>
-        <button class="btn-primary">Log in</button>
+    <div class="form-wrapper">
+        <!-- Форма входа -->
+        <form th:action="@{/autorization/login}"
+              th:object="${userLoginDTO}"
+              method="post"
+              th:if="${activeTab=='login'}"
+              class="auth-form">
+            <label>
+                Email
+                <input type="email" th:field="*{email}" placeholder="you@example.com"/>
+                <div class="error" th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}"></div>
+            </label>
+            <label>
+                Пароль
+                <input type="password" th:field="*{password}" placeholder="Введите пароль"/>
+                <div class="error" th:if="${#fields.hasErrors('password')}"
+                     th:errors="*{password}"></div>
+            </label>
+            <button type="submit" class="btn-submit">Войти</button>
+        </form>
 
-        <div class="social-login">
-            <a href="#" class="social-btn google">Google</a>
-            <a href="#" class="social-btn facebook">Facebook</a>
-        </div>
+        <!-- Форма регистрации -->
+        <form th:action="@{/autorization/register}"
+              th:object="${userRegisterDTO}"
+              method="post"
+              th:if="${activeTab=='register'}"
+              class="auth-form">
+            <label>
+                Логин
+                <input type="text" th:field="*{username}" placeholder="Придумайте логин" required/>
+                <div class="error" th:if="${#fields.hasErrors('username')}"
+                     th:errors="*{username}"></div>
+            </label>
+            <label>
+                Email
+                <input type="email" th:field="*{email}" placeholder="you@example.com" required/>
+                <div class="error" th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}"></div>
+            </label>
+            <label>
+                Email
+                <input type="email" th:field="*{email}" placeholder="you@example.com" required/>
+                <div class="error" th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}"></div>
+            </label>
+            <label>
+                Email
+                <input type="email" th:field="*{email}" placeholder="you@example.com" required/>
+                <div class="error" th:if="${#fields.hasErrors('email')}"
+                     th:errors="*{email}"></div>
+            </label>
+            <!-- остальные поля регистрации -->
+            <button type="submit" class="btn-submit">Зарегистрироваться</button>
+        </form>
     </div>
+</main>
 
-    <div class="form-wrap" id="form-register" style="display: none;">
-        <div class="form-group">
-            <label for="reg-name">Имя</label>
-            <input type="text" id="reg-name" placeholder="Ваше имя" />
-        </div>
-        <div class="form-group">
-            <label for="reg-email">Email</label>
-            <input type="email" id="reg-email" placeholder="you@example.com" />
-        </div>
-        <div class="form-group">
-            <label for="reg-password">Пароль</label>
-            <input type="password" id="reg-password" placeholder="••••••••" />
-        </div>
-        <button class="btn-primary">Зарегистрироваться</button>
-
-        <div class="social-login">
-            <a href="/oauth2/authorization/google" class="social-btn google">Google</a>
-            <a href="/oauth2/authorization/facebook" class="social-btn facebook">Facebook</a>
-        </div>
-    </div>
-</div>
-
-<script>
-    // JS для переключения между формами
-    const tabLogin = document.getElementById('tab-login');
-    const tabRegister = document.getElementById('tab-register');
-    const formLogin = document.getElementById('form-login');
-    const formRegister = document.getElementById('form-register');
-
-    tabLogin.addEventListener('click', () => {
-        tabLogin.classList.add('active');
-        tabRegister.classList.remove('active');
-        formLogin.style.display = 'block';
-        formRegister.style.display = 'none';
-    });
-    tabRegister.addEventListener('click', () => {
-        tabRegister.classList.add('active');
-        tabLogin.classList.remove('active');
-        formRegister.style.display = 'block';
-        formLogin.style.display = 'none';
-    });
-</script>
-
+<!-- здесь можно подключить общий footer -->
+<footer th:insert="~{fragments/footer :: footer}"></footer>
 </body>
 </html>

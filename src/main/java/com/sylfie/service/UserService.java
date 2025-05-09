@@ -25,6 +25,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                    new EntityNotFoundException("User not found with username " + username)
+                );
+    }
+
     public User getById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() ->
