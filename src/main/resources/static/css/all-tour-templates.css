@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap');
 /* ========================================
    1. СБРОС И БАЗОВЫЕ СТИЛИ
    ======================================== */
@@ -5,9 +7,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 body {
-    font-family: 'Poppins', sans-serif;
     color: #2c2c2c;
     background: #f9f9f9;
     line-height: 1.5;
@@ -197,34 +199,54 @@ h1, h3 {
     height: 100%;
     object-fit: cover;
 }
-.tour-info {
-    padding: 16px;
-    flex: 1;
-}
-.tour-info h3 {
-    font-size: 18px;
-    margin-bottom: 8px;
-    color: #254A19;
-}
-.tour-info p {
-    font-size: 14px;
-    color: #666;
-}
-
 /* ========================================
    6. НОВЫЕ СТИЛИ ДЛЯ PRICE / LOCATION / GROUP
    ======================================== */
 .tour-info {
     display: flex;
-    align-items: center;
-    gap: 24px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
     margin-top: 12px;
+    margin-bottom: 10px;
+    padding: 16px;
+    flex: 1;
 }
+
+.tour-info h3 {
+    margin: 0;
+}
+
+.tour-title{
+    font-size: 18px;
+    color: #254A19;
+
+}
+
+.tour-duration{
+    font-size: 12px;
+    font-family: "Julius Sans One", sans-serif;
+    font-style: normal
+}
+
+.tour-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .tour-price {
     font-size: 16px;
     font-weight: 600;
     color: #3a8e32;
 }
+
+.tour-price span {
+    font-size: 20px;
+    font-weight: 900;
+}
+
 .tour-location,
 .tour-group-size {
     display: flex;
@@ -238,18 +260,33 @@ h1, h3 {
     color: #3a8e32;
     font-size: 16px;
 }
-.tour-detail-btn {
-    display: block;
-    text-align: center;
-    margin: 16px;
-    padding: 10px 0;
+
+/* Styles for "Подробнее" button */
+.btn-more {
+    display: inline-block;
+    padding: 10px 16px;
     background: #3a8e32;
     color: #fff;
-    border-radius: 4px;
+    border-radius: 7px;
+    text-align: center;
     font-weight: 500;
-    transition: background 0.2s, transform 0.1s;
+    transition: background 0.2s, transform 0.2s;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.tour-detail-btn:hover {
-    background: #3a8e32;
-    transform: translateY(-1px);
+
+.btn-more:hover {
+    background: #2e7d28;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
+
+/* Image zoom on button hover (modern browsers) */
+.tour-image-wrapper img {
+    transition: transform 0.3s ease;
+}
+
+.tour-card:has(.btn-more:hover) .tour-image-wrapper img {
+    transform: scale(1.05);
+}
+

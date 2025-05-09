@@ -82,23 +82,23 @@
                         <span th:if="${template.pictures.isEmpty()}">Нет изображения</span>
                     </div>
                     <div class="tour-info">
-                        <div class="tour-duration" th:text="${template.durationDays} + ' DAY TOUR'">9 DAY TOUR</div>
-                        <h3 class="tour-title" th:text="${template.name}">Название тура</h3>
+                        <div class="tour-duration" th:text="${template.durationDays} + ' DAY TOUR'"></div>
+                        <h3 class="tour-title" th:text="${template.name}"></h3>
                         <div class="tour-meta">
                             <div class="tour-location">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <span th:text="${template.location}">USA, Colorado</span>
+                                <span th:text="${template.location}"></span>
                             </div>
                             <div class="tour-group-size">
                                 <i class="fas fa-users"></i>
-                                <span th:text="${template.maxParticipants}">12</span>
+                                <span th:text="${template.maxParticipants}"></span>
                             </div>
                         </div>
                         <div class="tour-price-block">
-                            <span class="tour-price"><sup>$</sup><span th:text="${template.price}">1000</span></span>
+                            <span class="tour-price"><span th:text="${'$' + template.price}"></span></span>
                             <span class="tour-per-person">per person</span>
                         </div>
-                        <a th:href="@{/tours/{id}(id=${template.id})}" class="btn-more">Подробнее</a>
+                        <a th:href="@{/tours/{id}(id=${template.id})}" class="btn-more">Details</a>
                     </div>
                 </article>
             </div>

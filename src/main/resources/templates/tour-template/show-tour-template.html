@@ -4,36 +4,127 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title layout:fragment="title" th:text="${tourTemplate.name}">Tour Template</title>
+    <meta charset="UTF-8">
+    <title layout:fragment="title" th:text="${tourTemplate.name}">Tour Name</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Наши стили -->
 </head>
 <body>
-<main layout:fragment="content" class="container">
+<main layout:fragment="content" th:object="${tourTemplate}">
 
-    <section class="tour-detail">
-        <h1 th:text="${tourTemplate.name}">Tour Name</h1>
-        <!-- ... блок с мета-данными ... -->
+    <link rel="stylesheet" th:href="@{/css/tour-template.css}">
 
-        <div class="tour-description">
-            <h2>Description</h2>
-            <p th:text="${tourTemplate.description}"></p>
+    <!-- Баннер -->
+    <div class="banner-container">
+        <img class="banner-img"
+             th:src="@{/tours/{tid}/pictures/{pid}(tid=*{id}, pid=*{getPreviewPicture().id})}"
+             alt="All tours banner">
+        <div class="banner-overlay">
+            <h1 class="banner-title" th:text="*{name}"></h1>
+            <p th:if="*{durationDays == 1}" class="banner-subtitle" th:text="*{durationDays + ' DAY       |       ' + location.toUpperCase()}"></p>
+            <p th:unless="*{durationDays == 1}" class="banner-subtitle" th:text="*{durationDays + ' DAYS       |       ' + location.toUpperCase()}"></p>
         </div>
+    </div>
 
-        <div class="tour-images" th:if="${tourTemplate.pictures}" th:with="pictures = ${tourTemplate.pictures}">
-            <h2>Gallery</h2>
-            <div class="images-grid">
-                <img th:each="pic : ${pictures}"
-                     th:src="@{/tours/{tid}/pictures/{pid}(tid=${tourTemplate.id}, pid=${pic.id})}"
-                     alt="Tour image"
-                     class="tour-image"/>
+    <!-- Блок “Quick Info” и слайдер -->
+    <div class="container">
+        <div class="tour-detail__top">
+            <!-- Quick info -->
+            <aside class="tour-summary">
+                <h2 class="tour-summary__header">Quick Info</h2>
+                <ul class="tour-summary__info">
+                    <li><i class="fas fa-dollar-sign"></i>
+                        <span th:text="${tourTemplate.price} + ' $'">6120 $</span>
+                    </li>
+                    <li><i class="fas fa-clock"></i>
+                        <span th:text="${tourTemplate.durationDays} + ' day tour'">1 day tour</span>
+                    </li>
+                    <li><i class="fas fa-map-marker-alt"></i>
+                        <span th:text="${tourTemplate.location}">Cuba</span>
+                    </li>
+                    <li><i class="fas fa-users"></i>
+                        <span th:text="${tourTemplate.maxParticipants}">4</span>
+                    </li>
+                    <li><i class="fas fa-flag"></i>
+                        <span th:text="${tourTemplate.category.name}">Экстремальный</span>
+                    </li>
+                    <li><i class="fas fa-star"></i>
+                        <span th:text="${tourTemplate.difficulty.name()}">HARD</span>
+                    </li>
+                </ul>
+                <a th:href="@{/booking/{id}(id=${tourTemplate.id})}" class="btn btn--primary">
+                    Забронировать
+                </a>
+            </aside>
+
+            <!-- Слайдер -->
+            <div class="tour-slider">
+                <div class="slider-container">
+                    <button class="slider-btn slider-btn--prev" aria-label="Prev">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="slider-track-container">
+                        <ul class="slider-track">
+                            <li class="slide" th:each="pic,idx : ${tourTemplate.pictures}"
+                                th:classappend="${idx==0} ? 'active'">
+                                <img th:src="@{/tours/{tid}/pictures/{pid}(tid=${tourTemplate.id},pid=${pic.id})}"
+                                     alt="">
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="slider-btn slider-btn--next" aria-label="Next">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="slider-dots">
+                    <button class="dot" th:each="pic,idx : ${tourTemplate.pictures}"
+                            th:classappend="${idx==0} ? 'active'"
+                            th:data-index="${idx}"></button>
+                </div>
             </div>
         </div>
 
-        <div class="tour-action">
-            <a th:href="@{/booking/{id}(id=${tourTemplate.id})}"
-               class="btn btn-primary">Book</a>
-        </div>
-    </section>
+        <!-- Описание под слайдером -->
+        <section class="tour-detail__description">
+            <h2>Описание тура</h2>
+            <p th:utext="${tourTemplate.description}">
+                Здесь будет подробное описание тура…
+            </p>
+        </section>
+    </div>
 
+    <!-- Слайдер JS -->
+    <script>
+        (function(){
+            const track = document.querySelector('.slider-track');
+            const slides = Array.from(track.children);
+            const prevBtn = document.querySelector('.slider-btn--prev');
+            const nextBtn = document.querySelector('.slider-btn--next');
+            const dots = Array.from(document.querySelectorAll('.dot'));
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            let current = 0;
+
+            slides.forEach((s,i) => s.style.left = (slideWidth * i) + 'px');
+
+            function goTo(idx) {
+                track.style.transform = 'translateX(-'+ slideWidth * idx +'px)';
+                slides[current].classList.remove('active');
+                dots[current].classList.remove('active');
+                slides[idx].classList.add('active');
+                dots[idx].classList.add('active');
+                current = idx;
+            }
+
+            nextBtn.addEventListener('click', ()=> goTo((current+1)%slides.length));
+            prevBtn.addEventListener('click', ()=> goTo((current-1+slides.length)%slides.length));
+            dots.forEach(dot => dot.addEventListener('click', ()=> goTo(+dot.dataset.index)));
+        })();
+    </script>
 </main>
 </body>
 </html>

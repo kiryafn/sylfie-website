@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* 1. RESET & BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* 2. CONTAINER */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 8px;
+}
+
+/* 3. BANNER */
+.banner-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.banner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 57%;
+    display: block;
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-title {
+    color: #fff;
+    font-size: 60px;
+    font-weight: 600;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.banner-subtitle {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 400;
+    margin-top: 8px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    font-family: "Julius Sans One", sans-serif;
+    white-space: pre-wrap;
+}
+
+/* --- TOP SECTION --- */
+.tour-detail__top {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+}
+
+/* --- SUMMARY --- */
+.tour-summary {
+    flex: 0 0 300px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tour-summary__header {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+}
+
+.tour-summary__info {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tour-summary__info li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    color: #555;
+}
+
+.tour-summary__info li i {
+    color: #4B0082;
+    font-size: 18px;
+}
+
+.btn--primary {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+    text-align: center;
+    background: #4B0082;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background .2s, transform .1s;
+}
+
+.btn--primary:hover {
+    background: #37006b;
+    transform: translateY(-2px);
+}
+
+/* --- SLIDER --- */
+.tour-slider {
+    flex: 1;
+}
+
+.slider-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.slider-track {
+    display: flex;
+    transition: transform .5s ease;
+}
+
+.slide {
+    min-width: 100%;
+}
+
+.slide img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background .2s;
+}
+
+.slider-btn--prev {
+    left: 8px;
+}
+
+.slider-btn--next {
+    right: 8px;
+}
+
+.slider-btn:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* --- DOTS --- */
+.slider-dots {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: background .3s;
+}
+
+.dot.active, .dot:hover {
+    background: #4B0082;
+}
+
+/* --- DESCRIPTION --- */
+.tour-detail__description {
+    margin-top: 32px;
+}
+
+.tour-detail__description h2 {
+    font-size: 20px;
+    color: #222;
+    margin-bottom: 12px;
+}
+
+.tour-detail__description p {
+    font-size: 15px;
+    color: #444;
+    white-space: pre-line;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .tour-detail__top {
+        flex-direction: column;
+    }
+
+    .tour-summary {
+        width: 100%;
+    }
+}
