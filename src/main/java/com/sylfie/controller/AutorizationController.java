@@ -12,12 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/autorization")
 public class AutorizationController {
 
-    // срабатывает, когда параметра type НЕТ
-    @GetMapping(params = "!type")
-    public String defaultTab() {
-        return "redirect:/autorization?type=login";
-    }
-
 
     @GetMapping
     public String getAutorization(@RequestParam(value = "type", defaultValue = "login") String type, Model model) {

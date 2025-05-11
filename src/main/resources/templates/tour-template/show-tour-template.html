@@ -19,7 +19,6 @@
 <main layout:fragment="content" class="tour-page">
     <link rel="stylesheet" th:href="@{/css/tour-template.css}">
 
-
     <!-- HERO -->
     <section class="tour-hero">
         <img class="tour-hero__img"
@@ -73,11 +72,14 @@
 
     <!-- DESCRIPTION -->
     <section class="tour-detail__description container">
-        <h2>Описание тура</h2>
-        <p th:utext="${tourTemplate.description}">
-            Здесь будет подробное описание тура…
-        </p>
+        <div class="description-card">
+            <h2>Описание тура</h2>
+            <p th:utext="${tourTemplate.description}">
+                Здесь будет подробное описание тура…
+            </p>
+        </div>
     </section>
+
 </main>
 </body>
 </html>

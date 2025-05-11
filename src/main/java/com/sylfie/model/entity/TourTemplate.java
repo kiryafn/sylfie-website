@@ -26,7 +26,8 @@ public class TourTemplate {
     @Column(nullable = false, unique = true)
     private String slug;
 
-    @Column(columnDefinition = "text")
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -36,8 +37,6 @@ public class TourTemplate {
     @Column(name = "max_participants")
     private Integer maxParticipants;
 
-    @Column(nullable = false)
-    private Integer capacity;
 
     @OneToMany(mappedBy = "tourTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TourPicture> pictures = new ArrayList<>();
@@ -48,11 +47,16 @@ public class TourTemplate {
     @Column(precision = 19, scale = 2)
     private BigDecimal price;
 
-    private String location;
+    @Enumerated(EnumType.STRING)
+    private Location location;
 
     private Integer durationDays;
 
-    public TourTemplate() {}
+    private String shortDescription;
+
+    public TourTemplate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public TourTemplate(TourCategory category,
                         String name,
@@ -65,7 +69,6 @@ public class TourTemplate {
         this.description   = description;
         this.difficulty    = difficulty;
         this.maxParticipants = maxParticipants;
-        this.capacity      = capacity;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -133,14 +136,6 @@ public class TourTemplate {
         this.maxParticipants = maxParticipants;
     }
 
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -176,11 +171,11 @@ public class TourTemplate {
         this.price = price;
     }
 
-    public String getLocation() {
+    public Location getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Location location) {
         this.location = location;
     }
 
@@ -198,5 +193,13 @@ public class TourTemplate {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 }

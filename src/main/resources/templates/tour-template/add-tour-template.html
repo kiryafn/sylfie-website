@@ -4,83 +4,186 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-  <title layout:fragment="title">Админ — Создание тура</title>
+  <meta charset="UTF-8">
+  <title layout:fragment="title">Создать новый тур</title>
+
+  <!-- Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CKEditor 5 Classic -->
+
+  <!-- Наш CSS -->
+  <link rel="stylesheet" th:href="@{/css/admin-tour-template.css}">
 </head>
 <body>
-<main layout:fragment="content">
-  <section class="container">
-    <h2 class="section-title">Создание нового шаблона тура</h2>
-    <form th:action="@{/admin/tour-templates/save}"
-          th:object="${template}"
-          method="post"
-          enctype="multipart/form-data"
-          class="tour-form">
+<main layout:fragment="content" class="admin-container">
+  <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
 
-      <div class="form-group">
-        <label for="name">Название тура</label>
-        <input type="text" id="name" th:field="*{name}" required/>
+
+  <h1 class="admin-title">Создать новый тур</h1>
+
+  <form th:action="@{/admin/tour-templates/save}"
+        th:object="${template}"
+        method="post"
+        enctype="multipart/form-data"
+        class="admin-form">
+
+    <!-- Основная информация -->
+    <section class="form-section">
+      <h2>Основная информация</h2>
+      <div class="grid-two-cols">
+        <div class="field">
+          <label for="name">Название тура</label>
+          <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="field">
+          <label for="shortDescription">Краткое описание</label>
+          <textarea id="shortDescription" th:field="*{shortDescription}" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label>Сложность</label>
+          <div class="radio-group">
+            <label><input type="radio" th:field="*{difficulty}" value="EASY"> Лёгкая</label>
+            <label><input type="radio" th:field="*{difficulty}" value="MEDIUM"> Средняя</label>
+            <label><input type="radio" th:field="*{difficulty}" value="HARD"> Сложная</label>
+          </div>
+        </div>
+        <div class="field">
+          <label for="durationDays">Длительность (дней)</label>
+          <input type="number" id="durationDays" th:field="*{durationDays}" min="1" required>
+        </div>
+        <div class="field">
+          <label for="price">Цена (USD)</label>
+          <input type="number" id="price" th:field="*{price}" step="0.01" required>
+        </div>
+        <div class="field">
+          <label for="maxParticipants">Макс. участников</label>
+          <input type="number" id="maxParticipants" th:field="*{maxParticipants}" min="1" required>
+        </div>
+        <div class="field">
+          <label for="category">Категория</label>
+          <select id="category" th:field="*{category}" required>
+            <option value="" disabled selected>Выберите категорию</option>
+            <option th:each="cat : ${categories}"
+                    th:value="${cat.id}"
+                    th:text="${cat.name}">Категория</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="location">Локация</label>
+          <select id="location" th:field="*{location}" required>
+            <option value="" disabled selected>Выберите локацию</option>
+            <option th:each="loc : ${locations}"
+                    th:value="${loc.name()}"
+                    th:text="${loc.name}">Локация</option>
+          </select>
+        </div>
       </div>
+    </section>
 
-      <div class="form-group">
-        <label for="description">Описание</label>
-        <textarea id="description" th:field="*{description}" rows="4" required></textarea>
+    <!-- Полное описание -->
+    <section class="form-section">
+      <h2>Полный текст (HTML)</h2>
+      <div class="field full-width">
+        <label for="descriptionHtml">Описание тура</label>
+        <textarea id="descriptionHtml" th:field="*{descriptionHtml}" rows="8"></textarea>
       </div>
+    </section>
 
-      <div class="form-group">
-        <label for="difficulty">Сложность</label>
-        <select id="difficulty" th:field="*{difficulty}" required>
-          <option th:each="d : ${difficulties}"
-                  th:value="${d}"
-                  th:text="${d.name().toLowerCase()}">
-          </option>
-        </select>
+    <!-- Превью-картинка -->
+    <section class="form-section">
+      <h2>Превью-картинка</h2>
+      <div class="field preview-field">
+        <label for="previewPic">Выберите превью</label>
+        <input type="file" id="previewPic" name="previewPic" accept="image/*">
+        <div id="previewThumb" class="thumb-container"></div>
       </div>
+    </section>
 
-      <div class="form-group">
-        <label for="maxParticipants">Максимум участников</label>
-        <input type="number" id="maxParticipants" th:field="*{maxParticipants}"
-               min="1" required/>
+    <!-- Галерея -->
+    <section class="form-section">
+      <h2>Галерея (несколько фото)</h2>
+      <div class="field full-width">
+        <label for="pictures">Загрузить изображения</label>
+        <input type="file" id="pictures" name="pictures" multiple accept="image/*">
+        <div id="galleryThumbs" class="thumb-list"></div>
       </div>
+    </section>
 
-      <div class="form-group">
-        <label for="capacity">Вместимость</label>
-        <input type="number" id="capacity" th:field="*{capacity}"
-               min="1" required/>
-      </div>
+    <!-- Кнопки -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn--primary">
+        <i class="fas fa-save"></i> Создать тур
+      </button>
+      <a href="#" onclick="history.back()" class="btn btn--secondary">
+        <i class="fas fa-times"></i> Отмена
+      </a>
+    </div>
+  </form>
 
-      <div class="form-group">
-        <label for="category">Категория тура</label>
-        <select id="category" th:field="*{category}" required>
-          <option value="" disabled selected>-- Выберите категорию --</option>
-          <option th:each="cat : ${categories}"
-                  th:value="${cat.id}"
-                  th:text="${cat.name}">
-          </option>
-        </select>
-      </div>
+  <script>
+    // Инициализация CKEditor 5 Classic
+    ClassicEditor
+            .create(document.querySelector('#descriptionHtml'), {
+              toolbar: [
+                'heading', '|',
+                'bold', 'italic', 'underline', '|',
+                'bulletedList', 'numberedList', '|',
+                'link', 'imageUpload', '|',
+                'undo', 'redo'
+              ],
+              image: {
+                toolbar: [ 'imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side' ]
+              }
+            })
+            .catch(error => console.error(error));
 
-      <div class="form-group">
-        <label for="pictures">Изображения тура (до 10)</label>
-        <input type="file"
-               id="pictures"
-               name="pictures"
-               accept="image/*"
-               multiple onchange="limitFiles(this)"/>
-        <small>Максимум 10 файлов. JPG, PNG, GIF.</small>
-      </div>
+    // Превью для одной картинки
+    document.getElementById('previewPicture').addEventListener('change', e => {
+      const c = document.getElementById('previewThumb');
+      c.innerHTML = '';
+      if (!e.target.files.length) return;
+      const url = URL.createObjectURL(e.target.files[0]);
+      const img = document.createElement('img');
+      img.src = url;
+      img.classList.add('thumb-single');
+      c.append(img);
+    });
 
-      <button type="submit" class="btn">Создать шаблон</button>
-    </form>
-  </section>
+    // Галерея множественных превью
+    document.getElementById('pictures').addEventListener('change', e => {
+      const c = document.getElementById('galleryThumbs');
+      c.innerHTML = '';
+      Array.from(e.target.files).forEach((file, i) => {
+        const url = URL.createObjectURL(file);
+        const w = document.createElement('div');
+        w.classList.add('thumb-wrap');
+        const img = document.createElement('img');
+        img.src = url;
+        img.classList.add('thumb');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = '<i class="fas fa-times"></i>';
+        btn.classList.add('thumb-remove');
+        btn.onclick = () => {
+          w.remove();
+          const dt = new DataTransfer();
+          Array.from(e.target.files)
+                  .filter((_, idx) => idx !== i)
+                  .forEach(f => dt.items.add(f));
+          e.target.files = dt.files;
+        };
+        w.append(img, btn);
+        c.append(w);
+      });
+    });
+  </script>
 </main>
 
-<script>
-  function limitFiles(input) {
-    if (input.files.length > 10) {
-      alert("Можно загрузить не более 10 изображений");
-      input.value = "";
-    }
-  }
-</script>
 </body>
 </html>

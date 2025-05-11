@@ -1,9 +1,12 @@
 package com.sylfie.service;
 
 import com.github.slugify.Slugify;
+import com.sylfie.mapper.TourTemplateMapper;
+import com.sylfie.model.dto.TourTemplateRequestDTO;
 import com.sylfie.model.entity.TourTemplate;
 import com.sylfie.repository.TourHistoryRepository;
 import com.sylfie.repository.TourTemplateRepository;
+import com.sylfie.util.HtmlSanitizer;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -18,11 +21,15 @@ public class TourTemplateService{
     private final TourTemplateRepository tourTemplateRepository;
     private final TourHistoryRepository tourHistoryRepository;
     private final Slugify slugify;
+    private final HtmlSanitizer htmlSanitizer;
+    private final TourTemplateMapper tourTemplateMapper;
 
 
-    public TourTemplateService(TourTemplateRepository tourTemplateRepository, TourHistoryRepository tourHistoryRepository, Slugify slugify) {
+    public TourTemplateService(TourTemplateRepository tourTemplateRepository, TourHistoryRepository tourHistoryRepository, Slugify slugify, HtmlSanitizer htmlSanitizer, TourTemplateMapper tourTemplateMapper) {
         this.tourTemplateRepository = tourTemplateRepository;
         this.tourHistoryRepository = tourHistoryRepository;
+        this.tourTemplateMapper = tourTemplateMapper;
+        this.htmlSanitizer = htmlSanitizer;
         this.slugify = slugify;
     }
 
@@ -41,8 +48,10 @@ public class TourTemplateService{
     }
 
     @Transactional
-    public TourTemplate create(TourTemplate template) {
+    public TourTemplate create(TourTemplateRequestDTO templateDTO) {
+        TourTemplate template = tourTemplateMapper.toEntity(templateDTO);
         template.setSlug(generateSlug(template));
+        template.setDescription(htmlSanitizer.sanitize(template.getDescription()));
         return tourTemplateRepository.save(template);
     }
 

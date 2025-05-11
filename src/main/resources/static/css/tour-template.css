@@ -12,7 +12,11 @@ body {
     color: #333;
     line-height: 1.5;
 }
-a { text-decoration: none; color: inherit; }
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -23,7 +27,6 @@ a { text-decoration: none; color: inherit; }
 .tour-hero {
     position: relative;
     height: 650px;
-    overflow: visible;
 }
 .tour-hero__img {
     width: 100%;
@@ -32,20 +35,20 @@ a { text-decoration: none; color: inherit; }
     object-position: center;
     display: block;
 }
-/* виньетка */
+/* Виньетка */
 .tour-hero::before {
     content: '';
     position: absolute;
     inset: 0;
     background: radial-gradient(
             ellipse at center,
-            rgba(0,0,0,0.0) 30%,
-            rgba(0,0,0,0.8) 100%
+            rgba(0,0,0,0) 30%,
+            rgba(0,0,0,0.7) 100%
     );
     pointer-events: none;
 }
 
-/* кнопка назад */
+/* Back-button */
 .tour-hero__back {
     position: absolute;
     top: 16px; left: 16px;
@@ -64,17 +67,17 @@ a { text-decoration: none; color: inherit; }
     background: rgba(0,0,0,0.6);
 }
 
-/* 3. ПАНЕЛЬ ИНФОРМАЦИИ */
+/* 3. INFO PANEL */
+/* ↓ это значение отвечает за положение панели по высоте относительно низа секции */
 .tour-hero__panel {
     position: absolute;
-    /* ← вот это значение отвечает за смещение панели над краем секции */
-    /* из предыдущих -160px → подняли до -120px, чтобы половина панели оказалась над изображением */
-    bottom: -100px;
+    bottom: -120px; /* ← увеличьте/уменьшите по модулю, чтобы поднять/опустить */
     width: 100%;
     display: flex;
     justify-content: center;
     z-index: 2;
 }
+
 .tour-panel {
     background: #fff;
     border-radius: 8px;
@@ -86,11 +89,13 @@ a { text-decoration: none; color: inherit; }
     width: 100%;
     max-width: 1100px;
 }
-/* левый столбец */
+
+/* — левый столбец */
 .tour-panel__info {
     flex: 1;
     max-width: 70%;
 }
+
 .tour-hero__subline {
     text-transform: uppercase;
     font-size: 13px;
@@ -98,6 +103,7 @@ a { text-decoration: none; color: inherit; }
     letter-spacing: 1px;
     margin-bottom: 8px;
 }
+
 .tour-hero__title {
     font-size: 36px;
     font-weight: 600;
@@ -105,6 +111,7 @@ a { text-decoration: none; color: inherit; }
     margin-bottom: 16px;
     line-height: 1.2;
 }
+
 .tour-hero__meta {
     display: flex;
     flex-wrap: wrap;
@@ -112,13 +119,14 @@ a { text-decoration: none; color: inherit; }
     font-size: 15px;
     color: #555;
 }
+
 .meta-item {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 .meta-item i {
-    color: #986f28;
+    color: #5a9828;
     font-size: 18px;
 }
 .tooltip-icon {
@@ -126,13 +134,15 @@ a { text-decoration: none; color: inherit; }
     color: #999;
     cursor: help;
 }
-/* правый столбец */
+
+/* — правый столбец */
 .tour-panel__actions {
     display: flex;
     flex-direction: column;
     gap: 16px;
     align-items: flex-end;
 }
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -140,50 +150,67 @@ a { text-decoration: none; color: inherit; }
     font-weight: 500;
     cursor: pointer;
 }
+
 .btn--primary {
-    background: #0d3b66;
+    background: #19660d;
     color: #fff;
     padding: 12px 28px;
     border-radius: 4px;
     transition: background .2s;
 }
 .btn--primary:hover {
-    background: #092a4a;
+    background: #154a09;
 }
+
 .btn--link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #0d3b66;
+    color: #23660d;
     font-size: 16px;
 }
 .btn--link i {
     font-size: 18px;
 }
 
-/* 4. ОПИСАНИЕ */
+/* 4. DESCRIPTION */
 .tour-detail__description {
-    /* чтобы не наслаивалось под панель: */
-    margin: 200px 0 48px;
+    /* чтобы не перекрывать панель: */
+    margin-top: 200px; /* можно скорректировать в зависимости от bottom-панели */
 }
-.tour-detail__description h2 {
-    font-size: 20px;
-    margin-bottom: 16px;
+.description-card {
+    padding: 32px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.description-card h2 {
+    font-size: 24px;
     color: #222;
+    margin-bottom: 16px;
 }
-.tour-detail__description p {
-    font-size: 15px;
+.description-card p {
+    font-size: 16px;
     color: #444;
+    line-height: 1.6;
     white-space: pre-line;
 }
 
 /* 5. RESPONSIVE */
 @media (max-width: 768px) {
     .tour-hero { height: 500px; }
-    .tour-hero__back { top:8px; left:8px; padding:4px 8px; }
+    .tour-hero__back { top: 8px; left: 8px; padding: 4px 8px; }
     .tour-hero__panel { bottom: -100px; }
-    .tour-panel { flex-direction: column; align-items: stretch; gap: 24px; padding: 24px; }
+    .tour-panel {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        padding: 24px;
+    }
+    .tour-panel__info { max-width: 100%; }
     .tour-hero__title { font-size: 28px; }
     .tour-hero__meta { gap: 16px 24px; }
-    .tour-detail__description { margin:160px 0 32px; }
+    .tour-detail__description { margin-top: 180px; }
+    .description-card { padding: 24px; }
 }

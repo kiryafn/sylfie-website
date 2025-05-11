@@ -50,8 +50,8 @@ public class TourTemplateController {
         List<TourTemplate> templates = tourTemplateService.getAll().stream()
                 .filter(t -> categoryId  == null || t.getCategory().getId().equals(categoryId))
                 .filter(t -> difficulty  == null || t.getDifficulty() == difficulty)
-                .filter(t -> minCapacity == null || t.getCapacity() >= minCapacity)
-                .filter(t -> maxCapacity == null || t.getCapacity() <= maxCapacity)
+                .filter(t -> minCapacity == null || t.getMaxParticipants() >= minCapacity)
+                .filter(t -> maxCapacity == null || t.getMaxParticipants() <= maxCapacity)
                 .collect(Collectors.toList());
 
 
