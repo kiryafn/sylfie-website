@@ -2,12 +2,19 @@ package com.sylfie.mapper;
 
 import com.sylfie.model.dto.UserRegisterDTO;
 import com.sylfie.model.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface UserMapper {
-    @Mapping(source = "password", target = "passwordHash")
-    User toUser(UserRegisterDTO userRegisterDTO);
+@Component
+public class UserMapper {
+
+    public User toUser(UserRegisterDTO ur){
+        return new User(
+                ur.getUsername(),
+                ur.getEmail(),
+                ur.getPassword(),
+                ur.getFirstName(),
+                ur.getLastName(),
+                ur.getPhoneNumber(),
+                ur.getDateOfBirth());
+    }
 }

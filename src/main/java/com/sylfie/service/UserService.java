@@ -1,13 +1,17 @@
 package com.sylfie.service;
 
+import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.InsufficientBalanceException;
+import com.sylfie.exception.UsernameTakenException;
+import com.sylfie.mapper.UserMapper;
 import com.sylfie.model.dto.UserRegisterDTO;
 import com.sylfie.model.entity.User;
+import com.sylfie.model.entity.Role;
+import com.sylfie.repository.RoleRepository;
 import com.sylfie.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +23,17 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private final static String DEFAULT_ROLE = "USER";
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     public List<User> getAll() {
@@ -30,10 +41,11 @@ public class UserService {
     }
 
     public User getByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() ->
-                    new EntityNotFoundException("User not found with username " + username)
-                );
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found with username " + username);
+        }
+        return user;
     }
 
     public User getById(Long id) {
@@ -44,14 +56,15 @@ public class UserService {
     }
 
     @Transactional
-    public User create(User user) {
-        // Тут можно добавить хеширование пароля, присвоение ролей и др.
-        return userRepository.save(user);
-    }
-
-    @Transactional
     public User create(UserRegisterDTO userRegisterDTO) {
-        User user = new User(userRegisterDTO);
+        isUserValidToCreate(userRegisterDTO);
+        User user = userMapper.toUser(userRegisterDTO);
+        user.setBalance(BigDecimal.ZERO);
+        user.setBonusBalance(BigDecimal.ZERO);
+        user.setPasswordHash(passwordEncoder.encode(userRegisterDTO.getPassword()));
+        Role role = roleRepository.findByName(DEFAULT_ROLE);
+        user.getRoles().add(role);
+
         return userRepository.save(user);
     }
 
@@ -84,8 +97,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+    private void isUserValidToCreate(UserRegisterDTO ur) {
+        User existingUserByEMail = userRepository.findByEmail(ur.getEmail());
+        if (existingUserByEMail != null) throw new EmailTakenException("This email is already taken");
+
+        User existingUserByUsername = userRepository.findByUsername(ur.getUsername());
+        if (existingUserByUsername != null) throw new UsernameTakenException("This username is already taken");
     }
 }

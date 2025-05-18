@@ -36,9 +36,6 @@ public class User {
     @Column(nullable = false, length = 16)
     private String phoneNumber;
 
-    @Column(length = 50)
-    private String address;
-
     private LocalDate dateOfBirth;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -61,34 +58,19 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    public User(String username, String email, String passwordHash, String firstName, String lastName, String phoneNumber, String address, LocalDate dateOfBirth) {
-        this.username      = username;
-        this.email         = email;
-        this.passwordHash  = passwordHash;
-        this.firstName     = firstName;
-        this.lastName      = lastName;
-        this.phoneNumber   = phoneNumber;
-        this.address       = address;
-        this.dateOfBirth   = dateOfBirth;
-        this.balance       = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-        this.bonusBalance  = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-        this.createdAt = LocalDateTime.now();
+    public User(String username, String email, String passwordHash, String firstName, String lastName, String phoneNumber, LocalDate dateOfBirth) {
+        this.username = username;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.balance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);  // Значение по умолчанию
+        this.bonusBalance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);  // Значение по умолчанию
+        this.createdAt = LocalDateTime.now();  // Текущее время
     }
 
-    public User(UserRegisterDTO userRegisterDTO) {
-        this.username      = userRegisterDTO.getUsername();
-        this.email         = userRegisterDTO.getEmail();
-        this.passwordHash  = userRegisterDTO.getPassword();
-        this.firstName     = userRegisterDTO.getFirstName();
-        this.lastName      = userRegisterDTO.getLastName();
-        this.phoneNumber   = userRegisterDTO.getPhoneNumber();
-        this.address       = userRegisterDTO.getAddress();
-        this.dateOfBirth   = userRegisterDTO.getDateOfBirth();
-        this.balance       = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-        this.bonusBalance  = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
-        this.createdAt = LocalDateTime.now();
-
-    }
 
     public User() {}
 
@@ -187,14 +169,6 @@ public class User {
 
     public Set<Role> getRoles() {
         return roles;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public LocalDate getDateOfBirth() {

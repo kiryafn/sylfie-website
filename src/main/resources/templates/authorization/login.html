@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход в аккаунт</title>
+  <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+<body>
+<div class="auth-container">
+  <div class="form-wrapper">
+    <h1 style="text-align: center; font-size:24px; font-weight:600; margin-bottom:24px;">Добро пожаловать</h1>
+
+    <form class="auth-form" th:action="@{/login}" method="post" th:object="${userLoginDTO}">
+      <label for="username">Имя пользователя
+        <input type="text" id="username" name="username" th:field="*{username}" placeholder="Введите имя пользователя" required>
+      </label>
+      <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+      <label for="password">Пароль
+        <input type="password" id="password" name="password" th:field="*{password}" placeholder="Введите ваш пароль" required>
+      </label>
+      <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+      <button type="submit" class="btn-submit">Войти</button>
+    </form>
+
+    <div th:if="${param.error}" style="color:red; text-align: center; margin-bottom: 16px;">
+      Неверный email или пароль. Попробуйте снова.
+    </div>
+
+
+    <!-- Ссылка для регистрации -->
+    <p style="text-align: center; margin-top:16px; font-size:14px;">
+      Нет аккаунта? <a th:href="@{/register}" style="color: #3A8E32;">Создать аккаунт</a>
+    </p>
+  </div>
+</div>
+</body>
+</html>

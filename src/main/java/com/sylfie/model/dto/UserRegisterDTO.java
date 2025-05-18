@@ -35,9 +35,6 @@ public class UserRegisterDTO {
     @Pattern(regexp = "^\\+?[0-9]{7,15}$", message = "Phone number must be between 7 and 15 digits, optional leading +")
     private String phoneNumber;
 
-    @Size(max = 255, message = "Address must not exceed 255 characters")
-    private String address;
-
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
 
@@ -87,14 +84,6 @@ public class UserRegisterDTO {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public LocalDate getDateOfBirth() {

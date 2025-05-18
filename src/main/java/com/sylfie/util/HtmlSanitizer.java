@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class HtmlSanitizer {
-
     public String sanitize(String dirtyHtml) {
         return Jsoup.clean(
                 dirtyHtml,

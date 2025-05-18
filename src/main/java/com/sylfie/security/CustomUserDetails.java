@@ -3,6 +3,7 @@ package com.sylfie.security;
 import com.sylfie.model.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -17,15 +18,14 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Преобразуем роли пользователя в формат GrantedAuthority для Spring Security
         return user.getRoles().stream()
-                .map(role -> (GrantedAuthority) role::getName) // Предполагается, что Role имеет метод getName()
+                .map(role -> (GrantedAuthority) role::getName)
                 .collect(Collectors.toSet());
     }
 
     @Override
     public String getPassword() {
-        return user.getPasswordHash(); // Используем hashed пароль
+        return user.getPasswordHash();
     }
 
     @Override
@@ -35,25 +35,24 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Если нет других проверок на срок действия аккаунта, просто возвращаем true
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true; // По умолчанию аккаунт не заблокирован
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // Если нет сроков окончания пароля, возвращаем true
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // Если есть, например, поле isActive в User, можно проверять его
+        return true;
     }
 
-    // Дополнительный метод для получения оригинальной сущности User
     public User getUser() {
         return user;
     }

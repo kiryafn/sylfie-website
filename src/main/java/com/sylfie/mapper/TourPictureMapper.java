@@ -3,6 +3,7 @@ package com.sylfie.mapper;
 import com.sylfie.model.entity.TourPicture;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -11,16 +12,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-public interface TourPictureMapper {
+@Component
+public class TourPictureMapper {
+    public TourPicture toEntity(MultipartFile file) throws IOException {
+        TourPicture tourPicture = new TourPicture();
+        tourPicture.setData(file.getBytes());
+        tourPicture.setContentType(file.getContentType());
+        tourPicture.setFilename(file.getOriginalFilename());
+        return tourPicture;
+    }
 
-    @Mapping(target = "filename", expression = "java(file.getOriginalFilename())")
-    @Mapping(target = "contentType", expression = "java(file.getContentType())")
-    @Mapping(target = "data",      expression = "java(file.getBytes())")
-    @Mapping(target = "tourTemplate", ignore = true)
-    TourPicture toEntity(MultipartFile file) throws IOException;
-
-    default List<TourPicture> toEntityList(MultipartFile[] files) {
+    public List<TourPicture> toEntityList(MultipartFile[] files) {
         if (files == null || files.length == 0) {
             return Collections.emptyList();
         }
@@ -29,7 +31,7 @@ public interface TourPictureMapper {
                     try {
                         return toEntity(file);
                     } catch (IOException ex) {
-                        throw new RuntimeException("Ошибка чтения MultipartFile", ex);
+                        throw new RuntimeException("MultipartFile Read Error", ex);
                     }
                 })
                 .collect(Collectors.toList());
