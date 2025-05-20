@@ -1,0 +1,37 @@
+spring:
+    application:
+        name: Sylfie
+
+    datasource:
+        url: jdbc:h2:file:./database/database
+        driver-class-name: org.h2.Driver
+
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+
+    messages:
+        basename: messages
+
+    servlet:
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 1000MB
+
+server:
+    address: 0.0.0.0
+    port: 8080
+
+cloud:
+    aws:
+        credentials:
+            access-key: ${AWS_ACCESS_KEY_ID}
+            secret-key: ${AWS_SECRET_ACCESS_KEY}
+        region:
+            static: ${AWS_REGION}
+        stack:
+            auto: false
+        s3:
+            bucket: ${S3_BUCKET}

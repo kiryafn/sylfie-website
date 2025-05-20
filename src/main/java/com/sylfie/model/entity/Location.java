@@ -1,12 +1,18 @@
 package com.sylfie.model.entity;
 
 public enum Location {
-    Cuba,
-    Ukraine,
-    Spain,
-    SouthAfrica,
-    Antarctica,
-    Japan,
-    USA
+    Cuba("Cuba"),
+    Ukraine("Ukraine"),
+    Spain("Spain"),
+    SouthAfrica("South Africa"),
+    Antarctica("Antarctica"),
+    Japan("Japan"),
+    USA("USA");
+
+    String name;
+
+    Location(String name) {
+        this.name = name;
+    }
 
 }

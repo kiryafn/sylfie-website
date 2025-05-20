@@ -1,7 +1,6 @@
 package com.sylfie.model.entity;
 
 import com.sylfie.exception.InsufficientBalanceException;
-import com.sylfie.model.dto.UserRegisterDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
