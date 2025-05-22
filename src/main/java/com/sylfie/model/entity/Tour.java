@@ -22,12 +22,9 @@ public class Tour {
     private LocalDateTime endDate;
 
     @Column(name = "booked_count", nullable = false)
-    private Integer bookedCount;
+    private Integer bookedCount = 0;
 
-    private LocalDateTime createdAt;
-
-    public Tour() {
-    }
+    public Tour() {}
 
     public Tour(TourTemplate template,
                 LocalDateTime startDate,
@@ -35,11 +32,8 @@ public class Tour {
         this.template    = template;
         this.startDate   = startDate;
         this.endDate     = endDate;
-        this.bookedCount = 0;
-        this.createdAt   = LocalDateTime.now();
     }
 
-    //GETTERS AND SETTERS
     public Long getId() {
         return id;
     }

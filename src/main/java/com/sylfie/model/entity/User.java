@@ -37,25 +37,25 @@ public class User {
 
     private LocalDate dateOfBirth;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles = new HashSet<>();
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "avatar_id")
-    private Avatar avatar;
-
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal bonusBalance;
 
-    private LocalDateTime createdAt;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "avatar_id")
+    private Avatar avatar;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private final Set<Role> roles = new HashSet<>();
+
+    private final LocalDateTime createdAt = LocalDateTime.now();
 
     public User(String username, String email, String passwordHash, String firstName, String lastName, String phoneNumber, LocalDate dateOfBirth) {
         this.username = username;
@@ -67,7 +67,6 @@ public class User {
         this.dateOfBirth = dateOfBirth;
         this.balance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);  // Значение по умолчанию
         this.bonusBalance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);  // Значение по умолчанию
-        this.createdAt = LocalDateTime.now();  // Текущее время
     }
 
 

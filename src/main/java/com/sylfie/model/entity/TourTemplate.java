@@ -30,6 +30,9 @@ public class TourTemplate {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column(columnDefinition = "TEXT")
+    private String shortDescription;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Difficulty difficulty;
@@ -37,39 +40,35 @@ public class TourTemplate {
     @Column(name = "max_participants")
     private Integer maxParticipants;
 
-
     @OneToMany(mappedBy = "tourTemplate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TourPicture> pictures = new ArrayList<>();
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
 
     @Column(precision = 19, scale = 2)
     private BigDecimal price;
 
-    @Enumerated(EnumType.STRING)
-    private Location location;
-
     private Integer durationDays;
 
-    private String shortDescription;
+    @ManyToOne()
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-    public TourTemplate() {
-        this.createdAt = LocalDateTime.now();
-    }
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+
+    public TourTemplate() {}
 
     public TourTemplate(TourCategory category,
                         String name,
                         String description,
                         Difficulty difficulty,
-                        Integer maxParticipants,
-                        Integer capacity) {
-        this.category      = category;
-        this.name          = name;
-        this.description   = description;
-        this.difficulty    = difficulty;
+                        Integer maxParticipants) {
+        this.category        = category;
+        this.name            = name;
+        this.description     = description;
+        this.difficulty      = difficulty;
         this.maxParticipants = maxParticipants;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt       = LocalDateTime.now();
     }
 
     public void addPicture(TourPicture picture) {
@@ -159,7 +158,7 @@ public class TourTemplate {
                 return picture;
             }
         }
-        if (pictures.size() > 0) {return pictures.getFirst();}
+        if (!pictures.isEmpty()) {return pictures.getFirst();}
         else return null;
     }
 

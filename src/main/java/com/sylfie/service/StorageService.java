@@ -15,7 +15,7 @@ import java.util.Objects;
 @Service
 public class StorageService {
 
-    @Value("${application.bucket.name}")
+    @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
     private final S3Client s3Client;
@@ -31,12 +31,13 @@ public class StorageService {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(fileName)
+                .acl(ObjectCannedACL.PUBLIC_READ)
                 .build();
 
         s3Client.putObject(putObjectRequest, RequestBody.fromFile(fileObj));
         fileObj.delete();
 
-        return "File uploaded: " + fileName;
+        return "https://" + bucketName + ".s3.amazonaws.com/" + fileName;
     }
 
     public byte[] downloadFile(String fileName) {

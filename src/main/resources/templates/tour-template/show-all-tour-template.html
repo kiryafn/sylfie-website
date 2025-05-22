@@ -77,10 +77,10 @@
                 <article class="tour-card" th:each="template : ${tourTemplates}">
                     <div class="tour-image-wrapper">
                         <img th:if="${!template.pictures.isEmpty()}"
-                             th:src="@{/tours/{tid}/pictures/{pid}(tid=${template.id}, pid=${template.previewPicture.id})}"
-                             alt="Tour image">
+                             th:src="${template.previewPicture.picture.url}" alt="Tour image">
                         <span th:if="${template.pictures.isEmpty()}">Нет изображения</span>
                     </div>
+
                     <div class="tour-info">
                         <div class="tour-duration" th:text="${template.durationDays} + ' DAY TOUR'"></div>
                         <h3 class="tour-title" th:text="${template.name}"></h3>

@@ -1,6 +1,8 @@
 package com.sylfie.model.entity;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,6 +23,8 @@ public class TourHistory {
 
     @Column(name = "booking_date", nullable = false)
     private LocalDateTime bookingDate;
+
+    private BigDecimal priceAtBooking;
 
     @Enumerated(EnumType.STRING)
     @Column
@@ -72,5 +76,13 @@ public class TourHistory {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public BigDecimal getPriceAtBooking() {
+        return priceAtBooking;
+    }
+
+    public void setPriceAtBooking(BigDecimal priceAtBooking) {
+        this.priceAtBooking = priceAtBooking;
     }
 }

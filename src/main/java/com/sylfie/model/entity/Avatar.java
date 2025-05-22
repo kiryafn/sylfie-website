@@ -3,11 +3,17 @@ package com.sylfie.model.entity;
 import jakarta.persistence.*;
 
 @Entity
-@DiscriminatorValue("AVATAR")
-public class Avatar extends Picture {
+public class Avatar{
 
-    @OneToOne(mappedBy = "avatar", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @OneToOne(mappedBy = "avatar", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private User user;
+
+    @OneToOne
+    private Picture picture;
 
     public User getUser() {
         return user;

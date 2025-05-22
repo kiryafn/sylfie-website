@@ -27,20 +27,11 @@ public class TourCategory {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<TourTemplate> templates = new HashSet<>();
 
-    @Enumerated(EnumType.STRING)
-    private Difficulty difficulty;
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
     public TourCategory() {}
 
-    public TourCategory(String name, String description, Difficulty difficulty) {
+    public TourCategory(String name, String description) {
         this.name = name;
         this.description = description;
-        this.difficulty = difficulty;
-        this.createdAt = LocalDateTime.now();
-
     }
 
     //GETTERS AND SETTERS
@@ -76,17 +67,5 @@ public class TourCategory {
     public void removeTemplate(TourTemplate tpl) {
         templates.remove(tpl);
         tpl.setCategory(null);
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
     }
 }
