@@ -1,7 +1,7 @@
 package com.sylfie.mapper;
 
-import com.sylfie.model.dto.UserRegisterDTO;
-import com.sylfie.model.entity.User;
+import com.sylfie.dto.UserRegisterDTO;
+import com.sylfie.model.User;
 import org.springframework.stereotype.Component;
 
 @Component

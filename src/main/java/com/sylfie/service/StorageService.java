@@ -31,15 +31,19 @@ public class StorageService {
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
                 .key(fileName)
-                .acl(ObjectCannedACL.PUBLIC_READ)
                 .build();
 
         s3Client.putObject(putObjectRequest, RequestBody.fromFile(fileObj));
+
         fileObj.delete();
 
-        return "https://" + bucketName + ".s3.amazonaws.com/" + fileName;
-    }
+        String url = s3Client.utilities().getUrl(builder -> builder
+                .bucket(bucketName)
+                .key(fileName)
+        ).toExternalForm();
 
+        return url;
+    }
     public byte[] downloadFile(String fileName) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)

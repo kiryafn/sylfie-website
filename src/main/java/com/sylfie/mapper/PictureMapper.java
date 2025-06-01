@@ -1,8 +1,7 @@
 package com.sylfie.mapper;
 
-import com.sylfie.model.entity.ContentType;
-import com.sylfie.model.entity.Picture;
-import com.sylfie.model.entity.TourPicture;
+import com.sylfie.model.ContentType;
+import com.sylfie.model.Picture;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +17,7 @@ public class PictureMapper {
     public Picture map(MultipartFile file) throws IOException {
         Picture pic = new Picture();
         pic.setFilename(file.getOriginalFilename());
-        pic.setContentType(ContentType.valueOf(file.getContentType()));
+        pic.setContentType(ContentType.getByName(file.getContentType()));
         pic.setUploadedAt(LocalDateTime.now());
         return pic;
     }

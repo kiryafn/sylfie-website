@@ -79,7 +79,7 @@
           <select id="location" th:field="*{location}" required>
             <option value="" disabled selected>Выберите локацию</option>
             <option th:each="loc : ${locations}"
-                    th:value="${loc.name()}"
+                    th:value="${loc.id}"
                     th:text="${loc.name}">Локация</option>
           </select>
         </div>

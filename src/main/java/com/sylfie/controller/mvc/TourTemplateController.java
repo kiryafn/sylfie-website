@@ -1,7 +1,8 @@
-package com.sylfie.controller;
+package com.sylfie.controller.mvc;
 
 
-import com.sylfie.model.entity.*;
+import com.sylfie.model.Difficulty;
+import com.sylfie.model.TourTemplate;
 import com.sylfie.repository.TourCategoryRepository;
 import com.sylfie.service.TourCategoryService;
 import com.sylfie.service.TourTemplateService;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Controller

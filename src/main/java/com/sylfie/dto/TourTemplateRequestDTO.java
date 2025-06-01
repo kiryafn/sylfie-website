@@ -1,9 +1,9 @@
-package com.sylfie.model.dto;
+package com.sylfie.dto;
 
-import com.sylfie.model.entity.Difficulty;
-import com.sylfie.model.entity.Location;
-import com.sylfie.model.entity.TourCategory;
-import com.sylfie.model.entity.TourPicture;
+import com.sylfie.model.Difficulty;
+import com.sylfie.model.Location;
+import com.sylfie.model.TourCategory;
+import com.sylfie.model.TourPicture;
 
 import java.math.BigDecimal;
 import java.util.List;

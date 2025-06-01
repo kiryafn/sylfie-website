@@ -22,7 +22,7 @@
     <!-- HERO -->
     <section class="tour-hero">
         <img class="tour-hero__img"
-             th:src="@{/tours/{tid}/pictures/{pid}(tid=${tourTemplate.id}, pid=${tourTemplate.previewPicture.id})}"
+             th:src="${tourTemplate.previewPicture.picture.url}"
              alt="Banner">
 
         <button class="tour-hero__back" onclick="history.back()">
@@ -34,25 +34,25 @@
                 <!-- Левый столбец: инфо -->
                 <div class="tour-panel__info">
                     <div class="tour-hero__subline"
-                         th:text="${tourTemplate.difficulty.name()}">Medium</div>
+                         th:text="${tourTemplate.difficulty.name()}"></div>
                     <h1 class="tour-hero__title"
-                        th:text="${tourTemplate.name}">Shark Swimming</h1>
+                        th:text="${tourTemplate.name}"></h1>
                     <div class="tour-hero__meta">
                         <div class="meta-item">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span th:text="${tourTemplate.location}">Cuba</span>
+                            <span th:text="${tourTemplate.location}"></span>
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-calendar-alt"></i>
-                            <span th:text="${tourTemplate.durationDays + ' Day'}">1 Day</span>
+                            <span th:text="${tourTemplate.durationDays + ' Day'}"></span>
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-dollar-sign"></i>
-                            <span th:text="${'From ' + tourTemplate.price + '$'}">From 6120.00$</span>
+                            <span th:text="${'From ' + tourTemplate.price + '$'}"></span>
                         </div>
                         <div class="meta-item">
                             <i class="fas fa-chart-line"></i>
-                            <span th:text="${'Level ' + tourTemplate.difficulty.name()}">Level HARD</span>
+                            <span th:text="${'Level ' + tourTemplate.difficulty.name()}"></span>
                             <i class="fas fa-info-circle tooltip-icon" title="Difficulty level"></i>
                         </div>
                     </div>

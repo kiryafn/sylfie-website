@@ -1,6 +1,6 @@
 package com.sylfie.repository;
 
-import com.sylfie.model.entity.Picture;
+import com.sylfie.model.Picture;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

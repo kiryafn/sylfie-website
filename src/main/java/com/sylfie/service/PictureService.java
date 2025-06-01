@@ -1,14 +1,12 @@
 package com.sylfie.service;
 
 import com.sylfie.mapper.PictureMapper;
-import com.sylfie.model.entity.ContentType;
-import com.sylfie.model.entity.Picture;
+import com.sylfie.model.Picture;
 import com.sylfie.repository.PictureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @Service
 public class PictureService {
@@ -24,7 +22,6 @@ public class PictureService {
 
     public Picture save(MultipartFile file) throws IOException {
         String url = storageService.uploadFile(file);
-
         Picture pic = pictureMapper.map(file);
         pic.setUrl(url);
 

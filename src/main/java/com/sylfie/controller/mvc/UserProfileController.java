@@ -1,6 +1,6 @@
-package com.sylfie.controller;
+package com.sylfie.controller.mvc;
 
-import com.sylfie.model.entity.User;
+import com.sylfie.model.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

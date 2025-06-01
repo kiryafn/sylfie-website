@@ -1,4 +1,4 @@
-package com.sylfie.model.entity;
+package com.sylfie.model;
 
 import com.sylfie.exception.InsufficientBalanceException;
 import jakarta.persistence.*;

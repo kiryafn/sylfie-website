@@ -1,9 +1,7 @@
-package com.sylfie.model.entity;
+package com.sylfie.model;
 
 import jakarta.persistence.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 

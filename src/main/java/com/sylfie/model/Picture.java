@@ -1,4 +1,4 @@
-package com.sylfie.model.entity;
+package com.sylfie.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;

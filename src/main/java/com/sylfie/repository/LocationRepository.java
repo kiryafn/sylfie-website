@@ -1,6 +1,6 @@
 package com.sylfie.repository;
 
-import com.sylfie.model.entity.Location;
+import com.sylfie.model.Location;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

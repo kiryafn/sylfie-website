@@ -1,11 +1,9 @@
-package com.sylfie.controller.admin;
+package com.sylfie.controller.mvc.admin;
 
-import com.sylfie.mapper.PictureMapper;
-import com.sylfie.mapper.TourTemplateMapper;
-import com.sylfie.model.dto.TourTemplateRequestDTO;
-import com.sylfie.model.entity.Difficulty;
-import com.sylfie.model.entity.Picture;
-import com.sylfie.model.entity.TourPicture;
+import com.sylfie.dto.TourTemplateRequestDTO;
+import com.sylfie.model.Difficulty;
+import com.sylfie.model.Picture;
+import com.sylfie.model.TourPicture;
 import com.sylfie.service.*;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -57,7 +55,6 @@ public class AdminTourTemplateController {
         return "tour-template/add-tour-template";
     }
 
-    // ... в конструкторе — добавить pictureService
 
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String save(
@@ -66,7 +63,7 @@ public class AdminTourTemplateController {
             @RequestParam("pictures") MultipartFile[] pictures) throws IOException {
 
         List<TourPicture> pics = new ArrayList<>();
-        // Сохраняем обычные картинки
+
         for (MultipartFile file : pictures) {
             Picture picture = pictureService.save(file);
             TourPicture tourPicture = new TourPicture();
@@ -75,7 +72,6 @@ public class AdminTourTemplateController {
             pics.add(tourPicture);
         }
 
-        // Сохраняем preview картинку
         Picture previewPicture = pictureService.save(previewPic);
         TourPicture preview = new TourPicture();
         preview.setPicture(previewPicture);

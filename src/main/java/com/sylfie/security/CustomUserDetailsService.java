@@ -1,6 +1,6 @@
 package com.sylfie.security;
 
-import com.sylfie.model.entity.User;
+import com.sylfie.model.User;
 import com.sylfie.service.UserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

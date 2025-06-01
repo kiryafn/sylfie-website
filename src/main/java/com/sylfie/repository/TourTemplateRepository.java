@@ -1,7 +1,6 @@
 package com.sylfie.repository;
 
-import com.sylfie.model.entity.TourCategory;
-import com.sylfie.model.entity.TourTemplate;
+import com.sylfie.model.TourTemplate;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

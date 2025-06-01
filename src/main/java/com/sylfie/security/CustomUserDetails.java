@@ -1,9 +1,8 @@
 package com.sylfie.security;
 
-import com.sylfie.model.entity.User;
+import com.sylfie.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

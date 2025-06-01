@@ -1,6 +1,6 @@
-package com.sylfie.controller;
+package com.sylfie.controller.mvc;
 
-import com.sylfie.model.entity.User;
+import com.sylfie.model.User;
 import com.sylfie.service.TourTemplateService;
 import com.sylfie.service.UserService;
 import org.springframework.stereotype.Controller;

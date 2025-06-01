@@ -1,4 +1,4 @@
-package com.sylfie.model.dto;
+package com.sylfie.dto;
 
 
 import jakarta.validation.constraints.*;

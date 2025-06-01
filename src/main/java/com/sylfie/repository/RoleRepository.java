@@ -1,7 +1,6 @@
 package com.sylfie.repository;
 
-import com.sylfie.model.entity.Role;
-import com.sylfie.model.entity.User;
+import com.sylfie.model.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

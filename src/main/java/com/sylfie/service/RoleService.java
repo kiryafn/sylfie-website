@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.model.entity.Role;
+import com.sylfie.model.Role;
 import com.sylfie.repository.RoleRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

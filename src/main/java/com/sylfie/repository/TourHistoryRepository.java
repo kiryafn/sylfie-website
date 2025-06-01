@@ -1,7 +1,7 @@
 package com.sylfie.repository;
 
 
-import com.sylfie.model.entity.TourHistory;
+import com.sylfie.model.TourHistory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

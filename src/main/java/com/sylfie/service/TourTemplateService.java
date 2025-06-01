@@ -2,8 +2,8 @@ package com.sylfie.service;
 
 import com.github.slugify.Slugify;
 import com.sylfie.mapper.TourTemplateMapper;
-import com.sylfie.model.dto.TourTemplateRequestDTO;
-import com.sylfie.model.entity.TourTemplate;
+import com.sylfie.dto.TourTemplateRequestDTO;
+import com.sylfie.model.TourTemplate;
 import com.sylfie.repository.TourHistoryRepository;
 import com.sylfie.repository.TourTemplateRepository;
 import com.sylfie.util.HtmlSanitizer;

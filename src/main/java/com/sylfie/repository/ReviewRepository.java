@@ -1,6 +1,6 @@
 package com.sylfie.repository;
 
-import com.sylfie.model.entity.Review;
+import com.sylfie.model.Review;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

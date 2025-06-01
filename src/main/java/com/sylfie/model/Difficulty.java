@@ -1,4 +1,4 @@
-package com.sylfie.model.entity;
+package com.sylfie.model;
 
 public enum Difficulty {
     EASY,

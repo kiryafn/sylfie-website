@@ -4,9 +4,9 @@ import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.InsufficientBalanceException;
 import com.sylfie.exception.UsernameTakenException;
 import com.sylfie.mapper.UserMapper;
-import com.sylfie.model.dto.UserRegisterDTO;
-import com.sylfie.model.entity.User;
-import com.sylfie.model.entity.Role;
+import com.sylfie.dto.UserRegisterDTO;
+import com.sylfie.model.User;
+import com.sylfie.model.Role;
 import com.sylfie.repository.RoleRepository;
 import com.sylfie.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

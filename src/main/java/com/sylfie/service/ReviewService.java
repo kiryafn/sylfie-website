@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.model.entity.Review;
+import com.sylfie.model.Review;
 import com.sylfie.repository.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

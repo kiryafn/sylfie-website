@@ -76,10 +76,7 @@
             <div class="tour-cards">
                 <article class="tour-card" th:each="template : ${tourTemplates}">
                     <div class="tour-image-wrapper">
-                        <img th:if="${!template.pictures.isEmpty()}"
-                             th:src="${template.previewPicture.picture.url}" alt="Tour image">
-                        <span th:if="${template.pictures.isEmpty()}">Нет изображения</span>
-                    </div>
+                        <img th:src="${template.previewPicture?.picture?.url}" alt="Tour image">                    </div>
 
                     <div class="tour-info">
                         <div class="tour-duration" th:text="${template.durationDays} + ' DAY TOUR'"></div>
@@ -87,7 +84,7 @@
                         <div class="tour-meta">
                             <div class="tour-location">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <span th:text="${template.location}"></span>
+                                <span th:text="${template.location.name}"></span>
                             </div>
                             <div class="tour-group-size">
                                 <i class="fas fa-users"></i>

@@ -1,13 +1,18 @@
 spring:
     application:
         name: Sylfie
+    config:
+        import: optional:file:.env[.properties]
+
 
     datasource:
-        url: jdbc:h2:file:./database/database
-        driver-class-name: org.h2.Driver
+        url: ${DATABASE_URL}
+        username: ${AWS_USER}
+        password: ${AWS_PASSWORD}
+        driver-class-name: org.postgresql.Driver
 
     jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
         hibernate:
             ddl-auto: update
         show-sql: true

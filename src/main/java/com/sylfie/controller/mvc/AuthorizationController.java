@@ -1,9 +1,9 @@
-package com.sylfie.controller;
+package com.sylfie.controller.mvc;
 
 import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.UsernameTakenException;
-import com.sylfie.model.dto.UserLoginDTO;
-import com.sylfie.model.dto.UserRegisterDTO;
+import com.sylfie.dto.UserLoginDTO;
+import com.sylfie.dto.UserRegisterDTO;
 import com.sylfie.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;

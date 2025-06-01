@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.model.entity.TourHistory;
+import com.sylfie.model.TourHistory;
 import com.sylfie.repository.TourHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

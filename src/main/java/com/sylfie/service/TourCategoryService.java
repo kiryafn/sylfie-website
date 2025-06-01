@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.model.entity.TourCategory;
+import com.sylfie.model.TourCategory;
 import com.sylfie.repository.TourCategoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
