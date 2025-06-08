@@ -1,68 +1,158 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Регистрация</title>
-    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Login - Sylfie</title>
+
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
-<div class="auth-container">
-    <div class="form-wrapper">
-        <h1 style="text-align: center; font-size:24px; font-weight:600; margin-bottom:24px;">Создать аккаунт</h1>
+<main layout:fragment="content" class="bg-gray-50 flex items-center justify-center min-h-screen font-['Inter'] mt-10">
 
-        <form class="auth-form" th:action="@{/register}" method="post" th:object="${userRegisterDTO}">
+    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-md border">
 
-            <label for="username">Имя пользователя
-                <input type="text" id="username" name="username" th:field="*{username}" placeholder="Введите имя пользователя" required>
-            </label>
-            <!-- Отображаем ошибку из BindingResult -->
-            <div class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
-            <!-- Кастомная ошибка имени пользователя -->
-            <div class="error" th:if="${usernameError}" th:text="${usernameError}"></div>
+        <div class="text-center mb-8">
+            <img src="/img/logos/full_logo.svg" alt="Sylfie Logo" class="w-24 mx-auto mb-4"/>
+            <h1 class="text-2xl font-semibold text-gray-800" th:text="#{register.welcome}">Welcome</h1>
+            <p class="text-sm text-gray-500 mt-1" th:text="#{register.signup}">Sign up to continue</p>
+        </div>
 
-            <label for="email">Email
-                <input type="email" id="email" name="email" th:field="*{email}" placeholder="Введите ваш email" required>
-            </label>
-            <!-- Отображаем ошибку из BindingResult -->
-            <div class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-            <!-- Кастомная ошибка email -->
-            <div class="error" th:if="${emailError}" th:text="${emailError}"></div>
+        <form th:action="@{/register}" method="post" th:object="${userRegisterDTO}" class="space-y-5">
 
-            <label for="password">Пароль
-                <input type="password" id="password" name="password" th:field="*{password}" placeholder="Введите ваш пароль" required>
-            </label>
-            <!-- Отображаем ошибку из BindingResult -->
-            <div class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1" th:text="#{register.email}">Email</label>
+                <input type="email" id="email" name="email" th:field="*{email}"
+                       th:placeholder="#{register.email.placeholder}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                       required>
+                <p class="text-red-500 text-sm mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
 
-            <label for="firstName">Имя
-                <input type="text" id="firstName" name="firstName" th:field="*{firstName}" placeholder="Введите ваше имя" required>
-            </label>
-            <div class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+            <!-- Username -->
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-1" th:text="#{register.username}">Username</label>
+                <input type="text" id="username" name="username" th:field="*{username}"
+                       th:placeholder="#{register.username.placeholder}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                       required>
+                <p class="text-red-500 text-sm mt-1" th:if="${#fields.hasErrors('username')}"
+                   th:errors="*{username}"></p>
+            </div>
 
-            <label for="lastName">Фамилия
-                <input type="text" id="lastName" name="lastName" th:field="*{lastName}" placeholder="Введите вашу фамилию" required>
-            </label>
-            <div class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+            <!-- First name -->
+            <div>
+                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1"
+                       th:text="#{register.firstName}">First name</label>
+                <input type="text" id="firstName" name="firstName" th:field="*{firstName}"
+                       th:placeholder="#{register.firstName.placeholder}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                       required>
+                <p class="text-red-500 text-sm mt-1" th:if="${#fields.hasErrors('firstName')}"
+                   th:errors="*{firstName}"></p>
+            </div>
 
-            <label for="phoneNumber">Телефон
-                <input type="tel" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}" placeholder="Введите номер телефона" required>
-            </label>
-            <div class="error" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+            <!-- Last name -->
+            <div>
+                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1"
+                       th:text="#{register.lastName}">Username</label>
+                <input type="text" id="lastName" name="lastName" th:field="*{lastName}"
+                       th:placeholder="#{register.lastName.placeholder}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                       required>
+                <p class="text-red-500 text-sm mt-1" th:if="${#fields.hasErrors('lastName')}"
+                   th:errors="*{lastName}"></p>
+            </div>
 
-            <label for="dateOfBirth">Дата рождения
-                <input type="date" id="dateOfBirth" name="dateOfBirth" th:field="*{dateOfBirth}" placeholder="Выберите дату рождения" required>
-            </label>
-            <div class="error" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></div>
+            <!-- Last name -->
+            <div>
+                <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1"
+                       th:text="#{register.mobile}">Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}"
+                       th:placeholder="#{register.mobile.placeholder}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                       required>
+                <p class="text-red-500 text-sm mt-1" th:if="${#fields.hasErrors('phoneNumber')}"
+                   th:errors="*{phoneNumber}"></p>
+            </div>
 
-            <button type="submit" class="btn-submit">Зарегистрироваться</button>
+            <!-- Password -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1"
+                       th:text="#{register.password}">Password</label>
+                <input type="password" id="password" name="password" th:field="*{password}"
+                       th:placeholder="#{register.password.placeholder}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                       required>
+
+                <p class="text-red-500 text-sm mt-1" th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}"></p>
+            </div>
+
+            <!-- Confirm password -->
+            <div>
+                <label for="confirmpassword" class="block text-sm font-medium text-gray-700 mb-1"
+                       th:text="#{register.confirmpassword}">Password</label>
+                <input type="password" id="confirmpassword" name="confirmpassword" th:field="*{confirmPassword}"
+                       th:placeholder="#{register.confirmpassword.placeholder}"
+                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                       required>
+
+                <p class="text-red-500 text-sm mt-1" th:if="${#fields.hasErrors('confirmPassword')}"
+                   th:errors="*{confirmPassword}"></p>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                    class="w-full py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition duration-200"
+                    th:text="#{register}">
+                Log in
+            </button>
+
+            <!-- Or separator -->
+            <div class="flex items-center my-6">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="mx-4 text-sm text-gray-500" th:text="#{register.orseparator}">or</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            <!-- OAuth Buttons -->
+            <!-- Google -->
+            <a href="/oauth2/authorization/google"
+               class="flex items-center justify-center space-x-3 border border-gray-300 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo" class="w-5 h-5">
+                <span th:text="#{register.google}">Continue with Google</span>
+            </a>
+
+            <!-- Facebook -->
+            <a href="/oauth2/authorization/facebook"
+               class="flex items-center justify-center space-x-3 border border-gray-300 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 transition">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png"
+                     alt="Facebook logo" class="w-5 h-5">
+                <span th:text="#{register.facebook}">Continue with Facebook</span>
+            </a>
         </form>
 
-        <!-- Ссылка на логин -->
-        <p style="text-align: center; margin-top:16px; font-size:14px;">
-            Уже есть аккаунт? <a th:href="@{/login}" style="color: #3A8E32;">Войти</a>
+        <!-- Register link -->
+        <p class="text-center text-sm text-gray-600 mt-6">
+            <span th:text="#{register.haveaccount}">Have an account?</span>
+            <a th:href="@{/login}" class="text-green-600 hover:underline" th:text="#{register.login}">Log in</a>
         </p>
+
     </div>
-</div>
+
+</main>
 </body>
+
 </html>

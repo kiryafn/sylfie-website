@@ -42,7 +42,7 @@ public class AuthorizationController {
         }
 
         try {
-            userService.create(regDTO);
+            userService.createFromDTO(regDTO);
             return "redirect:/login";
         } catch (UsernameTakenException e) {
             model.addAttribute("usernameError", e.getMessage());

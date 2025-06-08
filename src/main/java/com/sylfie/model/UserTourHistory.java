@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tour_history")
-public class TourHistory {
+@Table(name = "user_tour_history")
+public class UserTourHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +30,10 @@ public class TourHistory {
     @Column
     private Status status;
 
-    public TourHistory() {
+    public UserTourHistory() {
     }
 
-    public TourHistory(User user, Tour tour, Status status) {
+    public UserTourHistory(User user, Tour tour, Status status) {
         this.user = user;
         this.tour = tour;
         this.status = status;

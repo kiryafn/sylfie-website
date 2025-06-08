@@ -4,94 +4,105 @@
       layout:decorate="~{layout}">
 <head>
   <title layout:fragment="title" th:text="#{main.title}">Sylfie - best experience here</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<main layout:fragment="content">
+<body class="font-sans text-gray-800">
 
-  <section class="hero">
-    <img class="hero-bg" src="/img/hero_bg.jpg" alt="Hero background"/>
-    <div class="hero-content container">
-      <img class="hero-branding hero-logo" src="/img/logos/full_logo_white.svg" alt="Sylfie Logo с текстом"/>
-      <p class="hero-subtitle" th:utext="#{hero.subtitle}">
-      </p>
-      <a href="#" class="hero-button" th:text="#{hero.button}">See more</a>
+<main layout:fragment="content" class="space-y-16">
+
+  <!-- HERO -->
+  <section class="relative h-[800px] flex items-center justify-center text-center text-white">
+    <!-- фоновое изображение -->
+    <img src="/img/hero_bg.jpg" alt="Hero background" class="absolute inset-0 w-full h-full object-cover">
+
+    <!-- затемняющий оверлей -->
+    <div class="absolute inset-0 bg-black/50"></div>
+
+    <!-- контент -->
+    <div class="relative z-10 space-y-6 px-4">
+      <img src="/img/logos/full_logo_white.svg" alt="Sylfie Logo" class="mx-auto w-48">
+      <p class="text-lg md:text-xl" th:utext="#{hero.subtitle}"></p>
+      <a href="#" class="inline-block bg-green-600 hover:bg-green-700 px-8 py-3 rounded-full text-white font-semibold text-lg transition" th:text="#{hero.button}">See more</a>
     </div>
   </section>
 
   <!-- FEATURES -->
-  <section id="features" class="features container">
-    <h2 class="section-title" th:text="#{features.title}">Why Choose Sylfie?</h2>
-    <div class="features-grid">
-      <div class="feature">
-        <img src="/img/icons/backpack.svg" alt="Gear Icon"/>
-        <h3 th:text="#{feature1.title}">Quality Equipment</h3>
-        <p th:text="#{feature1.desc}">Top-brand gear for every adventure, tested and trusted by pros.</p>
+  <section id="features" class="max-w-7xl mx-auto px-4 space-y-12">
+    <h2 class="text-3xl font-bold text-center text-green-700" th:text="#{features.title}">Why Choose Sylfie?</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <div class="flex flex-col items-center text-center space-y-4">
+        <img src="/img/icons/backpack.svg" alt="Gear Icon" class="w-16 h-16">
+        <h3 class="text-xl font-semibold text-green-800" th:text="#{feature1.title}">Quality Equipment</h3>
+        <p class="text-gray-600" th:text="#{feature1.desc}">Top-brand gear for every adventure.</p>
       </div>
-      <div class="feature">
-        <img src="/img/icons/windrose.svg" alt="Guide Icon"/>
-        <h3 th:text="#{feature2.title}">Expert Guides</h3>
-        <p th:text="#{feature2.desc}">Certified instructors lead you safely off the beaten path.</p>
+      <div class="flex flex-col items-center text-center space-y-4">
+        <img src="/img/icons/windrose.svg" alt="Guide Icon" class="w-16 h-16">
+        <h3 class="text-xl font-semibold text-green-800" th:text="#{feature2.title}">Expert Guides</h3>
+        <p class="text-gray-600" th:text="#{feature2.desc}">Certified instructors guide you safely.</p>
       </div>
-      <div class="feature">
-        <img src="/img/icons/help.svg" alt="Support Icon"/>
-        <h3 th:text="#{feature3.title}">24/7 Support</h3>
-        <p th:text="#{feature3.desc}">From booking to return, our team is here for you around the clock.</p>
+      <div class="flex flex-col items-center text-center space-y-4">
+        <img src="/img/icons/help.svg" alt="Support Icon" class="w-16 h-16">
+        <h3 class="text-xl font-semibold text-green-800" th:text="#{feature3.title}">24/7 Support</h3>
+        <p class="text-gray-600" th:text="#{feature3.desc}">We're here for you 24/7.</p>
       </div>
     </div>
   </section>
 
   <!-- TOURS -->
-  <section id="tours" class="tours container">
-    <h2 class="section-title" th:text="#{tours.title}">Popular Tours</h2>
-    <div class="tour-cards">
-      <article class="tour-card" th:each="template : ${tourTemplates}">
+  <section id="tours" class="max-w-7xl mx-auto px-4 space-y-8">
+    <h2 class="text-3xl font-bold text-center text-green-700" th:text="#{tours.title}">Popular Tours</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <article class="bg-white rounded-lg shadow hover:shadow-lg overflow-hidden transition" th:each="template : ${tourTemplates}">
         <img th:unless="${template.getPictures().isEmpty()}"
-             th:src="@{/tours/{tid}/pictures/{pid}(tid=${template.id}, pid=${template.getPreviewPicture().id})}">
-        <h3 th:text="${template.name}">Tour Title</h3>
-        <p th:text="${template.description}">Tour description</p>
-        <a th:href="@{/tours/{id}(id=${template.id})}"
-           class="btn"
-           th:text="#{tour.book}">Book Now</a>
+             th:src="@{template.getPreviewPicture.picture.url}"
+             alt="Tour Image" class="w-full h-48 object-cover">
+        <div class="p-4 space-y-2">
+          <h3 class="text-xl font-semibold text-green-800" th:text="${template.name}">Tour Title</h3>
+          <p class="text-gray-600 text-sm" th:text="${template.description}">Tour description</p>
+          <a th:href="@{/tours/{slug}(id=${template.slug})}" class="inline-block mt-2 bg-green-600 hover:bg-green-700 text-white text-center px-4 py-2 rounded transition text-sm font-semibold" th:text="#{tour.book}">Book Now</a>
+        </div>
       </article>
     </div>
   </section>
 
   <!-- TESTIMONIALS -->
-  <section class="testimonials">
-    <div class="container">
-      <h2 class="section-title" th:text="#{testimonials.title}">What Our Travelers Say</h2>
-      <div class="testimonials-slider">
-        <div class="testimonial">
-          <p th:text="#{testimonial1.text}">“Sylfie made our trip unforgettable. The guide knew all the hidden spots!”</p>
-          <span th:text="#{testimonial1.author}">— Anna K.</span>
+  <section class="bg-gray-50 py-12">
+    <div class="max-w-5xl mx-auto px-4 space-y-8">
+      <h2 class="text-3xl font-bold text-center text-green-700" th:text="#{testimonials.title}">What Our Travelers Say</h2>
+      <div class="flex flex-col md:flex-row gap-6 md:gap-8">
+        <div class="bg-white p-6 rounded-lg shadow space-y-4 flex-1">
+          <p class="italic text-gray-700" th:text="#{testimonial1.text}">“Sylfie made our trip unforgettable.”</p>
+          <span class="text-green-700 font-semibold" th:text="#{testimonial1.author}">— Anna K.</span>
         </div>
-        <div class="testimonial">
-          <p th:text="#{testimonial2.text}">“Top-notch equipment and service. Highly recommend to any adventure seeker.”</p>
-          <span th:text="#{testimonial2.author}">— Marco R.</span>
+        <div class="bg-white p-6 rounded-lg shadow space-y-4 flex-1">
+          <p class="italic text-gray-700" th:text="#{testimonial2.text}">“Top-notch equipment and service.”</p>
+          <span class="text-green-700 font-semibold" th:text="#{testimonial2.author}">— Marco R.</span>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="contact container">
-    <h2 class="section-title" th:text="#{contact.title}">Get in Touch</h2>
-    <form class="contact-form">
-      <div class="form-group">
-        <label for="name" th:text="#{contact.label.name}">Name</label>
-        <input id="name" type="text" th:placeholder="#{contact.placeholder.name}" required/>
+  <section id="contact" class="max-w-3xl mx-auto px-4 space-y-8 pb-16">
+    <h2 class="text-3xl font-bold text-center text-green-700" th:text="#{contact.title}">Get in Touch</h2>
+    <form class="space-y-6">
+      <div>
+        <label for="name" class="block mb-1 font-medium text-green-800" th:text="#{contact.label.name}">Name</label>
+        <input id="name" type="text" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring focus:ring-green-300" th:placeholder="#{contact.placeholder.name}" required>
       </div>
-      <div class="form-group">
-        <label for="email" th:text="#{contact.label.email}">Email</label>
-        <input id="email" type="email" th:placeholder="#{contact.placeholder.email}" required/>
+      <div>
+        <label for="email" class="block mb-1 font-medium text-green-800" th:text="#{contact.label.email}">Email</label>
+        <input id="email" type="email" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring focus:ring-green-300" th:placeholder="#{contact.placeholder.email}" required>
       </div>
-      <div class="form-group">
-        <label for="message" th:text="#{contact.label.message}">Message</label>
-        <textarea id="message" rows="4" th:placeholder="#{contact.placeholder.message}" required></textarea>
+      <div>
+        <label for="message" class="block mb-1 font-medium text-green-800" th:text="#{contact.label.message}">Message</label>
+        <textarea id="message" rows="4" class="w-full border border-gray-300 rounded px-4 py-2 focus:ring focus:ring-green-300" th:placeholder="#{contact.placeholder.message}" required></textarea>
       </div>
-      <button type="submit" class="btn form-btn" th:text="#{contact.button}">Send Message</button>
+      <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-full font-semibold transition" th:text="#{contact.button}">Send Message</button>
     </form>
   </section>
+
 </main>
+
 </body>
 </html>

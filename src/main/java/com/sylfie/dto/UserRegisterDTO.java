@@ -21,6 +21,10 @@ public class UserRegisterDTO {
     @Size(min = 8, max = 100, message = "Password must be at least 8 characters")
     private String password;
 
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 8, max = 100, message = "Password must be at least 8 characters")
+    private String confirmPassword;
+
     @NotBlank(message = "First name is mandatory")
     @Size(max = 50, message = "First name must not exceed 50 characters")
     @Pattern(regexp = "^[\\p{L} '–-]+$", message = "First name contains invalid characters")
@@ -92,5 +96,13 @@ public class UserRegisterDTO {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

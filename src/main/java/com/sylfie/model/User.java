@@ -23,16 +23,15 @@ public class User {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(nullable = false, length = 60)
-    private String passwordHash;
+    private String password;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     private String firstName;
 
     @Column(length = 50)
     private String lastName;
 
-    @Column(nullable = false, length = 16)
+    @Column(length = 16)
     private String phoneNumber;
 
     private LocalDate dateOfBirth;
@@ -42,6 +41,8 @@ public class User {
 
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal bonusBalance;
+
+    private String provider;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "avatar_id")
@@ -57,10 +58,10 @@ public class User {
 
     private final LocalDateTime createdAt = LocalDateTime.now();
 
-    public User(String username, String email, String passwordHash, String firstName, String lastName, String phoneNumber, LocalDate dateOfBirth) {
+    public User(String username, String email, String password, String firstName, String lastName, String phoneNumber, LocalDate dateOfBirth) {
         this.username = username;
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -107,8 +108,6 @@ public class User {
         return roles.stream().anyMatch(r -> r.getName().equals(roleName));
     }
 
-
-    //GETTERS AND SETTERS
     public Long getId() {
         return id;
     }
@@ -133,12 +132,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String passwordHash) {
+        this.password = passwordHash;
     }
 
     public String getFirstName() {
@@ -191,6 +190,14 @@ public class User {
 
     public void setBonusBalance(BigDecimal bonusBalance) {
         this.bonusBalance = bonusBalance;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     public LocalDateTime getCreatedAt() {

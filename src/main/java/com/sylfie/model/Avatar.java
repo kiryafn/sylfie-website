@@ -9,11 +9,17 @@ public class Avatar{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "avatar", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(mappedBy = "avatar", cascade = CascadeType.PERSIST)
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Picture picture;
+
+    public Avatar() {}
+
+    public Avatar(Picture picture) {
+        this.picture = picture;
+    }
 
     public User getUser() {
         return user;
@@ -24,5 +30,21 @@ public class Avatar{
         if (user != null && user.getAvatar() != this) {
             user.setAvatar(this);
         }
+    }
+
+    public Picture getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

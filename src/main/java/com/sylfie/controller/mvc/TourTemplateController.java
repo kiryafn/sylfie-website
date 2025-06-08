@@ -1,19 +1,21 @@
 package com.sylfie.controller.mvc;
 
 
+import com.sylfie.dto.TourTemplateRequestDTO;
 import com.sylfie.model.Difficulty;
+import com.sylfie.model.Picture;
+import com.sylfie.model.TourPicture;
 import com.sylfie.model.TourTemplate;
 import com.sylfie.repository.TourCategoryRepository;
-import com.sylfie.service.TourCategoryService;
-import com.sylfie.service.TourTemplateService;
-import com.sylfie.service.UserService;
+import com.sylfie.service.*;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,11 +25,15 @@ public class TourTemplateController {
     TourTemplateService tourTemplateService;
     TourCategoryService tourCategoryService;
     UserService userService;
+    LocationService locationService;
+    PictureService pictureService;
 
-    public TourTemplateController(TourTemplateService tourTemplateService, UserService userService, TourCategoryRepository tourCategoryRepository) {
+    public TourTemplateController(TourTemplateService tourTemplateService, UserService userService, TourCategoryService tourCategoryService, LocationService locationService, PictureService pictureService) {
         this.tourTemplateService = tourTemplateService;
         this.userService = userService;
-        this.tourCategoryService = new TourCategoryService(tourCategoryRepository);
+        this.tourCategoryService = tourCategoryService;
+        this.locationService = locationService;
+        this.pictureService = pictureService;
     }
 
     @GetMapping("/{slug}")
@@ -66,5 +72,44 @@ public class TourTemplateController {
 
         model.addAttribute("user", userService.getById(1L));
         return "tour-template/show-all-tour-template";
+    }
+
+    @GetMapping("/add")
+    public String add(Model model) {
+        model.addAttribute("template", new TourTemplateRequestDTO());
+        model.addAttribute("difficulties", Difficulty.values());
+        model.addAttribute("locations", locationService.getAll());
+        model.addAttribute("user", userService.getById(1L));
+        model.addAttribute("categories", tourCategoryService.getAll());
+        return "tour-template/add-tour-template";
+    }
+
+
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String save(
+            @ModelAttribute("template") TourTemplateRequestDTO template,
+            @RequestParam("previewPic") MultipartFile previewPic,
+            @RequestParam("pictures") MultipartFile[] pictures) throws IOException {
+
+        List<TourPicture> pics = new ArrayList<>();
+
+        for (MultipartFile file : pictures) {
+            Picture picture = pictureService.saveTourPicture(file);
+            TourPicture tourPicture = new TourPicture();
+            tourPicture.setPicture(picture);
+            tourPicture.setPreview(false);
+            pics.add(tourPicture);
+        }
+
+        Picture previewPicture = pictureService.saveTourPicture(previewPic);
+        TourPicture preview = new TourPicture();
+        preview.setPicture(previewPicture);
+        preview.setPreview(true);
+        pics.add(preview);
+
+        template.setPictures(pics);
+        tourTemplateService.create(template);
+
+        return "redirect:/admin/tour-templates/add";
     }
 }

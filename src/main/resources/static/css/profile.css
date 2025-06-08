@@ -1,33 +1,117 @@
-.profile-form {
-    max-width: 600px;
+.profile-page {
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    background-color: #f9f9f9;
+}
+
+.profile-container {
+    display: flex;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 20px;
-    background: #ffffff;
+}
+
+.profile-sidebar {
+    width: 220px;
+    margin-right: 40px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.profile-sidebar ul li {
+    border-bottom: 1px solid #eee;
+}
+
+.profile-sidebar ul li:last-child {
+    border-bottom: none;
+}
+
+.profile-sidebar ul li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: background 0.3s, color 0.3s;
+}
+
+.profile-sidebar ul li.active a,
+.profile-sidebar ul li a:hover {
+    background-color: #66d5b4;
+    color: white;
+}
+
+.profile-content {
+    flex: 1;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.profile-content h2 {
+    margin-bottom: 30px;
+    color: #2b7a33;
 }
 
 .profile-form .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-.profile-form .form-group label {
+.profile-form label {
     display: block;
-    font-weight: 600;
-    margin-bottom: 5px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
 }
 
-.profile-form .form-group input,
-.profile-form .form-group select {
+.profile-form input[type="text"],
+.profile-form input[type="email"],
+.profile-form input[type="password"],
+.profile-form input[type="tel"],
+.profile-form input[type="date"] {
     width: 100%;
-    padding: 10px;
+    padding: 10px 14px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
-.avatar-preview {
+.profile-form input[readonly] {
+    background-color: #f0f0f0;
+    color: #777;
+}
+
+.avatar-img {
     width: 100px;
     height: 100px;
-    border-radius: 50%;
     object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    margin-top: 10px;
+}
+
+.form-actions {
+    margin-top: 30px;
+}
+
+.save-button {
+    padding: 12px 24px;
+    background-color: #2b7a33;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.save-button:hover {
+    background-color: #25662b;
 }

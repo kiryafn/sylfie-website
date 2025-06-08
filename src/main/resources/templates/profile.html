@@ -1,262 +1,122 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>User Profile</title>
-    <link rel="stylesheet" th:href="@{/css/profile.css}">
-    <style>
-        /* Стили можно вынести в отдельный файл! */
-        body {
-            background: #f7f9fb;
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .profile-container {
-            display: flex;
-            max-width: 1100px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 18px;
-            box-shadow: 0 4px 32px 0 rgba(0,0,0,0.09);
-            overflow: hidden;
-        }
-        .profile-sidebar {
-            width: 260px;
-            background: #f2f5f8;
-            padding: 38px 0 0 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-right: 2px solid #e0e8ef;
-            min-height: 600px;
-        }
-        .avatar-box {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .avatar-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            border: 3px solid #57c763;
-            object-fit: cover;
-        }
-        .avatar-upload-label {
-            display: block;
-            margin-top: 12px;
-            color: #57c763;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color .2s;
-        }
-        .avatar-upload-label:hover { color: #387a42; }
-        .profile-menu {
-            margin-top: 25px;
-            width: 100%;
-        }
-        .profile-menu-btn {
-            width: 100%;
-            padding: 16px 0;
-            text-align: left;
-            background: none;
-            border: none;
-            outline: none;
-            color: #385856;
-            font-size: 17px;
-            font-weight: 500;
-            transition: background .2s, color .2s;
-            cursor: pointer;
-            border-left: 5px solid transparent;
-        }
-        .profile-menu-btn.active,
-        .profile-menu-btn:hover {
-            background: #e5fbe7;
-            color: #389d4c;
-            border-left: 5px solid #57c763;
-        }
-        .profile-main {
-            flex: 1;
-            padding: 44px 54px;
-        }
-        .profile-section { display: none; }
-        .profile-section.active { display: block; }
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Profile - Sylfie</title>
 
-        /* Profile form */
-        .profile-form { max-width: 480px; }
-        .profile-form label { font-size: 15px; font-weight: 500; color: #41545a; margin-bottom: 6px; display: block; }
-        .profile-form input[type="text"],
-        .profile-form input[type="email"],
-        .profile-form input[type="date"],
-        .profile-form input[type="tel"] {
-            width: 100%;
-            padding: 13px 14px;
-            margin-bottom: 17px;
-            border: 1px solid #c8d5de;
-            border-radius: 8px;
-            background: #f9fafc;
-            font-size: 15px;
-            transition: border .2s;
-        }
-        .profile-form input:focus { border: 1.5px solid #57c763; outline: none; }
-        .profile-form .profile-submit-btn {
-            background: #57c763;
-            color: #fff;
-            border: none;
-            padding: 14px 30px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            box-shadow: 0 2px 7px 0 rgba(87,199,99,0.07);
-            transition: background .2s;
-            cursor: pointer;
-        }
-        .profile-form .profile-submit-btn:hover { background: #389d4c; }
-        .balance-block {
-            margin-bottom: 22px;
-            font-size: 16px;
-            color: #36594a;
-            font-weight: 500;
-            background: #eafbee;
-            border-radius: 7px;
-            padding: 10px 18px;
-            display: inline-block;
-        }
-
-        /* History and Favourites */
-        .tour-history, .favourites-list {
-            width: 100%;
-            max-width: 600px;
-            margin-top: 25px;
-        }
-        .tour-card, .favourite-card {
-            display: flex;
-            align-items: center;
-            background: #f7faf7;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 10px 0 rgba(87,199,99,0.04);
-            padding: 18px 22px;
-        }
-        .tour-card img, .favourite-card img {
-            width: 65px;
-            height: 65px;
-            object-fit: cover;
-            border-radius: 10px;
-            margin-right: 18px;
-        }
-        .tour-info, .favourite-info { flex: 1; }
-        .tour-title, .favourite-title {
-            font-size: 17px;
-            font-weight: 600;
-            color: #36594a;
-        }
-        .tour-date, .favourite-date {
-            color: #78948b;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-        @media (max-width: 900px) {
-            .profile-container { flex-direction: column; }
-            .profile-sidebar { width: 100%; border-right: none; border-bottom: 2px solid #e0e8ef; flex-direction: row; min-height: unset; padding: 20px 0;}
-            .profile-main { padding: 30px 14px;}
-            .avatar-box { margin-bottom: 0; margin-right: 35px; }
-            .profile-menu { flex: 1; display: flex; justify-content: space-around; margin-top: 0;}
-            .profile-menu-btn { padding: 10px 0;}
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
-<div class="profile-container">
-    <!-- Sidebar -->
-    <div class="profile-sidebar">
-        <div class="avatar-box">
-            <img class="avatar-img" th:src="@{${user.avatar != null ? '/avatars/' + user.avatar.id : '/img/default-avatar.png'}}" alt="Avatar">
-            <form th:action="@{/profile/avatar}" method="post" enctype="multipart/form-data">
-                <label class="avatar-upload-label">
-                    <input type="file" name="avatar" accept="image/*" style="display:none;" onchange="this.form.submit()">
-                    Change Avatar
-                </label>
-            </form>
-            <div style="margin-top:8px; color:#7b8a8a; font-size:14px;" th:text="${user.username}">username</div>
-        </div>
-        <div class="profile-menu">
-            <button class="profile-menu-btn active" onclick="switchTab('profile')">Profile</button>
-            <button class="profile-menu-btn" onclick="switchTab('history')">History</button>
-            <button class="profile-menu-btn" onclick="switchTab('favourites')">Favourites</button>
-        </div>
-    </div>
-    <!-- Main Section -->
-    <div class="profile-main">
-        <!-- Profile -->
-        <div id="profile" class="profile-section active">
-            <h2 style="margin-bottom:18px; color:#36594a;">Profile Information</h2>
-            <div class="balance-block">
-                Balance: <span th:text="${user.balance}"></span> &nbsp; | &nbsp; Bonus: <span th:text="${user.bonusBalance}"></span>
-            </div>
-            <form class="profile-form" th:action="@{/profile}" method="post">
-                <label>First Name</label>
-                <input type="text" name="firstName" th:value="${user.firstName}" required>
-                <label>Last Name</label>
-                <input type="text" name="lastName" th:value="${user.lastName}">
-                <label>Username</label>
-                <input type="text" name="username" th:value="${user.username}" required>
-                <label>Email</label>
-                <input type="email" name="email" th:value="${user.email}" required>
-                <label>Phone Number</label>
-                <input type="tel" name="phoneNumber" th:value="${user.phoneNumber}" required>
-                <label>Date of Birth</label>
-                <input type="date" name="dateOfBirth" th:value="${user.dateOfBirth}">
-                <button class="profile-submit-btn" type="submit">Save Changes</button>
-            </form>
-        </div>
-        <!-- History -->
-        <div id="history" class="profile-section">
-            <h2 style="margin-bottom:18px; color:#36594a;">Order History</h2>
-            <div class="tour-history">
-                <div th:each="tour : ${orderHistory}" class="tour-card">
-                    <img th:src="@{${tour.pictureUrl}}" alt="Tour photo">
-                    <div class="tour-info">
-                        <div class="tour-title" th:text="${tour.name}">Tour Name</div>
-                        <div class="tour-date" th:text="${#dates.format(tour.date, 'dd MMM yyyy')}">Date</div>
-                        <div class="tour-date" th:text="'Status: ' + ${tour.status}">Status: Completed</div>
-                    </div>
-                    <a th:href="@{/tours/{id}(id=${tour.id})}" style="margin-left:15px; color:#57c763; text-decoration:none; font-weight:500;">View</a>
+<main layout:fragment="content" class="bg-gray-50 min-h-screen font-['Inter']">
+
+    <div class="flex flex-col md:flex-row max-w-6xl mx-auto py-10 px-4 gap-8">
+
+        <!-- Sidebar -->
+        <aside class="w-full md:w-1/4 bg-white rounded-xl shadow-md border p-6 space-y-4">
+            <div class="flex items-center space-x-4">
+                <img th:src="${user.avatar.picture.url}" alt="Avatar"
+                     class="w-16 h-16 rounded-full object-cover border border-gray-300">
+                <div>
+                    <p class="text-lg font-semibold text-gray-800" th:text="${user.firstName} + ' ' + ${user.lastName}">User Name</p>
+                    <p class="text-sm text-gray-500" th:text="${user.email}">user@example.com</p>
                 </div>
-                <!-- If no orders -->
-                <div th:if="${#lists.isEmpty(orderHistory)}" style="margin-top:32px; color:#999; text-align:center;">No orders yet.</div>
             </div>
-        </div>
-        <!-- Favourites -->
-        <div id="favourites" class="profile-section">
-            <h2 style="margin-bottom:18px; color:#36594a;">Favourite Tours</h2>
-            <div class="favourites-list">
-                <div th:each="tour : ${favourites}" class="favourite-card">
-                    <img th:src="@{${tour.pictureUrl}}" alt="Tour photo">
-                    <div class="favourite-info">
-                        <div class="favourite-title" th:text="${tour.name}">Tour Name</div>
-                        <div class="favourite-date" th:text="'Added: ' + ${#dates.format(tour.addedAt, 'dd MMM yyyy')}">Added: ...</div>
+
+            <nav class="pt-6 space-y-2">
+                <a href="?tab=profile" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-green-100 hover:text-green-700 font-medium">Profile</a>
+                <a href="?tab=security" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-green-100 hover:text-green-700 font-medium">Security</a>
+                <a href="?tab=history" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-green-100 hover:text-green-700 font-medium">History</a>
+                <a href="?tab=favourites" class="block px-3 py-2 rounded-lg text-gray-700 hover:bg-green-100 hover:text-green-700 font-medium">Favourites</a>
+            </nav>
+        </aside>
+
+        <!-- Main content -->
+        <section class="flex-1 bg-white rounded-xl shadow-md border p-8">
+            <!-- Profile tab -->
+            <div th:if="${param.tab} == null or param.tab == 'profile'">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Profile</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input type="text" th:value="${user.firstName}" disabled
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
                     </div>
-                    <form th:action="@{/favourites/remove}" method="post" style="margin-left:18px;">
-                        <input type="hidden" name="tourId" th:value="${tour.id}">
-                        <button style="border:none; background:none; color:#c84545; font-size:15px; cursor:pointer;">Remove</button>
-                    </form>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input type="text" th:value="${user.lastName}" disabled
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                        <input type="text" th:value="${user.username}" disabled
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" th:value="${user.email}" disabled
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100">
+                    </div>
+
                 </div>
-                <div th:if="${#lists.isEmpty(favourites)}" style="margin-top:32px; color:#999; text-align:center;">No favourites yet.</div>
             </div>
-        </div>
+
+            <!-- Security tab -->
+            <div th:if="${param.tab} == 'security'">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Security</h2>
+                <form method="post" th:action="@{/profile/change-password}" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                        <input type="password" name="currentPassword"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                               required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                        <input type="password" name="newPassword"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                               required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                        <input type="password" name="confirmNewPassword"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:outline-none"
+                               required>
+                    </div>
+
+                    <button type="submit"
+                            class="w-full py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition duration-200">
+                        Update Password
+                    </button>
+                </form>
+            </div>
+
+            <!-- History tab -->
+            <div th:if="${param.tab} == 'history'">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">History</h2>
+                <p class="text-gray-600">Your activity history will appear here.</p>
+            </div>
+
+            <!-- Favourites tab -->
+            <div th:if="${param.tab} == 'favourites'">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6">Favourites</h2>
+                <p class="text-gray-600">Your favourite items will appear here.</p>
+            </div>
+
+        </section>
+
     </div>
-</div>
-<script>
-    function switchTab(tab) {
-        document.querySelectorAll('.profile-menu-btn').forEach((btn, i) => {
-            btn.classList.remove('active');
-            if (['profile','history','favourites'][i] === tab) btn.classList.add('active');
-        });
-        document.querySelectorAll('.profile-section').forEach(sec => sec.classList.remove('active'));
-        document.getElementById(tab).classList.add('active');
-    }
-</script>
+
+</main>
 </body>
 </html>

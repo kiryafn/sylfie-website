@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.model.TourHistory;
+import com.sylfie.model.UserTourHistory;
 import com.sylfie.repository.TourHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -17,32 +17,32 @@ public class TourHistoryService {
         this.tourHistoryRepository = tourHistoryRepository;
     }
 
-    public List<TourHistory> getAll() {
+    public List<UserTourHistory> getAll() {
         return tourHistoryRepository.findAll();
     }
 
-    public List<TourHistory> getByUserId(Long userId) {
+    public List<UserTourHistory> getByUserId(Long userId) {
         return tourHistoryRepository.findAllByUserId(userId);
     }
 
-    public TourHistory getById(Long id) {
+    public UserTourHistory getById(Long id) {
         return tourHistoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("TourHistory not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("UserTourHistory not found with id: " + id));
     }
 
     @Transactional
-    public TourHistory create(TourHistory tourHistory) {
-        return tourHistoryRepository.save(tourHistory);
+    public UserTourHistory create(UserTourHistory userTourHistory) {
+        return tourHistoryRepository.save(userTourHistory);
     }
 
     @Transactional
-    public TourHistory update(TourHistory tourHistory) {
-        return tourHistoryRepository.save(tourHistory);
+    public UserTourHistory update(UserTourHistory userTourHistory) {
+        return tourHistoryRepository.save(userTourHistory);
     }
 
     @Transactional
     public void delete(Long id) {
-        TourHistory existing = getById(id);
+        UserTourHistory existing = getById(id);
         tourHistoryRepository.delete(existing);
     }
 }

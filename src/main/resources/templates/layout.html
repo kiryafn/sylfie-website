@@ -6,20 +6,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title layout:fragment="title">Sylfie</title>
-  <link rel="stylesheet" href="/css/styles.css" />
-  <link rel="stylesheet" href="/css/profile.css" />
-  <link rel="stylesheet" href="/css/admin-tour-templates.css" />
-  <link rel="stylesheet" href="/css/footer.css" />
-  <link rel="stylesheet" href="/css/all-tour-templates.css" />
-</head>
-<body>
 
+  <!-- Tailwind -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.3/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Global styles (optional) -->
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen bg-gray-50">
+
+<!-- Хедер -->
 <header layout:fragment="header" th:replace="fragments/header :: header"></header>
 
-<main layout:fragment="content"></main>
+<!-- Контент -->
+<main layout:fragment="content" class="flex-grow">
+  <!-- сюда вставляется контент страницы -->
+</main>
 
+<!-- Футер -->
 <footer layout:fragment="footer" th:replace="fragments/footer :: footer"></footer>
 
-<script src="/js/main.js"></script>
 </body>
 </html>

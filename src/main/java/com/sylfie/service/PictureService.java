@@ -20,8 +20,16 @@ public class PictureService {
         this.pictureMapper = pictureMapper;
     }
 
-    public Picture save(MultipartFile file) throws IOException {
-        String url = storageService.uploadFile(file);
+    public Picture saveAvatar(MultipartFile file) throws IOException {
+        String url = storageService.uploadAvatar(file);
+        Picture pic = pictureMapper.map(file);
+        pic.setUrl(url);
+
+        return pictureRepository.save(pic);
+    }
+
+    public Picture saveTourPicture(MultipartFile file) throws IOException {
+        String url = storageService.uploadTourPicture(file);
         Picture pic = pictureMapper.map(file);
         pic.setUrl(url);
 

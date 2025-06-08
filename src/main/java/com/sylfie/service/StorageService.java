@@ -15,6 +15,12 @@ import java.util.Objects;
 @Service
 public class StorageService {
 
+    @Value("avatars/")
+    private String avatarFolder = "avatars/";
+
+    @Value("tour_pictures/")
+    private String pictureFolder;
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
@@ -24,13 +30,14 @@ public class StorageService {
         this.s3Client = s3Client;
     }
 
-    public String uploadFile(MultipartFile file) {
+    public String uploadAvatar(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        String key = avatarFolder + fileName;
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(bucketName)
-                .key(fileName)
+                .key(key)
                 .build();
 
         s3Client.putObject(putObjectRequest, RequestBody.fromFile(fileObj));
@@ -39,11 +46,34 @@ public class StorageService {
 
         String url = s3Client.utilities().getUrl(builder -> builder
                 .bucket(bucketName)
-                .key(fileName)
+                .key(key)
         ).toExternalForm();
 
         return url;
     }
+
+    public String uploadTourPicture(MultipartFile file) {
+        File fileObj = convertMultiPartFileToFile(file);
+        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+        String key = pictureFolder + fileName;
+
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+
+        s3Client.putObject(putObjectRequest, RequestBody.fromFile(fileObj));
+
+        fileObj.delete();
+
+        String url = s3Client.utilities().getUrl(builder -> builder
+                .bucket(bucketName)
+                .key(key)
+        ).toExternalForm();
+
+        return url;
+    }
+
     public byte[] downloadFile(String fileName) {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucketName)

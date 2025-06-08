@@ -1,8 +1,8 @@
 package com.sylfie.service;
 
+import com.sylfie.exception.RoleNotFoundException;
 import com.sylfie.model.Role;
 import com.sylfie.repository.RoleRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +22,6 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public Role getById(Long id) {
-        return roleRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Role not found with id: " + id));
-    }
-
     @Transactional
     public Role create(Role role) {
         return roleRepository.save(role);
@@ -38,13 +33,13 @@ public class RoleService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        Role role = getById(id);
+    public void delete(String name) {
+        Role role = getByName(name);
         roleRepository.delete(role);
     }
 
-    public Role findByName(String name) {
-        return roleRepository.findByName(name);
+    public Role getByName(String name) {
+        return roleRepository.findByName(name).orElseThrow(() -> new RoleNotFoundException("Role with name" + name + "does not exists"));
     }
 
 }
