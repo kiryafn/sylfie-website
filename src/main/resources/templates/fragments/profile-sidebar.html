@@ -1,0 +1,19 @@
+<aside th:fragment="sidebar" class="w-1/4 bg-white rounded-xl shadow p-6 border">
+    <div class="text-center mb-6">
+        <img th:src="@{*{avatarUrl}}" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto mb-2"/>
+        <h2 class="text-xl font-semibold text-gray-800" th:text="*{firstName + ' ' + lastName}">John Doe</h2>
+        <p class="text-sm text-gray-500" th:text="*{email}">john.doe@example.com</p>
+    </div>
+
+    <div class="text-sm text-gray-600 space-y-2">
+        <p><span class="font-medium" th:text="#{profile.balance}">Balance:</span> <span th:text=" '$' + *{balance}">120.00 zł</span></p>
+        <p><span class="font-medium" th:text="#{profile.bonusBalance}">Bonus:</span> <span th:text=" '$' + *{bonusBalance}">15.00 zł</span></p>
+    </div>
+
+    <nav class="mt-8 space-y-2">
+        <a th:href="@{/profile}" class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700" th:text="#{profile.nav.profile}">Profile</a>
+        <a th:href="@{/profile/security}" class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700" th:text="#{profile.nav.security}">Security</a>
+        <a th:href="@{/profile/history}" class="block px-4 py-2 rounded-lg text-sm font-medium bg-green-100 text-green-700" th:text="#{profile.nav.history}">History</a>
+        <a th:href="@{/profile/favourites}" class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700" th:text="#{profile.nav.favourites}">Favourites</a>
+    </nav>
+</aside>

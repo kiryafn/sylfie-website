@@ -15,6 +15,9 @@ public class Picture {
     private String url; //S3 link to file
 
     @Column(nullable = false)
+    private String s3key;
+
+    @Column(nullable = false)
     private String filename;
 
     @Column(name = "content_type", nullable = false)
@@ -61,5 +64,13 @@ public class Picture {
 
     public void setUploadedAt(LocalDateTime uploadedAt) {
         this.uploadedAt = uploadedAt;
+    }
+
+    public String getS3key() {
+        return s3key;
+    }
+
+    public void setS3key(String s3key) {
+        this.s3key = s3key;
     }
 }

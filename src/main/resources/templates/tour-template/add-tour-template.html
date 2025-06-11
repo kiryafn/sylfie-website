@@ -6,184 +6,135 @@
 <head>
   <meta charset="UTF-8">
   <title layout:fragment="title">Создать новый тур</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
 
   <!-- Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-        rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <!-- CKEditor 5 Classic -->
-
-  <!-- Наш CSS -->
-  <link rel="stylesheet" th:href="@{/css/admin-tour-template.css}">
-</head>
-<body>
-<main layout:fragment="content" class="admin-container">
   <script src="https://cdn.ckeditor.com/ckeditor5/38.1.1/classic/ckeditor.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 font-poppins">
+<main layout:fragment="content" class="max-w-6xl mx-auto p-6">
 
+  <h1 class="text-3xl font-semibold mb-6">Создать новый тур</h1>
 
-  <h1 class="admin-title">Создать новый тур</h1>
-
-  <form th:action="@{/admin/tour-templates/save}"
-        th:object="${template}"
-        method="post"
-        enctype="multipart/form-data"
-        class="admin-form">
+  <form th:action="@{/tours/save}" th:object="${template}" method="post" enctype="multipart/form-data" class="bg-white shadow rounded-lg p-6 space-y-8">
 
     <!-- Основная информация -->
-    <section class="form-section">
-      <h2>Основная информация</h2>
-      <div class="grid-two-cols">
-        <div class="field">
-          <label for="name">Название тура</label>
-          <input type="text" id="name" th:field="*{name}" required>
+    <section>
+      <h2 class="text-xl font-semibold mb-4">Основная информация</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="name" class="block font-medium mb-1">Название тура</label>
+          <input type="text" id="name" th:field="*{name}" required class="w-full border rounded px-3 py-2">
         </div>
-        <div class="field">
-          <label for="shortDescription">Краткое описание</label>
-          <textarea id="shortDescription" th:field="*{shortDescription}" rows="2"></textarea>
+
+        <div>
+          <label for="shortDescription" class="block font-medium mb-1">Краткое описание</label>
+          <textarea id="shortDescription" th:field="*{shortDescription}" rows="2" class="w-full border rounded px-3 py-2"></textarea>
         </div>
-        <div class="field">
-          <label>Сложность</label>
-          <div class="radio-group">
-            <label><input type="radio" th:field="*{difficulty}" value="EASY"> Лёгкая</label>
-            <label><input type="radio" th:field="*{difficulty}" value="MEDIUM"> Средняя</label>
-            <label><input type="radio" th:field="*{difficulty}" value="HARD"> Сложная</label>
+
+        <div>
+          <label class="block font-medium mb-1">Сложность</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2">
+              <input type="radio" th:field="*{difficulty}" value="EASY"> Лёгкая
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" th:field="*{difficulty}" value="MEDIUM"> Средняя
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" th:field="*{difficulty}" value="HARD"> Сложная
+            </label>
           </div>
         </div>
-        <div class="field">
-          <label for="durationDays">Длительность (дней)</label>
-          <input type="number" id="durationDays" th:field="*{durationDays}" min="1" required>
+
+        <div>
+          <label for="durationDays" class="block font-medium mb-1">Длительность (дней)</label>
+          <input type="number" id="durationDays" th:field="*{durationDays}" min="1" required class="w-full border rounded px-3 py-2">
         </div>
-        <div class="field">
-          <label for="price">Цена (USD)</label>
-          <input type="number" id="price" th:field="*{price}" step="0.01" required>
+
+        <div>
+          <label for="price" class="block font-medium mb-1">Цена (USD)</label>
+          <input type="number" id="price" th:field="*{price}" step="0.01" required class="w-full border rounded px-3 py-2">
         </div>
-        <div class="field">
-          <label for="maxParticipants">Макс. участников</label>
-          <input type="number" id="maxParticipants" th:field="*{maxParticipants}" min="1" required>
+
+        <div>
+          <label for="maxParticipants" class="block font-medium mb-1">Макс. участников</label>
+          <input type="number" id="maxParticipants" th:field="*{maxParticipants}" min="1" required class="w-full border rounded px-3 py-2">
         </div>
-        <div class="field">
-          <label for="category">Категория</label>
-          <select id="category" th:field="*{category}" required>
+
+        <div>
+          <label for="category" class="block font-medium mb-1">Категория</label>
+          <select id="category" th:field="*{category}" required class="w-full border rounded px-3 py-2">
             <option value="" disabled selected>Выберите категорию</option>
-            <option th:each="cat : ${categories}"
-                    th:value="${cat.id}"
-                    th:text="${cat.name}">Категория</option>
+            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Категория</option>
           </select>
         </div>
-        <div class="field">
-          <label for="location">Локация</label>
-          <select id="location" th:field="*{location}" required>
+
+        <div>
+          <label for="location" class="block font-medium mb-1">Локация</label>
+          <select id="location" th:field="*{location}" required class="w-full border rounded px-3 py-2">
             <option value="" disabled selected>Выберите локацию</option>
-            <option th:each="loc : ${locations}"
-                    th:value="${loc.id}"
-                    th:text="${loc.name}">Локация</option>
+            <option th:each="loc : ${locations}" th:value="${loc.id}" th:text="${loc.name}">Локация</option>
           </select>
         </div>
       </div>
     </section>
 
     <!-- Полное описание -->
-    <section class="form-section">
-      <h2>Полный текст (HTML)</h2>
-      <div class="field full-width">
-        <label for="descriptionHtml">Описание тура</label>
-        <textarea id="descriptionHtml" th:field="*{descriptionHtml}" rows="8"></textarea>
+    <section>
+      <h2 class="text-xl font-semibold mb-4">Полный текст (HTML)</h2>
+      <div>
+        <label for="descriptionHtml" class="block font-medium mb-1">Описание тура</label>
+        <textarea id="descriptionHtml" th:field="*{descriptionHtml}" rows="8" class="w-full border rounded px-3 py-2"></textarea>
       </div>
     </section>
 
     <!-- Превью-картинка -->
-    <section class="form-section">
-      <h2>Превью-картинка</h2>
-      <div class="field preview-field">
-        <label for="previewPic">Выберите превью</label>
-        <input type="file" id="previewPic" name="previewPic" accept="image/*">
-        <div id="previewThumb" class="thumb-container"></div>
+    <section>
+      <h2 class="text-xl font-semibold mb-4">Превью-картинка</h2>
+      <div>
+        <label for="previewPic" class="block font-medium mb-1">Выберите превью</label>
+        <input type="file" id="previewPic" name="previewPic" accept="image/*" class="block w-full">
+        <div id="previewThumb" class="mt-4"></div>
       </div>
     </section>
 
     <!-- Галерея -->
-    <section class="form-section">
-      <h2>Галерея (несколько фото)</h2>
-      <div class="field full-width">
-        <label for="pictures">Загрузить изображения</label>
-        <input type="file" id="pictures" name="pictures" multiple accept="image/*">
-        <div id="galleryThumbs" class="thumb-list"></div>
+    <section>
+      <h2 class="text-xl font-semibold mb-4">Галерея (несколько фото)</h2>
+      <div>
+        <label for="pictures" class="block font-medium mb-1">Загрузить изображения</label>
+        <input type="file" id="pictures" name="pictures" multiple accept="image/*" class="block w-full">
+        <div id="galleryThumbs" class="flex flex-wrap gap-4 mt-4"></div>
       </div>
     </section>
 
     <!-- Кнопки -->
-    <div class="form-actions">
-      <button type="submit" class="btn btn--primary">
-        <i class="fas fa-save"></i> Создать тур
+    <div class="flex justify-start gap-4">
+      <button type="submit" class="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700">
+        <i class="fas fa-save mr-2"></i>Создать тур
       </button>
-      <a href="#" onclick="history.back()" class="btn btn--secondary">
-        <i class="fas fa-times"></i> Отмена
+      <a href="#" onclick="history.back()" class="bg-gray-300 text-gray-800 px-5 py-2 rounded hover:bg-gray-400">
+        <i class="fas fa-times mr-2"></i>Отмена
       </a>
     </div>
   </form>
 
   <script>
-    // Инициализация CKEditor 5 Classic
     ClassicEditor
             .create(document.querySelector('#descriptionHtml'), {
-              toolbar: [
-                'heading', '|',
-                'bold', 'italic', 'underline', '|',
-                'bulletedList', 'numberedList', '|',
-                'link', 'imageUpload', '|',
-                'undo', 'redo'
-              ],
-              image: {
-                toolbar: [ 'imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side' ]
-              }
+              toolbar: ['heading', '|', 'bold', 'italic', 'underline', '|', 'bulletedList', 'numberedList', '|', 'link', 'imageUpload', '|', 'undo', 'redo'],
+              image: { toolbar: ['imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side'] }
             })
             .catch(error => console.error(error));
-
-    // Превью для одной картинки
-    document.getElementById('previewPicture').addEventListener('change', e => {
-      const c = document.getElementById('previewThumb');
-      c.innerHTML = '';
-      if (!e.target.files.length) return;
-      const url = URL.createObjectURL(e.target.files[0]);
-      const img = document.createElement('img');
-      img.src = url;
-      img.classList.add('thumb-single');
-      c.append(img);
-    });
-
-    // Галерея множественных превью
-    document.getElementById('pictures').addEventListener('change', e => {
-      const c = document.getElementById('galleryThumbs');
-      c.innerHTML = '';
-      Array.from(e.target.files).forEach((file, i) => {
-        const url = URL.createObjectURL(file);
-        const w = document.createElement('div');
-        w.classList.add('thumb-wrap');
-        const img = document.createElement('img');
-        img.src = url;
-        img.classList.add('thumb');
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.innerHTML = '<i class="fas fa-times"></i>';
-        btn.classList.add('thumb-remove');
-        btn.onclick = () => {
-          w.remove();
-          const dt = new DataTransfer();
-          Array.from(e.target.files)
-                  .filter((_, idx) => idx !== i)
-                  .forEach(f => dt.items.add(f));
-          e.target.files = dt.files;
-        };
-        w.append(img, btn);
-        c.append(w);
-      });
-    });
   </script>
 </main>
-
 </body>
 </html>

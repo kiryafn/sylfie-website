@@ -1,11 +1,9 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.UserBalanceDTO;
-import com.sylfie.dto.UserProfileDTO;
+import com.sylfie.dto.UserInfoDTO;
 import com.sylfie.dto.UserRegisterDTO;
 import com.sylfie.model.User;
 import com.sylfie.security.OAuth2UserInfo;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,36 +33,27 @@ public class UserMapper {
         return user;
     }
 
-    public User toUser(UserProfileDTO ur){
-        User user = new User();
-        user.setUsername(ur.getUsername());
-        user.setEmail(ur.getEmail());
-        user.setPassword(ur.getPassword());
-        user.setFirstName(ur.getFirstName());
-        user.setLastName(ur.getLastName());
-        user.setPhoneNumber(ur.getPhoneNumber());
-        user.setDateOfBirth(ur.getDateOfBirth());
-        user.setAvatar(ur.getAvatar());
-        return user;
-    }
-
-    public UserProfileDTO toProfileDTO(User user){
-        UserProfileDTO dto = new UserProfileDTO();
+    public UserInfoDTO toInfoDTO(User user){
+        UserInfoDTO dto = new UserInfoDTO();
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setPhoneNumber(user.getPhoneNumber());
         dto.setDateOfBirth(user.getDateOfBirth());
-        dto.setAvatar(user.getAvatar());
+        dto.setBalance(user.getBalance());
+        dto.setBonusBalance(user.getBonusBalance());
+        dto.setAvatarUrl(user.getAvatar().getPicture().getUrl());
         return dto;
     }
 
-    public UserBalanceDTO toBalanceDTO(User user){
-        UserBalanceDTO dto = new UserBalanceDTO();
-        dto.setBalance(user.getBalance());
-        dto.setBonusBalance(user.getBonusBalance());
-
-        return dto;
+    public User toUser(UserInfoDTO dto, User user){
+        if (dto.getUsername() != null) user.setUsername(dto.getUsername());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
+        if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
+        if (dto.getLastName() != null) user.setLastName(dto.getLastName());
+        if (dto.getPhoneNumber() != null) user.setPhoneNumber(dto.getPhoneNumber());
+        if (dto.getDateOfBirth() != null) user.setDateOfBirth(dto.getDateOfBirth());
+        return user;
     }
 }

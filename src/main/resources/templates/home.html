@@ -5,6 +5,7 @@
 <head>
   <title layout:fragment="title" th:text="#{main.title}">Sylfie - best experience here</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></head>
 </head>
 <body class="font-sans text-gray-800">
 
@@ -49,17 +50,41 @@
   </section>
 
   <!-- TOURS -->
-  <section id="tours" class="max-w-7xl mx-auto px-4 space-y-8">
+  <section id="tours" class="max-w-7xl mx-auto px-4 space-y-10">
     <h2 class="text-3xl font-bold text-center text-green-700" th:text="#{tours.title}">Popular Tours</h2>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      <article class="bg-white rounded-lg shadow hover:shadow-lg overflow-hidden transition" th:each="template : ${tourTemplates}">
-        <img th:unless="${template.getPictures().isEmpty()}"
-             th:src="@{template.getPreviewPicture.picture.url}"
-             alt="Tour Image" class="w-full h-48 object-cover">
-        <div class="p-4 space-y-2">
-          <h3 class="text-xl font-semibold text-green-800" th:text="${template.name}">Tour Title</h3>
-          <p class="text-gray-600 text-sm" th:text="${template.description}">Tour description</p>
-          <a th:href="@{/tours/{slug}(id=${template.slug})}" class="inline-block mt-2 bg-green-600 hover:bg-green-700 text-white text-center px-4 py-2 rounded transition text-sm font-semibold" th:text="#{tour.book}">Book Now</a>
+      <article th:each="template : ${tourTemplates}" th:object="${template}"
+               class="bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden transition-all border border-gray-200">
+
+        <img th:src="*{previewPicture?.picture?.url}" alt="Tour Image"
+             class="w-full h-48 object-cover">
+
+        <div class="p-5 space-y-3">
+          <h3 class="text-xl font-semibold text-green-800" th:text="*{name}">Tour Title</h3>
+          <p class="text-gray-600 text-sm line-clamp-3" th:text="*{shortDescription}">Tour description</p>
+
+          <!-- Инфо с иконками -->
+          <div class="grid grid-cols-3 gap-2 text-xs text-gray-600 pt-2">
+            <div class="flex items-center gap-1">
+              <i class="fas fa-map-marker-alt text-green-600 text-sm"></i>
+              <span th:text="*{location?.name}">Iceland</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <i class="fas fa-users text-green-600 text-sm"></i>
+              <span th:text="*{maxParticipants}">12 ppl</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <i class="fas fa-dollar-sign text-green-600 text-sm"></i>
+              <span th:text="'From $' + *{price}">From $699</span>
+            </div>
+          </div>
+
+          <!-- Кнопка -->
+          <a th:href="@{/tours/{slug}(slug=${template.slug})}"
+             class="block w-full mt-4 bg-green-600 hover:bg-green-700 text-white text-center px-4 py-2 rounded-lg text-sm font-semibold transition">
+            <span th:text="#{tour.book}">Book Now</span>
+          </a>
         </div>
       </article>
     </div>

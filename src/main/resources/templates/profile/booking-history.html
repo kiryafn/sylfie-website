@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title th:text="#{history.title}">Booking History - Sylfie</title>
+
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<main layout:fragment="content" class="bg-gray-50 min-h-screen font-['Inter'] py-10">
+
+    <div class="max-w-7xl mx-auto px-4 flex gap-8" th:object="${userInfo}">
+        <!-- Sidebar -->
+        <aside th:replace="fragments/profile-sidebar :: sidebar"></aside>
+
+        <!-- Main content -->
+        <section class="flex-1 bg-white rounded-xl shadow p-8 border">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-semibold text-gray-800" th:text="#{history.title}">Your Booking History</h1>
+                <p class="text-sm text-gray-500" th:text="#{history.subtitle}">Overview of your past and active tour reservations</p>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-100 text-gray-600 text-sm uppercase">
+                    <tr>
+                        <th class="px-4 py-3 text-left" th:text="#{history.tour}">Tour</th>
+                        <th class="px-4 py-3 text-left" th:text="#{history.bookingDate}">Booking Date</th>
+                        <th class="px-4 py-3 text-left" th:text="#{history.price}">Price</th>
+                        <th class="px-4 py-3 text-left" th:text="#{history.status}">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-sm text-gray-700 divide-y divide-gray-100"
+                           th:if="${historyList != null}" th:each="entry : ${historyList}" th:object="${entry}">
+                    <tr>
+                        <td class="px-4 py-3 font-medium" th:text="*{tourName}">Tour Name</td>
+                        <td class="px-4 py-3" th:text="*{#temporals.format(bookingDate, 'dd MMM yyyy HH:mm')}"></td>
+                        <td class="px-4 py-3" th:text="'$' + *{priceAtBooking.floatValue()}"></td>
+                        <td class="px-4 py-3">
+                            <span th:switch="*{status}">
+                                <span th:case="'Booked'" class="text-green-600 font-medium" th:text="*{status}">BOOKED</span>
+                                <span th:case="'Canceled'" class="text-red-500 font-medium" th:text="*{status}">CANCELLED</span>
+                                <span th:case="'Completed'" class="text-green-1000 font-medium" th:text="*{status}">CANCELLED</span>
+                                <span th:case="*" class="text-yellow-500 font-medium" th:text="*{status}">UNKNOWN</span>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody th:if="${historyList == null or historyList.isEmpty()}">
+                    <tr>
+                        <td colspan="4" class="text-center text-gray-500 py-6" th:text="#{history.emptyhistory}">
+                            You haven't booked any tours yet.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+</main>
+</body>
+</html>

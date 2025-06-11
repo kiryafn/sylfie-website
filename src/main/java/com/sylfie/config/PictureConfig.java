@@ -19,6 +19,7 @@ public class PictureConfig {
         picture.setUrl(defaultAvatarUrl);
         picture.setFilename("default_pfp.jpg");
         picture.setContentType(ContentType.jpeg);
+        picture.setS3key("avatars/default_pfp.jpg");
 
         Avatar avatar = new Avatar();
         avatar.setPicture(picture);

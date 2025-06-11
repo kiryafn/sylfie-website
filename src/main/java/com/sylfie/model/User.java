@@ -7,7 +7,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -55,6 +57,14 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private final Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_favourites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "tour_template_id")
+    )
+    private final List<TourTemplate> favourites = new ArrayList<TourTemplate>();
 
     private final LocalDateTime createdAt = LocalDateTime.now();
 
@@ -214,6 +224,32 @@ public class User {
             avatar.setUser(this);
         }
     }
+
+    public List<TourTemplate> getFavourites() {
+        return favourites;
+    }
+
+    public boolean isFavourite(TourTemplate tour) {
+        return favourites.contains(tour);
+    }
+
+    public boolean isFavourite(Long tourId) {
+        return favourites.stream().anyMatch(t -> t.getId().equals(tourId));
+    }
+
+    public void removeFavourites() {
+        favourites.clear();
+    }
+
+    public void addFavourite(TourTemplate tour) {
+        if (!favourites.contains(tour)) favourites.add(tour);
+    }
+
+    public void removeFavourite(TourTemplate tour) {
+        if (favourites.contains(tour)) favourites.remove(tour);
+    }
+
+
 
     @Override
     public boolean equals(Object o) {

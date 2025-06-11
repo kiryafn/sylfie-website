@@ -1,5 +1,6 @@
 package com.sylfie.service;
 
+import com.sylfie.dto.UserTourHistoryDTO;
 import com.sylfie.model.UserTourHistory;
 import com.sylfie.repository.TourHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -44,5 +45,18 @@ public class TourHistoryService {
     public void delete(Long id) {
         UserTourHistory existing = getById(id);
         tourHistoryRepository.delete(existing);
+    }
+
+    //TODO: TO DTO
+    @Transactional
+    public List<UserTourHistoryDTO> getByUserName(String username) {
+        return tourHistoryRepository.findAllByUserUsername(username).stream()
+                .map(history -> new UserTourHistoryDTO(
+                        history.getTour().getTemplate().getName(),
+                        history.getBookingDate(),
+                        history.getPriceAtBooking(),
+                        history.getStatus().getName()
+                ))
+                .toList();
     }
 }

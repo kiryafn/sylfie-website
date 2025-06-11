@@ -42,4 +42,8 @@ public class TourService {
         Tour tour = getById(id);
         tourRepository.delete(tour);
     }
+
+    public List<Tour> getByTemplateId(Long templateId) {
+        return tourRepository.findAllByTemplateIdOrderByStartDate(templateId);
+    }
 }

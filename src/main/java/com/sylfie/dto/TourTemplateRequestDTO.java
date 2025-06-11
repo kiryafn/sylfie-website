@@ -18,7 +18,7 @@ public class TourTemplateRequestDTO {
     private Location location;
     private Integer durationDays;
     private String shortDescription;
-    private List<TourPicture> pictures;
+    private List<TourPicture> tourPictures;
 
     public String getName() {
         return name;
@@ -92,11 +92,11 @@ public class TourTemplateRequestDTO {
         this.shortDescription = shortDescription;
     }
 
-    public List<TourPicture> getPictures() {
-        return pictures;
+    public List<TourPicture> getTourPictures() {
+        return tourPictures;
     }
 
-    public void setPictures(List<TourPicture> pictures) {
-        this.pictures = pictures;
+    public void setTourPictures(List<TourPicture> tourPictures) {
+        this.tourPictures = tourPictures;
     }
 }

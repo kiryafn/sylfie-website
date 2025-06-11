@@ -1,11 +1,13 @@
 package com.sylfie.service;
 
+import com.sylfie.dto.UserInfoDTO;
 import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.InsufficientBalanceException;
 import com.sylfie.exception.UsernameTakenException;
 import com.sylfie.mapper.UserMapper;
 import com.sylfie.dto.UserRegisterDTO;
 import com.sylfie.model.Avatar;
+import com.sylfie.model.Picture;
 import com.sylfie.model.User;
 import com.sylfie.repository.UserRepository;
 import com.sylfie.security.OAuth2UserInfo;
@@ -14,7 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -29,13 +33,15 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final Avatar defaultAvatar;
+    private final PictureService pictureService;
 
-    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, UserMapper userMapper, Avatar defaultAvatar) {
+    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, UserMapper userMapper, Avatar defaultAvatar, PictureService pictureService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.defaultAvatar = defaultAvatar;
+        this.pictureService = pictureService;
     }
 
     public List<User> getAll() {
@@ -89,8 +95,12 @@ public class UserService {
     }
 
     @Transactional
-    public User update(User user) {
-        return userRepository.save(user);
+    public UserInfoDTO update(UserInfoDTO dto, String username){
+        User user = getByUsername(username);
+        userMapper.toUser(dto, user);
+
+        user = userRepository.save(user);
+        return userMapper.toInfoDTO(user);
     }
 
     @Transactional
@@ -100,15 +110,13 @@ public class UserService {
     }
 
     @Transactional
-    public User creditBalance(Long id, BigDecimal amount) {
-        User user = getById(id);
+    public User creditBalance(User user, BigDecimal amount) {
         user.credit(amount);
         return userRepository.save(user);
     }
 
     @Transactional
-    public User debitBalance(Long id, BigDecimal amount) {
-        User user = getById(id);
+    public User debitBalance(User user, BigDecimal amount) {
         try {
             user.debit(amount);
         } catch (IllegalArgumentException e) {
@@ -133,11 +141,33 @@ public class UserService {
                 .ifPresent(user -> { throw new UsernameTakenException("Username already taken"); });
     }
 
-    public User findByEmail(String email) {
+    public User getByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found with email " + email));
     }
 
     public Optional<User> findByEmailOptional(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    //TODO: Possibly change this to PasswordDTO
+    public void changePassword(String name, String currentPassword, String newPassword, String confirmNewPassword) {
+        User user = getByUsername(name);
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password does not match");
+        }
+        if (!newPassword.equals(confirmNewPassword)) {
+            throw new IllegalArgumentException("New password does not match");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        System.out.println("Before save: " + user.getPassword());
+        userRepository.save(user);
+        System.out.println("After save: " + user.getPassword());
+    }
+
+    public void updateAvatar(String username, MultipartFile avatar) throws IOException {
+        User user = getByUsername(username);
+        pictureService.deletePicture(user.getAvatar().getPicture().getId());
+        Picture picture = pictureService.saveAvatar(avatar);
+        user.setAvatar(new Avatar(picture));
     }
 }

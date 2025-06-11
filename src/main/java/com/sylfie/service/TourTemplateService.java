@@ -1,6 +1,7 @@
 package com.sylfie.service;
 
 import com.github.slugify.Slugify;
+import com.sylfie.dto.TourTemplateDTO;
 import com.sylfie.mapper.TourTemplateMapper;
 import com.sylfie.dto.TourTemplateRequestDTO;
 import com.sylfie.model.TourTemplate;
@@ -42,17 +43,19 @@ public class TourTemplateService{
                 .orElseThrow(() -> new EntityNotFoundException("Tour template not found with id: " + id));
     }
 
-    public TourTemplate getBySlug(String slug) {
-        return tourTemplateRepository.findBySlug(slug)
+    public TourTemplateDTO getBySlug(String slug) {
+        return tourTemplateRepository.findBySlug(slug).map(tourTemplateMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Tour template not found with slug: " + slug));
     }
 
     @Transactional
-    public TourTemplate create(TourTemplateRequestDTO templateDTO) {
+    public TourTemplateDTO create(TourTemplateRequestDTO templateDTO) {
         TourTemplate template = tourTemplateMapper.toEntity(templateDTO);
         template.setSlug(generateSlug(template));
         template.setDescription(htmlSanitizer.sanitize(template.getDescription()));
-        return tourTemplateRepository.save(template);
+        TourTemplate tt = tourTemplateRepository.save(template);
+
+        return tourTemplateMapper.toDto(tt);
     }
 
     @Transactional
@@ -71,9 +74,9 @@ public class TourTemplateService{
         tourTemplateRepository.delete(template);
     }
 
-    public List<TourTemplate> getTop3Popular() {
+    public List<TourTemplateDTO> getTop3Popular() {
         List<Long> topIds = tourHistoryRepository.findTopTourIds(PageRequest.of(0, 3));
-        return tourTemplateRepository.findAllById(topIds);
+        return tourTemplateRepository.findAllById(topIds).stream().map(tourTemplateMapper::toDto).toList();
     }
 
     private String generateSlug(TourTemplate template) {

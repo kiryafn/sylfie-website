@@ -4,6 +4,9 @@ spring:
     config:
         import: optional:file:.env[.properties]
     security:
+        user:
+            name: a
+            password: a
         oauth2:
             client:
                 registration:

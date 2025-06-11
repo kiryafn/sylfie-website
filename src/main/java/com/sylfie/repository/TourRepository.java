@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface TourRepository extends CrudRepository<Tour, Long> {
     List<Tour> findAll();
+
+    List<Tour> findAllByTemplateIdOrderByStartDate(Long templateId);
 }

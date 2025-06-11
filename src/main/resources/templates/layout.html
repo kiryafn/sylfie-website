@@ -24,7 +24,7 @@
 <body class="flex flex-col min-h-screen bg-gray-50">
 
 <!-- Хедер -->
-<header layout:fragment="header" th:replace="fragments/header :: header"></header>
+<header layout:fragment="header" th:replace="~{fragments/header :: header}"></header>
 
 <!-- Контент -->
 <main layout:fragment="content" class="flex-grow">
@@ -32,7 +32,7 @@
 </main>
 
 <!-- Футер -->
-<footer layout:fragment="footer" th:replace="fragments/footer :: footer"></footer>
+<footer layout:fragment="footer" th:replace="~{fragments/footer :: footer}"></footer>
 
 </body>
 </html>

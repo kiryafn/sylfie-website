@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @EnableWebSecurity
 @Configuration
@@ -23,7 +24,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 public class SecurityConfig {
 
     @Value("${spring.security.cookie.remember-me}")
-    private static String REMEMBER_ME_KEY;
+    private String REMEMBER_ME_KEY;
 
     private final CustomUserDetailsService userService;
     private final CustomOAuth2UserService oAuth2UserService;
@@ -72,5 +73,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public SpringSecurityDialect springSecurityDialect() {
+        return new SpringSecurityDialect();
     }
 }

@@ -1,102 +1,147 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <title layout:fragment="title">Все туры Sylfie</title>
-    <!-- Google Fonts: Poppins -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Наш кастомный CSS -->
-    <link rel="stylesheet" th:href="@{/css/all-tour-templates.css}">
-</head>
-<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></head>
+<body class="font-[Poppins] bg-gray-50 text-gray-800">
 <main layout:fragment="content">
 
     <!-- Баннер -->
-    <div class="banner-container">
-        <img class="banner-img" th:src="@{/img/banner.jpg}" alt="All tours banner">
-        <div class="banner-overlay">
-            <h1 class="banner-title">All tours</h1>
-            <p class="banner-subtitle">Choose your next adventure with us</p>
+    <div class="relative w-full h-[400px] overflow-hidden mb-10">
+        <img class="w-full h-full object-cover object-center" th:src="@{/img/banner.jpg}" alt="All tours banner">
+        <div class="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center">
+            <h1 class="text-white text-5xl font-semibold drop-shadow-lg">All tours</h1>
+            <p class="text-white text-lg mt-2 drop-shadow">Choose your next adventure with us</p>
         </div>
     </div>
 
-    <div class="filter-container container">
+    <div class="max-w-7xl mx-auto px-4 flex gap-6 mb-20">
 
         <!-- Сайдбар-фильтров -->
-        <aside class="filter-sidebar">
-            <h3>Фильтры</h3>
-            <form th:action="@{/tours}" method="get">
+        <aside class="w-72 bg-white rounded-lg shadow p-6">
+            <h3 class="text-lg font-semibold border-b pb-2 mb-4">Фильтры</h3>
+            <form th:action="@{/tours}" method="get" class="space-y-6">
 
-                <div class="filter-group">
-                    <label for="category">Категория</label>
-                    <select id="category" name="categoryId">
-                        <option value="">Все</option>
-                        <option th:each="cat : ${categories}"
-                                th:value="${cat.id}"
-                                th:text="${cat.name}"
-                                th:selected="${cat.id} == ${selectedCategory}"></option>
-                    </select>
-                </div>
-
-                <div class="filter-group">
-                    <span>Сложность</span>
-                    <div class="options">
-                        <label th:each="diff : ${difficulties}">
-                            <input type="radio" name="difficulty" th:value="${diff}"
-                                   th:checked="${diff} == ${selectedDifficulty}"/>
-                            <span th:text="${diff.name()}">Easy</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="difficulty" value=""
-                                   th:checked="${selectedDifficulty} == null"/>
-                            <span>Все</span>
+                <!-- Категории -->
+                <div>
+                    <span class="block text-sm font-medium mb-1">Категории</span>
+                    <div class="space-y-2">
+                        <label th:each="cat : ${categories}" class="flex items-center gap-2 text-sm">
+                            <input type="checkbox" name="categoryId"
+                                   th:value="${cat.id}"
+                                   th:checked="${selectedCategoryIds != null and selectedCategoryIds.contains(cat.id)}"
+                                   class="accent-green-600">
+                            <span th:text="${cat.name}">Категория</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="filter-group">
-                    <label for="minCapacity">Мин. вместимость</label>
-                    <input type="number" id="minCapacity" name="minCapacity" th:value="${minCapacity}">
-                </div>
-                <div class="filter-group">
-                    <label for="maxCapacity">Макс. вместимость</label>
-                    <input type="number" id="maxCapacity" name="maxCapacity" th:value="${maxCapacity}">
+                <!-- Сложности -->
+                <div>
+                    <span class="block text-sm font-medium mb-1">Сложность</span>
+                    <div class="space-y-2">
+                        <label th:each="diff : ${difficulties}" class="flex items-center gap-2 text-sm">
+                            <input type="checkbox" name="difficulty"
+                                   th:value="${diff}"
+                                   th:checked="${selectedDifficulties != null and selectedDifficulties.contains(diff)}"
+                                   class="accent-green-600">
+                            <span th:text="${diff.getName()}"></span>
+                        </label>
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn--primary">Показать</button>
+                <!-- Локации -->
+                <div>
+                    <span class="block text-sm font-medium mb-1">Локации</span>
+                    <div class="space-y-2">
+                        <label th:each="loc : ${locations}" class="flex items-center gap-2 text-sm">
+                            <input type="checkbox" name="locationId"
+                                   th:value="${loc.id}"
+                                   th:checked="${selectedLocationIds != null and selectedLocationIds.contains(loc.id)}"
+                                   class="accent-green-600">
+                            <span th:text="${loc.name}">Локация</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Цена -->
+                <div>
+                    <label class="block text-sm font-medium mb-1">Цена (мин)</label>
+                    <input type="range" name="minPrice" min="0" max="5000" step="10" th:value="${minPrice}" class="w-full">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Цена (макс)</label>
+                    <input type="range" name="maxPrice" min="0" max="5000" step="10" th:value="${maxPrice}" class="w-full">
+                </div>
+
+                <div>
+                    <label for="minCapacity" class="block text-sm font-medium mb-1">Мин. вместимость</label>
+                    <input type="number" id="minCapacity" name="minCapacity" th:value="${minCapacity}" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+                <div>
+                    <label for="maxCapacity" class="block text-sm font-medium mb-1">Макс. вместимость</label>
+                    <input type="number" id="maxCapacity" name="maxCapacity" th:value="${maxCapacity}" class="w-full border border-gray-300 rounded px-3 py-2">
+                </div>
+
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Показать</button>
             </form>
         </aside>
 
         <!-- Сетка туров -->
-        <section class="tour-templates">
-            <div class="tour-cards">
-                <article class="tour-card" th:each="template : ${tourTemplates}">
-                    <div class="tour-image-wrapper">
-                        <img th:src="${template.previewPicture?.picture?.url}" alt="Tour image">                    </div>
+        <section class="flex-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="mb-6" sec:authorize="hasRole('ADMIN')">
+                    <a th:href="@{/tours/add}"
+                       class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition">
+                        <i class="fas fa-plus mr-2"></i> Добавить тур
+                    </a>
+                </div>
+                <article th:each="template : ${templates}" th:object="${template}"
+                         class="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-200 hover:-translate-y-1">
 
-                    <div class="tour-info">
-                        <div class="tour-duration" th:text="${template.durationDays} + ' DAY TOUR'"></div>
-                        <h3 class="tour-title" th:text="${template.name}"></h3>
-                        <div class="tour-meta">
-                            <div class="tour-location">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span th:text="${template.location.name}"></span>
-                            </div>
-                            <div class="tour-group-size">
-                                <i class="fas fa-users"></i>
-                                <span th:text="${template.maxParticipants}"></span>
-                            </div>
-                        </div>
-                        <div class="tour-price-block">
-                            <span class="tour-price"><span th:text="${'$' + template.price}"></span></span>
-                            <span class="tour-per-person">per person</span>
-                        </div>
-                        <a th:href="@{/tours/{slug}(slug=${template.slug})}" class="btn-more">Details</a>
+                    <!-- Изображение -->
+                    <div class="h-56">
+                        <img th:src="*{previewPicture?.picture?.url}" alt="Tour image" class="w-full h-full object-cover">
                     </div>
+
+                    <!-- Информация -->
+                    <div class="flex flex-col justify-between flex-grow p-5 gap-3">
+
+                        <!-- Продолжительность -->
+                        <div class="text-xs uppercase text-gray-500 tracking-wide" th:text="|*{durationDays} DAY TOUR|"></div>
+
+                        <!-- Название тура -->
+                        <h3 class="text-lg font-semibold text-green-900" th:text="*{name}">Tour Name</h3>
+
+                        <!-- Локация и группа по краям -->
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-map-marker-alt text-green-600"></i>
+                                <span th:text="*{location?.name}">Location</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-users text-green-600"></i>
+                                <span th:text="*{maxParticipants}">12</span>
+                            </div>
+                        </div>
+
+                        <!-- Цена -->
+                        <div class="border-t pt-3">
+                            <span class="text-green-700 font-bold text-lg" th:text="'$' + *{price}"></span>
+                            <span class="text-sm font-normal text-gray-500">/person</span>
+                        </div>
+                    </div>
+
+                    <!-- Кнопка -->
+                    <a th:href="@{/tours/{slug}(slug=*{slug})}"
+                       class="bg-green-600 hover:bg-green-700 text-white text-sm w-full text-center py-3 rounded-b-2xl font-medium transition">
+                        Details
+                    </a>
                 </article>
             </div>
         </section>

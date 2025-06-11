@@ -18,15 +18,15 @@
     <!-- Правая часть -->
     <div class="flex items-center space-x-6">
 
-      <div th:if="${user != null}" class="flex items-center space-x-6">
+      <div th:if="${userInfo != null}" th:object="${userInfo}" class="flex items-center space-x-6">
 
         <!-- Баланс -->
         <div class="text-right text-sm hidden md:block">
           <div class="text-gray-600">
-            <span class="font-semibold text-green-600" th:text="#{header.balance} + ${' ' + userBalance.balance}">0.00</span> €
+            <span class="font-semibold text-green-600" th:text="|#{header.balance} *{balance}|"></span> €
           </div>
           <div class="text-gray-500">
-            <span class="font-semibold text-blue-500" th:text="#{header.bonus} + ${' ' + userBalance.bonusBalance}">0.00</span> €
+            <span class="font-semibold text-blue-500" th:text="|#{header.bonus} *{bonusBalance}|"></span> €
           </div>
         </div>
 
@@ -43,7 +43,7 @@
         <!-- User dropdown -->
         <div class="relative">
           <button id="user-dropdown-btn" class="flex items-center focus:outline-none">
-            <img th:src="@{${user.avatar?.picture?.url}}" alt="User Avatar"
+            <img th:src="@{*{avatarUrl}}" alt="User Avatar"
                  class="w-11 h-11 rounded-full object-cover">
           </button>
 
@@ -66,8 +66,7 @@
 
       </div>
 
-      <!-- Если не авторизован -->
-      <div th:if="${user == null}" class="flex items-center space-x-4">
+      <div th:if="${userInfo == null}" class="flex items-center space-x-4">
 
         <a th:href="@{/login}"
            class="px-4 py-2 border border-green-600 text-green-600 rounded-full font-medium hover:bg-green-50 transition">

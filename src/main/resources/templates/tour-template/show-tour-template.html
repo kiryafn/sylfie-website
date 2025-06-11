@@ -6,63 +6,55 @@
 <head>
     <meta charset="UTF-8">
     <title layout:fragment="title" th:text="${tourTemplate.name}">Tour Name</title>
-
-    <!-- Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-          rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Наш CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-<main layout:fragment="content" class="tour-page">
-    <link rel="stylesheet" th:href="@{/css/tour-template.css}">
-
+<body class="bg-gray-50 text-gray-800 font-[Poppins]">
+<main layout:fragment="content">
     <!-- HERO -->
-    <section class="tour-hero">
-        <img class="tour-hero__img"
-             th:src="${tourTemplate.previewPicture.picture.url}"
-             alt="Banner">
+    <section class="relative h-[650px]">
+        <img th:src="${tourTemplate.previewPicture.picture.url}" alt="Banner" class="w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/70"></div>
 
-        <button class="tour-hero__back" onclick="history.back()">
+        <button onclick="history.back()" class="absolute top-4 left-4 bg-black/40 text-white text-sm px-3 py-1.5 rounded hover:bg-black/60 flex items-center gap-2 z-10">
             <i class="fas fa-arrow-left"></i> Browse All Trips
         </button>
 
-        <div class="tour-hero__panel">
-            <div class="container tour-panel">
-                <!-- Левый столбец: инфо -->
-                <div class="tour-panel__info">
-                    <div class="tour-hero__subline"
-                         th:text="${tourTemplate.difficulty.name()}"></div>
-                    <h1 class="tour-hero__title"
-                        th:text="${tourTemplate.name}"></h1>
-                    <div class="tour-hero__meta">
-                        <div class="meta-item">
-                            <i class="fas fa-map-marker-alt"></i>
+        <div class="absolute bottom-[-120px] w-full flex justify-center z-10">
+            <div class="bg-white shadow-lg rounded-lg w-full max-w-5xl px-8 py-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                <!-- Info -->
+                <div class="flex-1 space-y-4">
+                    <div class="uppercase text-xs text-gray-500 tracking-widest" th:text="${tourTemplate.difficulty.name()}"></div>
+                    <h1 class="text-3xl font-semibold text-gray-900" th:text="${tourTemplate.name}"></h1>
+                    <div class="flex flex-wrap gap-6 text-sm text-gray-600">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-green-600"></i>
                             <span th:text="${tourTemplate.location}"></span>
                         </div>
-                        <div class="meta-item">
-                            <i class="fas fa-calendar-alt"></i>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-calendar-alt text-green-600"></i>
                             <span th:text="${tourTemplate.durationDays + ' Day'}"></span>
                         </div>
-                        <div class="meta-item">
-                            <i class="fas fa-dollar-sign"></i>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-dollar-sign text-green-600"></i>
                             <span th:text="${'From ' + tourTemplate.price + '$'}"></span>
                         </div>
-                        <div class="meta-item">
-                            <i class="fas fa-chart-line"></i>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-chart-line text-green-600"></i>
                             <span th:text="${'Level ' + tourTemplate.difficulty.name()}"></span>
-                            <i class="fas fa-info-circle tooltip-icon" title="Difficulty level"></i>
+                            <i class="fas fa-info-circle text-gray-400 text-xs cursor-help" title="Difficulty level"></i>
                         </div>
                     </div>
                 </div>
-                <!-- Правый столбец: действия -->
-                <div class="tour-panel__actions">
-                    <a th:href="@{/booking/{id}(id=${tourTemplate.id})}" class="btn btn--primary">
+
+                <!-- Actions -->
+                <div class="flex flex-col gap-3 items-start lg:items-end">
+                    <a th:href="@{/booking/{id}(id=${tourTemplate.id})}"
+                       class="bg-green-700 hover:bg-green-800 text-white font-medium px-6 py-2.5 rounded shadow">
                         Book Online
                     </a>
-                    <a href="tel:+18003682794" class="btn btn--link">
+                    <a href="tel:+18003682794" class="text-green-700 hover:underline flex items-center gap-2">
                         <i class="fas fa-phone"></i> Call 1-800-368-2794
                     </a>
                 </div>
@@ -71,15 +63,42 @@
     </section>
 
     <!-- DESCRIPTION -->
-    <section class="tour-detail__description container">
-        <div class="description-card">
-            <h2>Описание тура</h2>
-            <p th:utext="${tourTemplate.description}">
+    <section class="mt-[200px] px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Описание тура</h2>
+            <p class="text-gray-700 whitespace-pre-line leading-relaxed" th:utext="${tourTemplate.description}">
                 Здесь будет подробное описание тура…
             </p>
         </div>
     </section>
 
+    <!-- AVAILABLE TOURS -->
+    <section class="mt-12 px-4 max-w-5xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Доступные даты</h2>
+            <div class="space-y-4">
+                <div th:each="tour : ${tours}" class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 mb-4">
+                    <div class="space-y-1">
+                        <div class="text-sm text-gray-500">
+                            <i class="fas fa-calendar-day mr-1 text-green-600"></i>
+                            <span th:text="${#temporals.format(tour.startDate, 'dd MMM yyyy')}"></span>
+                            &nbsp;–&nbsp;
+                            <span th:text="${#temporals.format(tour.endDate, 'dd MMM yyyy')}"></span>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            Забронировано:
+                            <span class="font-medium" th:text="${tour.bookedCount}">0</span> человек(а)
+                        </div>
+                    </div>
+                    <form th:action="@{/booking/tour/{id}(id=${tour.id})}" method="post">
+                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-medium px-5 py-2 rounded shadow">
+                            Забронировать
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 </body>
 </html>

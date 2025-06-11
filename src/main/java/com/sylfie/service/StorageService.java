@@ -1,5 +1,6 @@
 package com.sylfie.service;
 
+import com.sylfie.util.S3Info;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +31,7 @@ public class StorageService {
         this.s3Client = s3Client;
     }
 
-    public String uploadAvatar(MultipartFile file) {
+    public S3Info uploadAvatar(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         String key = avatarFolder + fileName;
@@ -49,10 +50,10 @@ public class StorageService {
                 .key(key)
         ).toExternalForm();
 
-        return url;
+        return new S3Info(key, url, bucketName);
     }
 
-    public String uploadTourPicture(MultipartFile file) {
+    public S3Info uploadTourPicture(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         String key = pictureFolder + fileName;
@@ -71,7 +72,7 @@ public class StorageService {
                 .key(key)
         ).toExternalForm();
 
-        return url;
+        return new S3Info(key, url, bucketName);
     }
 
     public byte[] downloadFile(String fileName) {
@@ -94,12 +95,17 @@ public class StorageService {
     }
 
     private File convertMultiPartFileToFile(MultipartFile file) {
-        File convertedFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
-            fos.write(file.getBytes());
+        try {
+            String suffix = file.getOriginalFilename() != null && file.getOriginalFilename().contains(".")
+                    ? file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf('.'))
+                    : ".tmp";
+            File tempFile = File.createTempFile("upload-", suffix);
+            try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+                fos.write(file.getBytes());
+            }
+            return tempFile;
         } catch (IOException e) {
             throw new RuntimeException("Error converting multipartFile to file", e);
         }
-        return convertedFile;
     }
 }
