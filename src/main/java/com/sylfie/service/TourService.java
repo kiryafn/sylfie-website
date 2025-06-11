@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -43,7 +44,8 @@ public class TourService {
         tourRepository.delete(tour);
     }
 
-    public List<Tour> getByTemplateId(Long templateId) {
-        return tourRepository.findAllByTemplateIdOrderByStartDate(templateId);
+    public List<Tour> getAvailableByTemplateId(Long templateId) {
+        return tourRepository.findAllByTemplateIdOrderByStartDate(templateId).stream().filter(t -> t.getStartDate().isAfter(LocalDateTime.now())).toList();
     }
+
 }

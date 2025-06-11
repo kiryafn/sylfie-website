@@ -45,9 +45,9 @@ public class TourTemplateController {
 
     @GetMapping("/{slug}")
     public String showTour(@PathVariable String slug, Model model) {
-        TourTemplateDTO tt = tourTemplateService.getBySlug(slug);
+        TourTemplateDTO tt = tourTemplateMapper.toDto(tourTemplateService.getBySlug(slug));
         model.addAttribute("tourTemplate", tt);
-        model.addAttribute("tours", tourService.getByTemplateId(tt.getId()));
+        model.addAttribute("tours", tourService.getAvailableByTemplateId(tt.getId()));
         return "tour-template/show-tour-template";
     }
 

@@ -43,8 +43,8 @@ public class TourTemplateService{
                 .orElseThrow(() -> new EntityNotFoundException("Tour template not found with id: " + id));
     }
 
-    public TourTemplateDTO getBySlug(String slug) {
-        return tourTemplateRepository.findBySlug(slug).map(tourTemplateMapper::toDto)
+    public TourTemplate getBySlug(String slug) {
+        return tourTemplateRepository.findBySlug(slug)
                 .orElseThrow(() -> new EntityNotFoundException("Tour template not found with slug: " + slug));
     }
 

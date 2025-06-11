@@ -1,9 +1,13 @@
 package com.sylfie.mapper;
 
+import com.sylfie.dto.api.TourApiDTO;
+import com.sylfie.dto.api.TourTemplateApiDTO;
 import com.sylfie.dto.mvc.TourTemplateDTO;
 import com.sylfie.dto.mvc.TourTemplateRequestDTO;
 import com.sylfie.model.TourTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TourTemplateMapper {
@@ -40,6 +44,18 @@ public class TourTemplateMapper {
         dto.setLocation(tt.getLocation().getName());
         dto.setPicturesUrls(tt.getPictures().stream().map(p -> p.getPicture().getUrl()).toList());
         dto.setPreviewPictureUrl(tt.getPreviewPicture().getPicture().getUrl());
+
+        return dto;
+    }
+
+    public TourTemplateApiDTO toApiDto(TourTemplate tt, List<TourApiDTO> tours){
+        TourTemplateApiDTO dto = new TourTemplateApiDTO();
+        dto.setId(tt.getId());
+        dto.setName(tt.getName());
+        dto.setCaregory(tt.getCategory().getName());
+        dto.setLocation(tt.getLocation().getName());
+        dto.setMaxParticipants(tt.getMaxParticipants());
+        dto.setAvailable(tours);
 
         return dto;
     }
