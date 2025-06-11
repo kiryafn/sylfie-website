@@ -1,6 +1,9 @@
 spring:
     application:
         name: Sylfie
+    task:
+        scheduling:
+            time-zone: Europe/Warsaw
     config:
         import: optional:file:.env[.properties]
     security:

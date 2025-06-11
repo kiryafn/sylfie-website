@@ -1,11 +1,14 @@
 package com.sylfie.service;
 
 import com.sylfie.dto.mvc.UserTourHistoryDTO;
+import com.sylfie.model.Status;
 import com.sylfie.model.UserTourHistory;
 import com.sylfie.repository.TourHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -58,5 +61,20 @@ public class TourHistoryService {
                         history.getStatus().getName()
                 ))
                 .toList();
+    }
+
+    @Transactional
+    public void markExpiredToursAsCompleted() {
+        List<UserTourHistory> activeBookings = tourHistoryRepository.findAllByStatus(Status.BOOKED);
+
+        LocalDateTime now = LocalDateTime.now();
+
+        for (UserTourHistory booking : activeBookings) {
+            if (booking.getTour().getEndDate().isBefore(now)) {
+                booking.setStatus(Status.COMPLETED);
+            }
+        }
+
+        tourHistoryRepository.saveAll(activeBookings);
     }
 }

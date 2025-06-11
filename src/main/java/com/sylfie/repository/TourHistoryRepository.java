@@ -1,6 +1,7 @@
 package com.sylfie.repository;
 
 
+import com.sylfie.model.Status;
 import com.sylfie.model.UserTourHistory;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Pageable;
@@ -24,4 +25,6 @@ public interface TourHistoryRepository extends CrudRepository<UserTourHistory, L
             "where th.user.username = ?1 " +
             "order by th.tour.startDate desc")
     List<UserTourHistory> findAllByUserUsername(String userUsername);
+
+    List<UserTourHistory> findAllByStatus(Status status);
 }
