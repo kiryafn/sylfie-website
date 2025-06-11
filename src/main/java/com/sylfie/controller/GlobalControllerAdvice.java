@@ -1,6 +1,6 @@
 package com.sylfie.controller;
 
-import com.sylfie.dto.UserInfoDTO;
+import com.sylfie.dto.mvc.UserInfoDTO;
 import com.sylfie.mapper.UserMapper;
 import com.sylfie.security.CustomUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -1,4 +1,4 @@
-package com.sylfie.dto;
+package com.sylfie.dto.mvc;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

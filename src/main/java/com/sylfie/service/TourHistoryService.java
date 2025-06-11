@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.dto.UserTourHistoryDTO;
+import com.sylfie.dto.mvc.UserTourHistoryDTO;
 import com.sylfie.model.UserTourHistory;
 import com.sylfie.repository.TourHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;

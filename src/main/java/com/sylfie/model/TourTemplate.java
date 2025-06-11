@@ -51,6 +51,9 @@ public class TourTemplate {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @ManyToMany(mappedBy = "favourites")
+    private List<User> usersAddedToFavourite = new ArrayList<>();
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 

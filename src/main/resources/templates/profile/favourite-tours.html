@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Favourites - Sylfie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<main layout:fragment="content" class="bg-gray-50 min-h-screen font-['Inter'] py-10">
+
+    <div class="max-w-7xl mx-auto px-4 flex gap-8">
+        <!-- Sidebar -->
+        <aside th:replace="~{fragments/profile-sidebar :: sidebar}"></aside>
+
+        <!-- Main content -->
+        <section class="flex-1 bg-white rounded-xl shadow p-8 border">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-semibold text-gray-800">Your Favourites</h1>
+                <p class="text-sm text-gray-500">Tours you liked</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" th:if="${templates != null && !templates.isEmpty()}">
+                <article th:each="template : ${templates}" th:object="${template}"
+                         class="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-200 hover:-translate-y-1">
+
+                    <!-- Сердечко -->
+                    <button type="button"
+                            class="absolute top-3 right-3 z-10 focus:outline-none favourite-toggle-btn"
+                            th:data-id="*{id}"
+                            th:data-fav="true">
+                        <i class="fas fa-heart text-xl transition text-red-500"></i>
+                    </button>
+
+                    <!-- Изображение -->
+                    <div class="h-56">
+                        <img th:src="*{previewPicture?.picture?.url}" alt="Tour image" class="w-full h-full object-cover">
+                    </div>
+
+                    <!-- Информация -->
+                    <div class="flex flex-col justify-between flex-grow p-5 gap-3">
+
+                        <!-- Продолжительность -->
+                        <div class="text-xs uppercase text-gray-500 tracking-wide" th:text="|*{durationDays} DAY TOUR|"></div>
+
+                        <!-- Название тура -->
+                        <h3 class="text-lg font-semibold text-green-900" th:text="*{name}">Tour Name</h3>
+
+                        <!-- Локация и группа по краям -->
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-map-marker-alt text-green-600"></i>
+                                <span th:text="*{location?.name}">Location</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-users text-green-600"></i>
+                                <span th:text="*{maxParticipants}">12</span>
+                            </div>
+                        </div>
+
+                        <!-- Цена -->
+                        <div class="border-t pt-3">
+                            <span class="text-green-700 font-bold text-lg" th:text="'$' + *{price}"></span>
+                            <span class="text-sm font-normal text-gray-500">/person</span>
+                        </div>
+                    </div>
+
+                    <!-- Кнопка -->
+                    <a th:href="@{/tours/{slug}(slug=*{slug})}"
+                       class="bg-green-600 hover:bg-green-700 text-white text-sm w-full text-center py-3 rounded-b-2xl font-medium transition">
+                        Details
+                    </a>
+                </article>
+            </div>
+
+            <div th:if="${templates == null or templates.isEmpty()}" class="text-center text-gray-500 py-6">
+                You haven't liked any tours yet.
+            </div>
+        </section>
+    </div>
+
+</main>
+</body>
+</html>

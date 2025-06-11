@@ -1,7 +1,7 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.UserInfoDTO;
-import com.sylfie.dto.UserRegisterDTO;
+import com.sylfie.dto.mvc.UserInfoDTO;
+import com.sylfie.dto.mvc.UserRegisterDTO;
 import com.sylfie.model.User;
 import com.sylfie.security.OAuth2UserInfo;
 import org.springframework.stereotype.Component;

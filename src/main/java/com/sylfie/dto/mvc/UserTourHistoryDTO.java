@@ -1,4 +1,4 @@
-package com.sylfie.dto;
+package com.sylfie.dto.mvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

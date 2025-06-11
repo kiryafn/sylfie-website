@@ -1,8 +1,9 @@
 package com.sylfie.controller.mvc;
 
 
-import com.sylfie.dto.TourTemplateDTO;
-import com.sylfie.dto.TourTemplateRequestDTO;
+import com.sylfie.dto.mvc.TourTemplateDTO;
+import com.sylfie.dto.mvc.TourTemplateRequestDTO;
+import com.sylfie.mapper.TourTemplateMapper;
 import com.sylfie.model.Difficulty;
 import com.sylfie.model.Picture;
 import com.sylfie.model.TourPicture;
@@ -20,11 +21,11 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/tours")
 public class TourTemplateController {
+    private final TourTemplateMapper tourTemplateMapper;
     TourTemplateService tourTemplateService;
     TourCategoryService tourCategoryService;
     UserService userService;
@@ -32,13 +33,14 @@ public class TourTemplateController {
     PictureService pictureService;
     TourService tourService;
 
-    public TourTemplateController(TourTemplateService tourTemplateService, UserService userService, TourCategoryService tourCategoryService, LocationService locationService, PictureService pictureService, TourService tourService) {
+    public TourTemplateController(TourTemplateService tourTemplateService, UserService userService, TourCategoryService tourCategoryService, LocationService locationService, PictureService pictureService, TourService tourService, TourTemplateMapper tourTemplateMapper) {
         this.tourTemplateService = tourTemplateService;
         this.userService = userService;
         this.tourCategoryService = tourCategoryService;
         this.locationService = locationService;
         this.pictureService = pictureService;
         this.tourService = tourService;
+        this.tourTemplateMapper = tourTemplateMapper;
     }
 
     @GetMapping("/{slug}")
@@ -51,6 +53,7 @@ public class TourTemplateController {
 
     @GetMapping
     public String showAllTours(
+            @AuthenticationPrincipal CustomUserDetails principal,
             @RequestParam(required = false) List<Long> categoryId,
             @RequestParam(required = false) List<Difficulty> difficulty,
             @RequestParam(required = false) Integer minCapacity,
@@ -60,7 +63,7 @@ public class TourTemplateController {
             @RequestParam(required = false) List<Long> locationId,
             Model model
     ) {
-        List<TourTemplate> templates = tourTemplateService.getAll().stream()
+        List<TourTemplateDTO> templates = tourTemplateService.getAll().stream()
                 .filter(t -> categoryId == null  || categoryId.contains(t.getCategory().getId()))
                 .filter(t -> difficulty == null  || difficulty.isEmpty() || difficulty.contains(t.getDifficulty()))
                 .filter(t -> minCapacity == null || t.getMaxParticipants() >= minCapacity)
@@ -68,6 +71,7 @@ public class TourTemplateController {
                 .filter(t -> minPrice == null || t.getPrice().compareTo(BigDecimal.valueOf(minPrice)) >= 0)
                 .filter(t -> maxPrice == null || t.getPrice().compareTo(BigDecimal.valueOf(maxPrice)) <= 0)
                 .filter(t -> locationId == null  || locationId.contains(t.getLocation().getId()))
+                .map(tourTemplateMapper::toDto)
                 .toList();
 
         model.addAttribute("templates", templates);
@@ -83,6 +87,8 @@ public class TourTemplateController {
         model.addAttribute("maxCapacity", maxCapacity);
         model.addAttribute("minPrice", minPrice);
         model.addAttribute("maxPrice", maxPrice);
+
+        model.addAttribute("userFavouritesIds", userService.getFavouriteTourIds(principal.getName()));
 
         return "tour-template/show-all-tour-template";
     }

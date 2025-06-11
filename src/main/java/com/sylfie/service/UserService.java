@@ -1,13 +1,14 @@
 package com.sylfie.service;
 
-import com.sylfie.dto.UserInfoDTO;
+import com.sylfie.dto.mvc.UserInfoDTO;
 import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.InsufficientBalanceException;
 import com.sylfie.exception.UsernameTakenException;
 import com.sylfie.mapper.UserMapper;
-import com.sylfie.dto.UserRegisterDTO;
+import com.sylfie.dto.mvc.UserRegisterDTO;
 import com.sylfie.model.Avatar;
 import com.sylfie.model.Picture;
+import com.sylfie.model.TourTemplate;
 import com.sylfie.model.User;
 import com.sylfie.repository.UserRepository;
 import com.sylfie.security.OAuth2UserInfo;
@@ -34,18 +35,33 @@ public class UserService {
     private final UserMapper userMapper;
     private final Avatar defaultAvatar;
     private final PictureService pictureService;
+    private final TourTemplateService tourTemplateService;
 
-    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, UserMapper userMapper, Avatar defaultAvatar, PictureService pictureService) {
+    public UserService(UserRepository userRepository, RoleService roleService, PasswordEncoder passwordEncoder, UserMapper userMapper, Avatar defaultAvatar, PictureService pictureService, TourTemplateService tourTemplateService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
         this.defaultAvatar = defaultAvatar;
         this.pictureService = pictureService;
+        this.tourTemplateService = tourTemplateService;
     }
 
     public List<User> getAll() {
         return userRepository.findAll();
+    }
+
+    @Transactional
+    public void addOrRemoveFavourireTour(String username, Long tourId) {
+        User user = getByUsername(username);
+        TourTemplate tour = tourTemplateService.getById(tourId);
+
+        if (user.isFavourite(tour)) {
+            user.removeFavourite(tour);
+        } else {
+            user.addFavourite(tour);
+        }
+        userRepository.save(user);
     }
 
     public User getByUsername(String username) {
@@ -169,5 +185,10 @@ public class UserService {
         pictureService.deletePicture(user.getAvatar().getPicture().getId());
         Picture picture = pictureService.saveAvatar(avatar);
         user.setAvatar(new Avatar(picture));
+    }
+
+    public List<Long> getFavouriteTourIds(String username) {
+        User user = getByUsername(username);
+        return user.getFavourites().stream().map(TourTemplate::getId).toList();
     }
 }

@@ -15,7 +15,7 @@
 
     <div class="max-w-7xl mx-auto px-4 flex gap-8" th:object="${userInfo}">
         <!-- Sidebar -->
-        <aside th:replace="fragments/profile-sidebar :: sidebar"></aside>
+        <aside th:replace="~{fragments/profile-sidebar :: sidebar}"></aside>
 
         <!-- Main content -->
         <section class="flex-1 bg-white rounded-xl shadow p-8 border">

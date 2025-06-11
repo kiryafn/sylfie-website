@@ -1,17 +1,15 @@
-package com.sylfie.dto;
+package com.sylfie.dto.mvc;
 
 import com.sylfie.model.*;
-import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TourTemplateDTO {
     private Long id;
 
-    private TourCategory category;
+    private String category;
 
     private String name;
 
@@ -21,21 +19,21 @@ public class TourTemplateDTO {
 
     private String shortDescription;
 
-    private Difficulty difficulty;
+    private String difficulty;
 
     private Integer maxParticipants;
 
-    private List<TourPicture> pictures = new ArrayList<>();
+    private List<String> picturesUrls = new ArrayList<>();
 
-    private TourPicture previewPicture;
+    private String previewPictureUrl;
 
     private BigDecimal price;
 
     private Integer durationDays;
 
-    private Location location;
+    private String location;
 
-    public TourTemplateDTO(Long id, TourCategory category, String name, String slug, String description, String shortDescription, Difficulty difficulty, Integer maxParticipants, List<TourPicture> pictures, TourPicture preview, BigDecimal price, Integer durationDays, Location location) {
+    public TourTemplateDTO(Long id, String category, String name, String slug, String description, String shortDescription, String difficulty, Integer maxParticipants, List<String> pictures, String preview, BigDecimal price, Integer durationDays, String location) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -44,11 +42,11 @@ public class TourTemplateDTO {
         this.shortDescription = shortDescription;
         this.difficulty = difficulty;
         this.maxParticipants = maxParticipants;
-        this.pictures = pictures;
+        this.picturesUrls = pictures;
         this.price = price;
         this.durationDays = durationDays;
         this.location = location;
-        this.previewPicture = preview;
+        this.previewPictureUrl = preview;
     }
 
     public TourTemplateDTO() {
@@ -62,11 +60,11 @@ public class TourTemplateDTO {
         this.id = id;
     }
 
-    public TourCategory getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(TourCategory category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -102,28 +100,12 @@ public class TourTemplateDTO {
         this.shortDescription = shortDescription;
     }
 
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
     public Integer getMaxParticipants() {
         return maxParticipants;
     }
 
     public void setMaxParticipants(Integer maxParticipants) {
         this.maxParticipants = maxParticipants;
-    }
-
-    public List<TourPicture> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(List<TourPicture> pictures) {
-        this.pictures = pictures;
     }
 
     public BigDecimal getPrice() {
@@ -142,19 +124,35 @@ public class TourTemplateDTO {
         this.durationDays = durationDays;
     }
 
-    public Location getLocation() {
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public List<String> getPicturesUrls() {
+        return picturesUrls;
+    }
+
+    public void setPicturesUrls(List<String> picturesUrls) {
+        this.picturesUrls = picturesUrls;
+    }
+
+    public String getPreviewPictureUrl() {
+        return previewPictureUrl;
+    }
+
+    public void setPreviewPictureUrl(String previewPictureUrl) {
+        this.previewPictureUrl = previewPictureUrl;
+    }
+
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(String location) {
         this.location = location;
-    }
-
-    public TourPicture getPreviewPicture() {
-        return previewPicture;
-    }
-
-    public void setPreviewPicture(TourPicture previewPicture) {
-        this.previewPicture = previewPicture;
     }
 }

@@ -58,7 +58,7 @@ public class User {
     )
     private final Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "users_favourites",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -242,11 +242,11 @@ public class User {
     }
 
     public void addFavourite(TourTemplate tour) {
-        if (!favourites.contains(tour)) favourites.add(tour);
+        favourites.add(tour);
     }
 
     public void removeFavourite(TourTemplate tour) {
-        if (favourites.contains(tour)) favourites.remove(tour);
+        favourites.remove(tour);
     }
 
 

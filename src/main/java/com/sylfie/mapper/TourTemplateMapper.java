@@ -1,7 +1,7 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.TourTemplateDTO;
-import com.sylfie.dto.TourTemplateRequestDTO;
+import com.sylfie.dto.mvc.TourTemplateDTO;
+import com.sylfie.dto.mvc.TourTemplateRequestDTO;
 import com.sylfie.model.TourTemplate;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +33,13 @@ public class TourTemplateMapper {
         dto.setDurationDays(tt.getDurationDays());
         dto.setSlug(tt.getSlug());
         dto.setDescription(tt.getDescription());
-        dto.setDifficulty(tt.getDifficulty());
+        dto.setDifficulty(tt.getDifficulty().getName());
         dto.setMaxParticipants(tt.getMaxParticipants());
-        dto.setCategory(tt.getCategory());
+        dto.setCategory(tt.getCategory().getName());
         dto.setPrice(tt.getPrice());
-        dto.setLocation(tt.getLocation());
-        dto.setPictures(tt.getPictures());
-        dto.setPreviewPicture(tt.getPreviewPicture());
+        dto.setLocation(tt.getLocation().getName());
+        dto.setPicturesUrls(tt.getPictures().stream().map(p -> p.getPicture().getUrl()).toList());
+        dto.setPreviewPictureUrl(tt.getPreviewPicture().getPicture().getUrl());
 
         return dto;
     }

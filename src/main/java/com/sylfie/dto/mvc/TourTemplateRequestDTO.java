@@ -1,4 +1,4 @@
-package com.sylfie.dto;
+package com.sylfie.dto.mvc;
 
 import com.sylfie.model.Difficulty;
 import com.sylfie.model.Location;
