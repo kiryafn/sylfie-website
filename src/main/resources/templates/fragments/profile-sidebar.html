@@ -1,19 +1,49 @@
-+<aside th:fragment="sidebar" class="mt-8 w-1/4 bg-white rounded-xl shadow p-6 border">
-    <div class="text-center mb-6">
-        <img th:src="@{*{avatarUrl}}" alt="User Avatar" class="w-24 h-24 rounded-full mx-auto mb-2"/>
-        <h2 class="text-xl font-semibold text-gray-800" th:text="*{firstName + ' ' + lastName}">John Doe</h2>
+<aside th:fragment="sidebar" th:object="${userInfo}"
+       class="w-1/4 bg-white rounded-xl shadow p-6 border flex flex-col items-center justify-start">
+
+    <div class="text-center mb-6 relative group">
+        <label for="avatar-upload" class="cursor-pointer group block w-24 h-24 mx-auto relative rounded-full overflow-hidden">
+            <!-- Аватар -->
+            <img th:src="@{*{avatarUrl}}"
+                 alt="User Avatar"
+                 class="w-full h-full object-cover rounded-full transition-opacity duration-300 group-hover:opacity-80"/>
+
+            <!-- Затемнение с текстом -->
+            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span class="text-white text-sm font-medium">Change</span>
+            </div>
+        </label>
+
+        <form th:action="@{/profile/avatar}" method="post" enctype="multipart/form-data" class="hidden">
+            <input type="file" id="avatar-upload" name="avatar" accept="image/*" onchange="this.form.submit()">
+        </form>
+
+        <h2 class="text-xl font-semibold text-gray-800 mt-3" th:text="*{firstName + ' ' + lastName}">John Doe</h2>
         <p class="text-sm text-gray-500" th:text="*{email}">john.doe@example.com</p>
     </div>
 
-    <div class="text-sm text-gray-600 space-y-2">
-        <p><span class="font-medium" th:text="#{profile.balance}">Balance:</span> <span th:text=" '$' + *{balance}">120.00 zł</span></p>
-        <p><span class="font-medium" th:text="#{profile.bonusBalance}">Bonus:</span> <span th:text=" '$' + *{bonusBalance}">15.00 zł</span></p>
+    <div class="text-sm text-gray-600 space-y-2 text-center">
+        <p>
+            <span class="font-medium" th:text="#{profile.balance}">Balance:</span>
+            <span th:text="'$' + *{balance}">120.00 zł</span>
+        </p>
+        <p>
+            <span class="font-medium" th:text="#{profile.bonusBalance}">Bonus:</span>
+            <span th:text="'$' + *{bonusBalance}">15.00 zł</span>
+        </p>
     </div>
 
-    <nav class="mt-8 space-y-2">
-        <a th:href="@{/profile}" class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700" th:text="#{profile.nav.profile}">Profile</a>
-        <a th:href="@{/profile/security}" class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700" th:text="#{profile.nav.security}">Security</a>
-        <a th:href="@{/profile/history}" class="block px-4 py-2 rounded-lg text-sm font-medium bg-green-100 text-green-700" th:text="#{profile.nav.history}">History</a>
-        <a th:href="@{/profile/favourites}" class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700" th:text="#{profile.nav.favourites}">Favourites</a>
+    <nav class="mt-8 space-y-2 w-full">
+        <a th:href="@{/profile}" class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700"
+           th:text="#{profile.nav.profile}">Profile</a>
+        <a th:href="@{/profile/security}"
+           class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700"
+           th:text="#{profile.nav.security}">Security</a>
+        <a th:href="@{/profile/history}"
+           class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700"
+           th:text="#{profile.nav.history}">History</a>
+        <a th:href="@{/profile/favourites}"
+           class="block px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-100 text-gray-700"
+           th:text="#{profile.nav.favourites}">Favourites</a>
     </nav>
 </aside>

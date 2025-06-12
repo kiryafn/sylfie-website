@@ -94,13 +94,14 @@
 
         <!-- Сетка туров -->
         <section class="flex-1">
+            <div sec:authorize="hasRole('ADMIN')" class="flex justify-end mb-4">
+                <a th:href="@{/tours/add}"
+                   class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition">
+                    <i class="fas fa-plus mr-2"></i> Добавить тур
+                </a>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="mb-6" sec:authorize="hasRole('ADMIN')">
-                    <a th:href="@{/tours/add}"
-                       class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition">
-                        <i class="fas fa-plus mr-2"></i> Добавить тур
-                    </a>
-                </div>
                 <article th:each="template : ${templates}" th:object="${template}"
                          class="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col transition-transform duration-200 hover:-translate-y-1">
                     <!-- Сердечко -->

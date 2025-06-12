@@ -5,6 +5,7 @@ import com.sylfie.model.Picture;
 import com.sylfie.repository.PictureRepository;
 import com.sylfie.util.S3Info;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class PictureService {
         return pictureRepository.save(pic);
     }
 
+    @Transactional
     public Picture saveTourPicture(MultipartFile file) throws IOException {
         S3Info info = storageService.uploadTourPicture(file);
         Picture pic = pictureMapper.map(file);
@@ -41,6 +43,7 @@ public class PictureService {
         return pictureRepository.save(pic);
     }
 
+    @Transactional
     public void deletePicture(Long id) {
         Picture picture = pictureRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Picture not found with id: " + id));
         storageService.deleteFile(picture.getS3key());

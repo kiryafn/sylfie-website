@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserService {
 
     private final static String DEFAULT_ROLE = "ROLE_USER";
@@ -180,11 +180,13 @@ public class UserService {
         System.out.println("After save: " + user.getPassword());
     }
 
+    @Transactional
     public void updateAvatar(String username, MultipartFile avatar) throws IOException {
         User user = getByUsername(username);
         pictureService.deletePicture(user.getAvatar().getPicture().getId());
         Picture picture = pictureService.saveAvatar(avatar);
         user.setAvatar(new Avatar(picture));
+        userRepository.save(user);
     }
 
     public List<Long> getFavouriteTourIds(String username) {
