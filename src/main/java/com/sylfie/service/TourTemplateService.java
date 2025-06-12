@@ -55,7 +55,7 @@ public class TourTemplateService{
         template.setDescription(htmlSanitizer.sanitize(template.getDescription()));
         TourTemplate tt = tourTemplateRepository.save(template);
 
-        return tourTemplateMapper.toDto(tt);
+        return tourTemplateMapper.toResponseDto(tt);
     }
 
     @Transactional
@@ -76,7 +76,7 @@ public class TourTemplateService{
 
     public List<TourTemplateResponseDto> getTop3Popular() {
         List<Long> topIds = tourHistoryRepository.findTopTourIds(PageRequest.of(0, 3));
-        return tourTemplateRepository.findAllById(topIds).stream().map(tourTemplateMapper::toDto).toList();
+        return tourTemplateRepository.findAllById(topIds).stream().map(tourTemplateMapper::toResponseDto).toList();
     }
 
     private String generateSlug(TourTemplate template) {

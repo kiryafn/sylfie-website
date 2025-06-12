@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 text-gray-800 font-[Poppins]">
-<main layout:fragment="content">
+<main layout:fragment="content" th:object="${tourTemplate}">
     <!-- HERO -->
     <section class="relative h-[650px]">
-        <img th:src="${tourTemplate.previewPicture.picture.url}" alt="Banner" class="w-full h-full object-cover object-center">
+        <img th:src="*{previewPictureUrl}" alt="Banner" class="w-full h-full object-cover object-center">
         <div class="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/70"></div>
 
         <button onclick="history.back()" class="absolute top-4 left-4 bg-black/40 text-white text-sm px-3 py-1.5 rounded hover:bg-black/60 flex items-center gap-2 z-10">
@@ -25,24 +25,24 @@
             <div class="bg-white shadow-lg rounded-lg w-full max-w-5xl px-8 py-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
                 <!-- Info -->
                 <div class="flex-1 space-y-4">
-                    <div class="uppercase text-xs text-gray-500 tracking-widest" th:text="${tourTemplate.difficulty.name()}"></div>
-                    <h1 class="text-3xl font-semibold text-gray-900" th:text="${tourTemplate.name}"></h1>
+                    <div class="uppercase text-xs text-gray-500 tracking-widest" th:text="*{difficulty}"></div>
+                    <h1 class="text-3xl font-semibold text-gray-900" th:text="*{name}"></h1>
                     <div class="flex flex-wrap gap-6 text-sm text-gray-600">
                         <div class="flex items-center gap-2">
                             <i class="fas fa-map-marker-alt text-green-600"></i>
-                            <span th:text="${tourTemplate.location}"></span>
+                            <span th:text="*{location}"></span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-calendar-alt text-green-600"></i>
-                            <span th:text="${tourTemplate.durationDays + ' Day'}"></span>
+                            <span th:text="*{durationDays + ' Day'}"></span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-dollar-sign text-green-600"></i>
-                            <span th:text="${'From ' + tourTemplate.price + '$'}"></span>
+                            <span th:text="*{'From ' + price + '$'}"></span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-chart-line text-green-600"></i>
-                            <span th:text="${'Level ' + tourTemplate.difficulty.name()}"></span>
+                            <span th:text="*{'Level ' + difficulty}"></span>
                             <i class="fas fa-info-circle text-gray-400 text-xs cursor-help" title="Difficulty level"></i>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
     <section class="mt-[200px] px-4 max-w-5xl mx-auto">
         <div class="bg-white rounded-lg shadow-md p-8">
             <h2 class="text-2xl font-semibold text-gray-900 mb-4">Описание тура</h2>
-            <p class="text-gray-700 whitespace-pre-line leading-relaxed" th:utext="${tourTemplate.description}">
+            <p class="text-gray-700 whitespace-pre-line leading-relaxed" th:utext="*{description}">
                 Здесь будет подробное описание тура…
             </p>
         </div>
@@ -77,17 +77,17 @@
         <div class="bg-white rounded-lg shadow-md p-8">
             <h2 class="text-2xl font-semibold text-gray-900 mb-6">Доступные даты</h2>
             <div class="space-y-4">
-                <div th:each="tour : ${tours}" class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 mb-4">
+                <div th:each="tour : ${tourTemplate.availableTours}" th:object="${tour}" class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 mb-4">
                     <div class="space-y-1">
                         <div class="text-sm text-gray-500">
                             <i class="fas fa-calendar-day mr-1 text-green-600"></i>
-                            <span th:text="${#temporals.format(tour.startDate, 'dd MMM yyyy')}"></span>
+                            <span th:text="*{#temporals.format(startDate, 'dd MMM yyyy')}"></span>
                             &nbsp;–&nbsp;
-                            <span th:text="${#temporals.format(tour.endDate, 'dd MMM yyyy')}"></span>
+                            <span th:text="*{#temporals.format(endDate, 'dd MMM yyyy')}"></span>
                         </div>
                         <div class="text-sm text-gray-600">
                             Забронировано:
-                            <span class="font-medium" th:text="${tour.bookedCount}">0</span> человек(а)
+                            <span class="font-medium" th:text="*{bookedCount}">0</span>
                         </div>
                     </div>
                     <form th:action="@{/booking/tour/{id}(id=${tour.id})}" method="post">

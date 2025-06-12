@@ -1,6 +1,6 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.user.UserDto;
+import com.sylfie.dto.user.UserResponseDto;
 import com.sylfie.dto.auth.RegisterDto;
 import com.sylfie.model.User;
 import com.sylfie.security.OAuth2UserInfo;
@@ -33,8 +33,8 @@ public class UserMapper {
         return user;
     }
 
-    public UserDto toInfoDTO(User user){
-        UserDto dto = new UserDto();
+    public UserResponseDto toInfoDTO(User user){
+        UserResponseDto dto = new UserResponseDto();
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
@@ -47,7 +47,7 @@ public class UserMapper {
         return dto;
     }
 
-    public User toUser(UserDto dto, User user){
+    public User toUser(UserResponseDto dto, User user){
         if (dto.getUsername() != null) user.setUsername(dto.getUsername());
         if (dto.getEmail() != null) user.setEmail(dto.getEmail());
         if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());

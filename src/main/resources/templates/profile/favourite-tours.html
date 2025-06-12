@@ -36,7 +36,7 @@
 
                     <!-- Изображение -->
                     <div class="h-56">
-                        <img th:src="*{previewPicture?.picture?.url}" alt="Tour image" class="w-full h-full object-cover">
+                        <img th:src="*{previewPictureUrl}" alt="Tour image" class="w-full h-full object-cover">
                     </div>
 
                     <!-- Информация -->
@@ -52,7 +52,7 @@
                         <div class="flex justify-between text-sm text-gray-600">
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-map-marker-alt text-green-600"></i>
-                                <span th:text="*{location?.name}">Location</span>
+                                <span th:text="*{location}">Location</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <i class="fas fa-users text-green-600"></i>

@@ -2,19 +2,17 @@ package com.sylfie.dto.tour.tour;
 
 import java.time.LocalDateTime;
 
-public class TourResponseDto {
-    private String name;
+public class TourListItemDto {
     private Long id;
     private Integer bookedCount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public TourListItemDto(Long id, Integer bookedCount, LocalDateTime startDate, LocalDateTime endDate) {
+        this.id = id;
+        this.bookedCount = bookedCount;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Long getId() {
@@ -23,6 +21,9 @@ public class TourResponseDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public TourListItemDto() {
     }
 
     public Integer getBookedCount() {

@@ -3,7 +3,7 @@ package com.sylfie.dto.user;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class UserDto {
+public class UserResponseDto {
     private String firstName;
     private String lastName;
     private String username;
@@ -14,10 +14,10 @@ public class UserDto {
     private BigDecimal bonusBalance;
     private String avatarUrl;
 
-    public UserDto() {
+    public UserResponseDto() {
     }
 
-    public UserDto(String firstName, String lastName, String username, String email, LocalDate dateOfBirth, String phoneNumber, BigDecimal balance, BigDecimal bonusBalance, String avatarUrl) {
+    public UserResponseDto(String firstName, String lastName, String username, String email, LocalDate dateOfBirth, String phoneNumber, BigDecimal balance, BigDecimal bonusBalance, String avatarUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

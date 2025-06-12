@@ -1,12 +1,16 @@
 package com.sylfie.controller.mvc;
 
 
+import com.sylfie.dto.tour.template.TourTemplateDetailsDto;
 import com.sylfie.dto.tour.template.TourTemplateResponseDto;
 import com.sylfie.dto.tour.template.TourTemplateCreateDto;
+import com.sylfie.dto.tour.tour.TourListItemDto;
+import com.sylfie.mapper.TourMapper;
 import com.sylfie.mapper.TourTemplateMapper;
 import com.sylfie.model.Difficulty;
 import com.sylfie.model.Picture;
 import com.sylfie.model.TourPicture;
+import com.sylfie.model.TourTemplate;
 import com.sylfie.security.CustomUserDetails;
 import com.sylfie.service.*;
 import org.springframework.http.MediaType;
@@ -25,6 +29,7 @@ import java.util.List;
 @RequestMapping("/tours")
 public class TourTemplateController {
     private final TourTemplateMapper tourTemplateMapper;
+    private final TourMapper tourMapper;
     TourTemplateService tourTemplateService;
     TourCategoryService tourCategoryService;
     UserService userService;
@@ -32,7 +37,7 @@ public class TourTemplateController {
     PictureService pictureService;
     TourService tourService;
 
-    public TourTemplateController(TourTemplateService tourTemplateService, UserService userService, TourCategoryService tourCategoryService, LocationService locationService, PictureService pictureService, TourService tourService, TourTemplateMapper tourTemplateMapper) {
+    public TourTemplateController(TourTemplateService tourTemplateService, UserService userService, TourCategoryService tourCategoryService, LocationService locationService, PictureService pictureService, TourService tourService, TourTemplateMapper tourTemplateMapper, TourMapper tourMapper) {
         this.tourTemplateService = tourTemplateService;
         this.userService = userService;
         this.tourCategoryService = tourCategoryService;
@@ -40,13 +45,16 @@ public class TourTemplateController {
         this.pictureService = pictureService;
         this.tourService = tourService;
         this.tourTemplateMapper = tourTemplateMapper;
+        this.tourMapper = tourMapper;
     }
 
     @GetMapping("/{slug}")
     public String showTour(@PathVariable String slug, Model model) {
-        TourTemplateResponseDto tt = tourTemplateMapper.toDto(tourTemplateService.getBySlug(slug));
-        model.addAttribute("tourTemplate", tt);
-        model.addAttribute("tours", tourService.getAvailableByTemplateId(tt.getId()));
+        TourTemplate tt = tourTemplateService.getBySlug(slug);
+        List<TourListItemDto> availableTours = tourService.getAvailableByTemplateId(tt.getId()).stream().map(tourMapper::toListItemDto).toList();
+
+        TourTemplateDetailsDto ttdto = tourTemplateMapper.toDetailedDto(tt, availableTours);
+        model.addAttribute("tourTemplate", ttdto);
         return "tour-template/show-tour-template";
     }
 
@@ -70,7 +78,7 @@ public class TourTemplateController {
                 .filter(t -> minPrice == null || t.getPrice().compareTo(BigDecimal.valueOf(minPrice)) >= 0)
                 .filter(t -> maxPrice == null || t.getPrice().compareTo(BigDecimal.valueOf(maxPrice)) <= 0)
                 .filter(t -> locationId == null  || locationId.contains(t.getLocation().getId()))
-                .map(tourTemplateMapper::toDto)
+                .map(tourTemplateMapper::toResponseDto)
                 .toList();
 
         model.addAttribute("templates", templates);

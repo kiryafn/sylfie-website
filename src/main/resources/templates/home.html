@@ -57,7 +57,7 @@
       <article th:each="template : ${tourTemplates}" th:object="${template}"
                class="bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden transition-all border border-gray-200">
 
-        <img th:src="*{previewPicture?.picture?.url}" alt="Tour Image"
+        <img th:src="*{previewPictureUrl}" alt="Tour Image"
              class="w-full h-48 object-cover">
 
         <div class="p-5 space-y-3">
@@ -68,7 +68,7 @@
           <div class="grid grid-cols-3 gap-2 text-xs text-gray-600 pt-2">
             <div class="flex items-center gap-1">
               <i class="fas fa-map-marker-alt text-green-600 text-sm"></i>
-              <span th:text="*{location?.name}">Iceland</span>
+              <span th:text="*{location}">Iceland</span>
             </div>
             <div class="flex items-center gap-1">
               <i class="fas fa-users text-green-600 text-sm"></i>

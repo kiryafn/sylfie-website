@@ -1,6 +1,6 @@
 package com.sylfie.controller;
 
-import com.sylfie.dto.user.UserDto;
+import com.sylfie.dto.user.UserResponseDto;
 import com.sylfie.mapper.UserMapper;
 import com.sylfie.security.CustomUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +17,7 @@ public class GlobalControllerAdvice {
     }
 
         @ModelAttribute("userInfo")
-    public UserDto getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public UserResponseDto getCurrentUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
             return null;
         }

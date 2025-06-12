@@ -1,6 +1,6 @@
 package com.sylfie.controller.mvc;
 
-import com.sylfie.dto.user.UserDto;
+import com.sylfie.dto.user.UserResponseDto;
 import com.sylfie.mapper.TourTemplateMapper;
 import com.sylfie.mapper.UserMapper;
 import com.sylfie.security.CustomUserDetails;
@@ -44,7 +44,7 @@ public class UserProfileController {
 
     @PostMapping("update")
     public String updateProfile(@AuthenticationPrincipal CustomUserDetails principal,
-                                @ModelAttribute("userInfo") UserDto dto) throws IOException {
+                                @ModelAttribute("userInfo") UserResponseDto dto) throws IOException {
         userService.update(dto, principal.getName());
         return "redirect:/profile";
     }
@@ -72,7 +72,7 @@ public class UserProfileController {
 
     @GetMapping("favourites")
     public String getFavouritesPage(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
-        model.addAttribute("templates", userService.getByUsername(principal.getName()).getFavourites().stream().map(tourTemplateMapper::toDto).toList());
+        model.addAttribute("templates", userService.getByUsername(principal.getName()).getFavourites().stream().map(tourTemplateMapper::toResponseDto).toList());
         return "profile/favourite-tours";
     }
 

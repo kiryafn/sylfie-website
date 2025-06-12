@@ -1,6 +1,7 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.tour.tour.TourResponseDto;
+import com.sylfie.dto.tour.template.TourTemplateDetailsDto;
+import com.sylfie.dto.tour.tour.TourListItemDto;
 import com.sylfie.dto.tour.template.TourTemplateResponseDto;
 import com.sylfie.dto.tour.template.TourTemplateCreateDto;
 import com.sylfie.model.TourTemplate;
@@ -28,8 +29,8 @@ public class TourTemplateMapper {
         return tt;
     }
 
-    public TourTemplateResponseDto toDto(TourTemplate tt){
-        TourTemplateResponseDto dto = new TourTemplateResponseDto();
+    public TourTemplateDetailsDto toDetailedDto(TourTemplate tt, List<TourListItemDto> tourListItems){
+        TourTemplateDetailsDto dto = new TourTemplateDetailsDto();
         dto.setId(tt.getId());
         dto.setName(tt.getName());
         dto.setShortDescription(tt.getShortDescription());
@@ -43,18 +44,24 @@ public class TourTemplateMapper {
         dto.setLocation(tt.getLocation().getName());
         dto.setPicturesUrls(tt.getPictures().stream().map(p -> p.getPicture().getUrl()).toList());
         dto.setPreviewPictureUrl(tt.getPreviewPicture().getPicture().getUrl());
+        dto.setAvailableTours(tourListItems);
 
         return dto;
     }
 
-    public TourTemplateApiDTO toApiDto(TourTemplate tt, List<TourResponseDto> tours){
-        TourTemplateApiDTO dto = new TourTemplateApiDTO();
+    public TourTemplateResponseDto toResponseDto(TourTemplate tt){
+        TourTemplateResponseDto dto = new TourTemplateResponseDto();
         dto.setId(tt.getId());
         dto.setName(tt.getName());
-        dto.setCaregory(tt.getCategory().getName());
-        dto.setLocation(tt.getLocation().getName());
+        dto.setShortDescription(tt.getShortDescription());
+        dto.setDurationDays(tt.getDurationDays());
+        dto.setSlug(tt.getSlug());
+        dto.setDifficulty(tt.getDifficulty().getName());
         dto.setMaxParticipants(tt.getMaxParticipants());
-        dto.setAvailable(tours);
+        dto.setCategory(tt.getCategory().getName());
+        dto.setPrice(tt.getPrice());
+        dto.setLocation(tt.getLocation().getName());
+        dto.setPreviewPictureUrl(tt.getPreviewPicture().getPicture().getUrl());
 
         return dto;
     }

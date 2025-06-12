@@ -1,21 +1,21 @@
 package com.sylfie.dto.tour.template;
 
-import java.math.BigDecimal;
+import com.sylfie.dto.tour.tour.TourListItemDto;
 
-public class TourTemplateResponseDto {
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TourTemplateDetailsDto {
     private Long id;
 
     private String category;
 
     private String name;
 
-    private BigDecimal price;
-
-    private Integer durationDays;
-
-    private String location;
-
     private String slug;
+
+    private String description;
 
     private String shortDescription;
 
@@ -23,7 +23,17 @@ public class TourTemplateResponseDto {
 
     private Integer maxParticipants;
 
+    private List<String> picturesUrls = new ArrayList<>();
+
     private String previewPictureUrl;
+
+    private BigDecimal price;
+
+    private Integer durationDays;
+
+    private String location;
+
+    private List<TourListItemDto> availableTours = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -55,6 +65,14 @@ public class TourTemplateResponseDto {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getShortDescription() {
@@ -97,6 +115,14 @@ public class TourTemplateResponseDto {
         this.difficulty = difficulty;
     }
 
+    public List<String> getPicturesUrls() {
+        return picturesUrls;
+    }
+
+    public void setPicturesUrls(List<String> picturesUrls) {
+        this.picturesUrls = picturesUrls;
+    }
+
     public String getPreviewPictureUrl() {
         return previewPictureUrl;
     }
@@ -111,5 +137,13 @@ public class TourTemplateResponseDto {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<TourListItemDto> getAvailableTours() {
+        return availableTours;
+    }
+
+    public void setAvailableTours(List<TourListItemDto> availableTours) {
+        this.availableTours = availableTours;
     }
 }
