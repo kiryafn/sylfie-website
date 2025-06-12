@@ -24,7 +24,7 @@
 
         <!-- Сайдбар-фильтров -->
         <aside class="w-72 bg-white rounded-lg shadow p-6">
-            <h3 class="text-lg font-semibold border-b pb-2 mb-4">Фильтры</h3>
+            <h3 class="text-lg font-semibold border-b pb-2 mb-4" th:text="#{tour.filters}"></h3>
             <form th:action="@{/tours}" method="get" class="space-y-6">
 
                 <!-- Категории -->
@@ -43,7 +43,7 @@
 
                 <!-- Сложности -->
                 <div>
-                    <span class="block text-sm font-medium mb-1">Сложность</span>
+                    <span class="block text-sm font-medium mb-1" th:text="#{tour.create.difficulty}"></span>
                     <div class="space-y-2">
                         <label th:each="diff : ${difficulties}" class="flex items-center gap-2 text-sm">
                             <input type="checkbox" name="difficulty"
@@ -57,47 +57,47 @@
 
                 <!-- Локации -->
                 <div>
-                    <span class="block text-sm font-medium mb-1">Локации</span>
+                    <span class="block text-sm font-medium mb-1" th:text="#{tour.create.location}"></span>
                     <div class="space-y-2">
                         <label th:each="loc : ${locations}" class="flex items-center gap-2 text-sm">
                             <input type="checkbox" name="locationId"
                                    th:value="${loc.id}"
                                    th:checked="${selectedLocationIds != null and selectedLocationIds.contains(loc.id)}"
                                    class="accent-green-600">
-                            <span th:text="${loc.name}">Локация</span>
+                            <span th:text="${loc.name}"></span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Цена -->
                 <div>
-                    <label class="block text-sm font-medium mb-1">Цена (мин)</label>
+                    <label class="block text-sm font-medium mb-1" th:text="#{tour.create.minPrice}"></label>
                     <input type="range" name="minPrice" min="0" max="5000" step="10" th:value="${minPrice}" class="w-full">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium mb-1">Цена (макс)</label>
+                    <label class="block text-sm font-medium mb-1" th:text="#{tour.create.maxPrice}"></label>
                     <input type="range" name="maxPrice" min="0" max="5000" step="10" th:value="${maxPrice}" class="w-full">
                 </div>
 
                 <div>
-                    <label for="minCapacity" class="block text-sm font-medium mb-1">Мин. вместимость</label>
+                    <label for="minCapacity" class="block text-sm font-medium mb-1" th:text="#{tour.create.minCapacity}"></label>
                     <input type="number" id="minCapacity" name="minCapacity" th:value="${minCapacity}" class="w-full border border-gray-300 rounded px-3 py-2">
                 </div>
                 <div>
-                    <label for="maxCapacity" class="block text-sm font-medium mb-1">Макс. вместимость</label>
+                    <label for="maxCapacity" class="block text-sm font-medium mb-1" th:text="#{tour.create.maxCapacity}"></label>
                     <input type="number" id="maxCapacity" name="maxCapacity" th:value="${maxCapacity}" class="w-full border border-gray-300 rounded px-3 py-2">
                 </div>
 
-                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Показать</button>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700" th:text="#{tour.applyFilters}"></button>
             </form>
         </aside>
 
         <!-- Сетка туров -->
         <section class="flex-1">
             <div sec:authorize="hasRole('ADMIN')" class="flex justify-end mb-4">
-                <a th:href="@{/tours/add}"
+                <a th:href="@{/tours/add}" th:text="#{tour.create.submit}"
                    class="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition">
-                    <i class="fas fa-plus mr-2"></i> Добавить тур
+                    <i class="fas fa-plus mr-2"></i>
                 </a>
             </div>
 

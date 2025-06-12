@@ -75,8 +75,10 @@ public class TourTemplateService{
     }
 
     public List<TourTemplateResponseDto> getTop3Popular() {
-        List<Long> topIds = tourHistoryRepository.findTopTourIds(PageRequest.of(0, 3));
-        return tourTemplateRepository.findAllById(topIds).stream().map(tourTemplateMapper::toResponseDto).toList();
+        List<Long> topIds = tourHistoryRepository.findTopTourTemplateIds(PageRequest.of(0, 3));
+        return tourTemplateRepository.findAllById(topIds).stream()
+                .map(tourTemplateMapper::toResponseDto)
+                .toList();
     }
 
     private String generateSlug(TourTemplate template) {

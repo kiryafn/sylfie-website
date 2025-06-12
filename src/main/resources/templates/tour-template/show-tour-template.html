@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru"
+<html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
@@ -12,13 +12,14 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-[Poppins]">
 <main layout:fragment="content" th:object="${tourTemplate}">
+
     <!-- HERO -->
     <section class="relative h-[650px]">
         <img th:src="*{previewPictureUrl}" alt="Banner" class="w-full h-full object-cover object-center">
         <div class="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/70"></div>
 
         <button onclick="history.back()" class="absolute top-4 left-4 bg-black/40 text-white text-sm px-3 py-1.5 rounded hover:bg-black/60 flex items-center gap-2 z-10">
-            <i class="fas fa-arrow-left"></i> Browse All Trips
+            <i class="fas fa-arrow-left"></i> <span th:text="#{tour.details.back}">Browse All Trips</span>
         </button>
 
         <div class="absolute bottom-[-120px] w-full flex justify-center z-10">
@@ -34,15 +35,14 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-calendar-alt text-green-600"></i>
-                            <span th:text="*{durationDays + ' Day'}"></span>
+                            <span th:text="|*{durationDays} #{tour.details.days}|"></span>
                         </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-dollar-sign text-green-600"></i>
-                            <span th:text="*{'From ' + price + '$'}"></span>
-                        </div>
+                            <span th:text="|#{tour.details.from} *{price}$|"></span>                        </div>
                         <div class="flex items-center gap-2">
                             <i class="fas fa-chart-line text-green-600"></i>
-                            <span th:text="*{'Level ' + difficulty}"></span>
+                            <span th:text="*{difficulty}"></span>
                             <i class="fas fa-info-circle text-gray-400 text-xs cursor-help" title="Difficulty level"></i>
                         </div>
                     </div>
@@ -51,11 +51,10 @@
                 <!-- Actions -->
                 <div class="flex flex-col gap-3 items-start lg:items-end">
                     <a th:href="@{/booking/{id}(id=${tourTemplate.id})}"
-                       class="bg-green-700 hover:bg-green-800 text-white font-medium px-6 py-2.5 rounded shadow">
-                        Book Online
-                    </a>
+                       class="bg-green-700 hover:bg-green-800 text-white font-medium px-6 py-2.5 rounded shadow"
+                       th:text="#{tour.details.bookOnline}">Book Online</a>
                     <a href="tel:+18003682794" class="text-green-700 hover:underline flex items-center gap-2">
-                        <i class="fas fa-phone"></i> Call 1-800-368-2794
+                        <i class="fas fa-phone"></i> <span th:text="#{tour.details.call}">Call 1-800-368-2794</span>
                     </a>
                 </div>
             </div>
@@ -65,17 +64,15 @@
     <!-- DESCRIPTION -->
     <section class="mt-[200px] px-4 max-w-5xl mx-auto">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Описание тура</h2>
-            <p class="text-gray-700 whitespace-pre-line leading-relaxed" th:utext="*{description}">
-                Здесь будет подробное описание тура…
-            </p>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4" th:text="#{tour.details.descriptionTitle}">Tour Description</h2>
+            <p class="text-gray-700 whitespace-pre-line leading-relaxed" th:utext="*{description}"></p>
         </div>
     </section>
 
     <!-- AVAILABLE TOURS -->
     <section class="mt-12 px-4 max-w-5xl mx-auto">
         <div class="bg-white rounded-lg shadow-md p-8">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Доступные даты</h2>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-6" th:text="#{tour.details.availableDates}">Available Dates</h2>
             <div class="space-y-4">
                 <div th:each="tour : ${tourTemplate.availableTours}" th:object="${tour}" class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 mb-4">
                     <div class="space-y-1">
@@ -86,19 +83,19 @@
                             <span th:text="*{#temporals.format(endDate, 'dd MMM yyyy')}"></span>
                         </div>
                         <div class="text-sm text-gray-600">
-                            Забронировано:
+                            <span th:text="#{tour.details.booked}">Booked:</span>
                             <span class="font-medium" th:text="*{bookedCount}">0</span>
                         </div>
                     </div>
                     <form th:action="@{/booking/tour/{id}(id=${tour.id})}" method="post">
-                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-medium px-5 py-2 rounded shadow">
-                            Забронировать
-                        </button>
+                        <button type="submit" class="bg-green-700 hover:bg-green-800 text-white font-medium px-5 py-2 rounded shadow"
+                                th:text="#{tour.details.bookNow}">Book</button>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+
 </main>
 </body>
 </html>

@@ -14,10 +14,10 @@ public interface TourHistoryRepository extends CrudRepository<UserTourHistory, L
     List<UserTourHistory> findAllByUserId(Long userId);
     List<UserTourHistory> findAll();
 
-    @Query("select th.tour.id from UserTourHistory th " +
-            "group by th.tour.id " +
+    @Query("select th.tour.template.id from UserTourHistory th " +
+            "group by th.tour.template.id " +
             "order by count(th) desc")
-    List<Long> findTopTourIds(Pageable pageable);
+    List<Long> findTopTourTemplateIds(Pageable pageable);
 
     @Query("select th from UserTourHistory th " +
             "join fetch th.tour tour " +

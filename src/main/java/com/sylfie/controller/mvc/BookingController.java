@@ -1,8 +1,10 @@
 package com.sylfie.controller.mvc;
 
 import com.sylfie.exception.InsufficientBalanceException;
+import com.sylfie.security.CustomUserDetails;
 import com.sylfie.service.BookingService;
 import com.sylfie.service.UserService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +27,7 @@ public class BookingController {
     }
 
     @PostMapping("/tour/{id}")
-    public String bookTour(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
+    public String bookTour(@AuthenticationPrincipal CustomUserDetails principal, @PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             bookingService.bookTour(id, principal.getName());
             redirectAttributes.addFlashAttribute("success", "Бронирование успешно!");
@@ -34,6 +36,6 @@ public class BookingController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Ошибка при бронировании");
         }
-        return "redirect:/profile";
+        return "redirect:/profile/history";
     }
 }

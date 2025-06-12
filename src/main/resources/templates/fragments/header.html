@@ -3,19 +3,16 @@
 
   <div class="container mx-auto px-4 flex items-center justify-between h-16">
 
-    <!-- Лого -->
     <a th:href="@{/home}" class="flex items-center space-x-2">
       <img src="/img/logos/full_logo.svg" alt="Logo" class="h-10">
     </a>
 
-    <!-- Меню (десктоп) -->
     <nav id="main-menu" class="hidden md:flex items-center space-x-8 text-gray-700 font-medium">
       <a th:href="@{/home}" th:text="#{header.home}" class="hover:text-green-600">Home</a>
       <a th:href="@{/tours}" th:text="#{header.tours}" class="hover:text-green-600">Tours</a>
       <a th:href="@{/why-sylfie}" th:text="#{header.whyus}" class="hover:text-green-600">Why Sylfie</a>
     </nav>
 
-    <!-- Правая часть -->
     <div class="flex items-center space-x-6">
 
       <div th:if="${userInfo != null}" th:object="${userInfo}" class="flex items-center space-x-6">
@@ -23,10 +20,12 @@
         <!-- Баланс -->
         <div class="text-right text-sm hidden md:block">
           <div class="text-gray-600">
-            <span class="font-semibold text-green-600" th:text="|#{header.balance} *{balance}|"></span> €
+            <span class="font-semibold" th:text="#{header.balance}"></span>:
+            <span class="font-semibold text-green-600" th:text="*{balance + '$'}"></span>
           </div>
           <div class="text-gray-500">
-            <span class="font-semibold text-blue-500" th:text="|#{header.bonus} *{bonusBalance}|"></span> €
+            <span class="font-semibold" th:text="#{header.bonus}"></span>:
+            <span class="font-semibold text-blue-600" th:text="*{bonusBalance + '$'}"></span>
           </div>
         </div>
 
@@ -42,10 +41,6 @@
             <li>
               <a th:href="@{/profile}" th:text="#{header.profile}"
                  class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
-            </li>
-            <li>
-              <a th:href="@{/favorites}" th:text="#{header.favorites}"
-                 class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Saved Items</a>
             </li>
             <li>
               <a th:href="@{/logout}" th:text="#{header.logout}"
@@ -70,7 +65,6 @@
 
       </div>
 
-      <!-- Бургер для мобилки -->
       <button id="burger-btn" class="text-2xl text-gray-600 hover:text-green-600 md:hidden focus:outline-none">
         <i class="fas fa-bars"></i>
       </button>
@@ -78,7 +72,6 @@
     </div>
   </div>
 
-  <!-- Меню для мобилки (скрыто по умолчанию) -->
   <nav id="mobile-menu" class="md:hidden hidden flex-col space-y-4 bg-white border-t px-4 py-4 text-gray-700 font-medium">
     <a th:href="@{/home}" th:text="#{header.home}" class="hover:text-green-600">Home</a>
     <a th:href="@{/tours}" th:text="#{header.tours}" class="hover:text-green-600">Tours</a>
@@ -100,11 +93,10 @@
     const userDropdownMenu = document.getElementById('user-dropdown-menu');
 
     userDropdownBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // чтобы не закрывался при клике на кнопку
+      e.stopPropagation();
       userDropdownMenu.classList.toggle('hidden');
     });
 
-    // Закрывать dropdown при клике вне
     document.addEventListener('click', (e) => {
       if (!userDropdownMenu.contains(e.target) && !userDropdownBtn.contains(e.target)) {
         userDropdownMenu.classList.add('hidden');
