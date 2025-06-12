@@ -1,20 +1,19 @@
-package com.sylfie.dto.api;
+package com.sylfie.dto.tour.tour;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class TourApiDTO {
+public class TourResponseDto {
     private Integer bookedCount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    public TourApiDTO(Integer bookedCount, LocalDateTime startDate, LocalDateTime endDate) {
+    public TourResponseDto(Integer bookedCount, LocalDateTime startDate, LocalDateTime endDate) {
         this.bookedCount = bookedCount;
         this.startDate = startDate;
         this.endDate = endDate;
     }
 
-    public TourApiDTO() {
+    public TourResponseDto() {
     }
 
     public Integer getBookedCount() {

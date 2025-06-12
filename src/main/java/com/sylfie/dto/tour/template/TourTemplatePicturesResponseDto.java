@@ -1,12 +1,12 @@
-package com.sylfie.dto.api;
+package com.sylfie.dto.tour.template;
 
 import java.util.List;
 
-public class TourTemplatePicturesDTO {
+public class TourTemplatePicturesResponseDto {
     List<String> pictursUrls;
     String previewPictureUrl;
 
-    public TourTemplatePicturesDTO(List<String> pictursUrls, String previewPictureUrl) {
+    public TourTemplatePicturesResponseDto(List<String> pictursUrls, String previewPictureUrl) {
         this.pictursUrls = pictursUrls;
         this.previewPictureUrl = previewPictureUrl;
     }

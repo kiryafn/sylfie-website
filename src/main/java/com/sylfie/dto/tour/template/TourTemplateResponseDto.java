@@ -1,12 +1,10 @@
-package com.sylfie.dto.mvc;
-
-import com.sylfie.model.*;
+package com.sylfie.dto.tour.template;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TourTemplateDTO {
+public class TourTemplateResponseDto {
     private Long id;
 
     private String category;
@@ -33,7 +31,7 @@ public class TourTemplateDTO {
 
     private String location;
 
-    public TourTemplateDTO(Long id, String category, String name, String slug, String description, String shortDescription, String difficulty, Integer maxParticipants, List<String> pictures, String preview, BigDecimal price, Integer durationDays, String location) {
+    public TourTemplateResponseDto(Long id, String category, String name, String slug, String description, String shortDescription, String difficulty, Integer maxParticipants, List<String> pictures, String preview, BigDecimal price, Integer durationDays, String location) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -49,7 +47,7 @@ public class TourTemplateDTO {
         this.previewPictureUrl = preview;
     }
 
-    public TourTemplateDTO() {
+    public TourTemplateResponseDto() {
     }
 
     public Long getId() {

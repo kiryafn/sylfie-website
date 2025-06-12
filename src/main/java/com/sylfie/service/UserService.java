@@ -1,11 +1,11 @@
 package com.sylfie.service;
 
-import com.sylfie.dto.mvc.UserInfoDTO;
+import com.sylfie.dto.user.UserDto;
 import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.InsufficientBalanceException;
 import com.sylfie.exception.UsernameTakenException;
 import com.sylfie.mapper.UserMapper;
-import com.sylfie.dto.mvc.UserRegisterDTO;
+import com.sylfie.dto.auth.RegisterDto;
 import com.sylfie.model.Avatar;
 import com.sylfie.model.Picture;
 import com.sylfie.model.TourTemplate;
@@ -77,7 +77,7 @@ public class UserService {
     }
 
     @Transactional
-    public User createFromDTO(UserRegisterDTO urdto) {
+    public User createFromDTO(RegisterDto urdto) {
         isUserValidToCreate(urdto);
         User user = userMapper.toUser(urdto);
         user.setPassword(passwordEncoder.encode(urdto.getPassword()));
@@ -111,7 +111,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfoDTO update(UserInfoDTO dto, String username){
+    public UserDto update(UserDto dto, String username){
         User user = getByUsername(username);
         userMapper.toUser(dto, user);
 
@@ -141,7 +141,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private void isUserValidToCreate(UserRegisterDTO ur) {
+    private void isUserValidToCreate(RegisterDto ur) {
         userRepository.findByEmail(ur.getEmail())
                 .ifPresent(user -> { throw new EmailTakenException("Email already taken"); });
 

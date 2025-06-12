@@ -1,16 +1,16 @@
-package com.sylfie.dto.mvc;
+package com.sylfie.dto.tour.history;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class UserTourHistoryDTO {
+public class TourHistoryResponseDto {
 
     private String tourName;
     private LocalDateTime bookingDate;
     private BigDecimal priceAtBooking;
     private String status;
 
-    public UserTourHistoryDTO(String tourName, LocalDateTime bookingDate, BigDecimal priceAtBooking, String status) {
+    public TourHistoryResponseDto(String tourName, LocalDateTime bookingDate, BigDecimal priceAtBooking, String status) {
         this.tourName = tourName;
         this.bookingDate = bookingDate;
         this.priceAtBooking = priceAtBooking;

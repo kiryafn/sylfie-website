@@ -1,7 +1,7 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.mvc.UserInfoDTO;
-import com.sylfie.dto.mvc.UserRegisterDTO;
+import com.sylfie.dto.user.UserDto;
+import com.sylfie.dto.auth.RegisterDto;
 import com.sylfie.model.User;
 import com.sylfie.security.OAuth2UserInfo;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    public User toUser(UserRegisterDTO ur){
+    public User toUser(RegisterDto ur){
         User user = new User();
         user.setUsername(ur.getUsername());
         user.setEmail(ur.getEmail());
@@ -33,8 +33,8 @@ public class UserMapper {
         return user;
     }
 
-    public UserInfoDTO toInfoDTO(User user){
-        UserInfoDTO dto = new UserInfoDTO();
+    public UserDto toInfoDTO(User user){
+        UserDto dto = new UserDto();
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
@@ -47,7 +47,7 @@ public class UserMapper {
         return dto;
     }
 
-    public User toUser(UserInfoDTO dto, User user){
+    public User toUser(UserDto dto, User user){
         if (dto.getUsername() != null) user.setUsername(dto.getUsername());
         if (dto.getEmail() != null) user.setEmail(dto.getEmail());
         if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());

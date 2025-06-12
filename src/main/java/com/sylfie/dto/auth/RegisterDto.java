@@ -1,11 +1,11 @@
-package com.sylfie.dto.mvc;
+package com.sylfie.dto.auth;
 
 
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-public class UserRegisterDTO {
+public class RegisterDto {
 
     @NotBlank(message = "Username is mandatory")
     @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")

@@ -1,9 +1,9 @@
-package com.sylfie.dto.mvc;
+package com.sylfie.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class UserLoginDTO {
+public class LoginDto {
     @NotBlank(message = "Username is required")
     @NotNull(message = "Username is required")
     private String username;

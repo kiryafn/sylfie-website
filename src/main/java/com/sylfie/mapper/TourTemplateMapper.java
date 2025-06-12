@@ -1,9 +1,8 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.api.TourApiDTO;
-import com.sylfie.dto.api.TourTemplateApiDTO;
-import com.sylfie.dto.mvc.TourTemplateDTO;
-import com.sylfie.dto.mvc.TourTemplateRequestDTO;
+import com.sylfie.dto.tour.tour.TourResponseDto;
+import com.sylfie.dto.tour.template.TourTemplateResponseDto;
+import com.sylfie.dto.tour.template.TourTemplateCreateDto;
 import com.sylfie.model.TourTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ public class TourTemplateMapper {
 
     /** Create: DTO → Entity */
 
-    public TourTemplate toEntity(TourTemplateRequestDTO dto){
+    public TourTemplate toEntity(TourTemplateCreateDto dto){
         TourTemplate tt = new TourTemplate();
         tt.setName(dto.getName());
         tt.setDescription(dto.getDescriptionHtml());
@@ -29,8 +28,8 @@ public class TourTemplateMapper {
         return tt;
     }
 
-    public TourTemplateDTO toDto(TourTemplate tt){
-        TourTemplateDTO dto = new TourTemplateDTO();
+    public TourTemplateResponseDto toDto(TourTemplate tt){
+        TourTemplateResponseDto dto = new TourTemplateResponseDto();
         dto.setId(tt.getId());
         dto.setName(tt.getName());
         dto.setShortDescription(tt.getShortDescription());
@@ -48,7 +47,7 @@ public class TourTemplateMapper {
         return dto;
     }
 
-    public TourTemplateApiDTO toApiDto(TourTemplate tt, List<TourApiDTO> tours){
+    public TourTemplateApiDTO toApiDto(TourTemplate tt, List<TourResponseDto> tours){
         TourTemplateApiDTO dto = new TourTemplateApiDTO();
         dto.setId(tt.getId());
         dto.setName(tt.getName());

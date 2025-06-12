@@ -1,13 +1,12 @@
 package com.sylfie.controller.mvc;
 
 
-import com.sylfie.dto.mvc.TourTemplateDTO;
-import com.sylfie.dto.mvc.TourTemplateRequestDTO;
+import com.sylfie.dto.tour.template.TourTemplateResponseDto;
+import com.sylfie.dto.tour.template.TourTemplateCreateDto;
 import com.sylfie.mapper.TourTemplateMapper;
 import com.sylfie.model.Difficulty;
 import com.sylfie.model.Picture;
 import com.sylfie.model.TourPicture;
-import com.sylfie.model.TourTemplate;
 import com.sylfie.security.CustomUserDetails;
 import com.sylfie.service.*;
 import org.springframework.http.MediaType;
@@ -45,7 +44,7 @@ public class TourTemplateController {
 
     @GetMapping("/{slug}")
     public String showTour(@PathVariable String slug, Model model) {
-        TourTemplateDTO tt = tourTemplateMapper.toDto(tourTemplateService.getBySlug(slug));
+        TourTemplateResponseDto tt = tourTemplateMapper.toDto(tourTemplateService.getBySlug(slug));
         model.addAttribute("tourTemplate", tt);
         model.addAttribute("tours", tourService.getAvailableByTemplateId(tt.getId()));
         return "tour-template/show-tour-template";
@@ -63,7 +62,7 @@ public class TourTemplateController {
             @RequestParam(required = false) List<Long> locationId,
             Model model
     ) {
-        List<TourTemplateDTO> templates = tourTemplateService.getAll().stream()
+        List<TourTemplateResponseDto> templates = tourTemplateService.getAll().stream()
                 .filter(t -> categoryId == null  || categoryId.contains(t.getCategory().getId()))
                 .filter(t -> difficulty == null  || difficulty.isEmpty() || difficulty.contains(t.getDifficulty()))
                 .filter(t -> minCapacity == null || t.getMaxParticipants() >= minCapacity)
@@ -95,7 +94,7 @@ public class TourTemplateController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("template", new TourTemplateRequestDTO());
+        model.addAttribute("template", new TourTemplateCreateDto());
         model.addAttribute("difficulties", Difficulty.values());
         model.addAttribute("locations", locationService.getAll());
         model.addAttribute("categories", tourCategoryService.getAll());
@@ -106,7 +105,7 @@ public class TourTemplateController {
     @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String save(
             //TODO: DTO VALIDATION!!!!!!!!!
-            @ModelAttribute("template") TourTemplateRequestDTO template,
+            @ModelAttribute("template") TourTemplateCreateDto template,
             @RequestParam("previewPic") MultipartFile previewPic,
             @RequestParam("pictures") MultipartFile[] pictures) throws IOException {
 
@@ -130,7 +129,7 @@ public class TourTemplateController {
         pics.add(preview);
 
         template.setTourPictures(pics);
-        TourTemplateDTO ttDto = tourTemplateService.create(template);
+        TourTemplateResponseDto ttDto = tourTemplateService.create(template);
 
         return "redirect:/tours/" + ttDto.getSlug() ;
     }

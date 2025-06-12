@@ -1,9 +1,9 @@
-package com.sylfie.dto.mvc;
+package com.sylfie.dto.user;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class UserInfoDTO {
+public class UserDto {
     private String firstName;
     private String lastName;
     private String username;
@@ -14,10 +14,10 @@ public class UserInfoDTO {
     private BigDecimal bonusBalance;
     private String avatarUrl;
 
-    public UserInfoDTO() {
+    public UserDto() {
     }
 
-    public UserInfoDTO(String firstName, String lastName, String username, String email, LocalDate dateOfBirth, String phoneNumber, BigDecimal balance, BigDecimal bonusBalance, String avatarUrl) {
+    public UserDto(String firstName, String lastName, String username, String email, LocalDate dateOfBirth, String phoneNumber, BigDecimal balance, BigDecimal bonusBalance, String avatarUrl) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

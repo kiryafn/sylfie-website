@@ -1,7 +1,7 @@
 package com.sylfie.controller.api;
 
-import com.sylfie.dto.mvc.UserLoginDTO;
-import com.sylfie.dto.mvc.UserRegisterDTO;
+import com.sylfie.dto.auth.LoginDto;
+import com.sylfie.dto.auth.RegisterDto;
 import com.sylfie.security.CustomUserDetailsService;
 import com.sylfie.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -39,7 +39,7 @@ public class AuthApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDTO request, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody LoginDto request, HttpSession session) {
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
@@ -55,7 +55,7 @@ public class AuthApiController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody UserRegisterDTO dto) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterDto dto) {
         if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             return ResponseEntity.badRequest().body("Passwords do not match");
         }

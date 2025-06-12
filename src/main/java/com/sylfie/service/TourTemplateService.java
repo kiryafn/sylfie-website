@@ -1,9 +1,9 @@
 package com.sylfie.service;
 
 import com.github.slugify.Slugify;
-import com.sylfie.dto.mvc.TourTemplateDTO;
+import com.sylfie.dto.tour.template.TourTemplateResponseDto;
 import com.sylfie.mapper.TourTemplateMapper;
-import com.sylfie.dto.mvc.TourTemplateRequestDTO;
+import com.sylfie.dto.tour.template.TourTemplateCreateDto;
 import com.sylfie.model.TourTemplate;
 import com.sylfie.repository.TourHistoryRepository;
 import com.sylfie.repository.TourTemplateRepository;
@@ -49,7 +49,7 @@ public class TourTemplateService{
     }
 
     @Transactional
-    public TourTemplateDTO create(TourTemplateRequestDTO templateDTO) {
+    public TourTemplateResponseDto create(TourTemplateCreateDto templateDTO) {
         TourTemplate template = tourTemplateMapper.toEntity(templateDTO);
         template.setSlug(generateSlug(template));
         template.setDescription(htmlSanitizer.sanitize(template.getDescription()));
@@ -74,7 +74,7 @@ public class TourTemplateService{
         tourTemplateRepository.delete(template);
     }
 
-    public List<TourTemplateDTO> getTop3Popular() {
+    public List<TourTemplateResponseDto> getTop3Popular() {
         List<Long> topIds = tourHistoryRepository.findTopTourIds(PageRequest.of(0, 3));
         return tourTemplateRepository.findAllById(topIds).stream().map(tourTemplateMapper::toDto).toList();
     }

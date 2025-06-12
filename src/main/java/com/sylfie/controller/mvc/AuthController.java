@@ -1,9 +1,9 @@
 package com.sylfie.controller.mvc;
 
+import com.sylfie.dto.auth.LoginDto;
 import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.UsernameTakenException;
-import com.sylfie.dto.mvc.UserLoginDTO;
-import com.sylfie.dto.mvc.UserRegisterDTO;
+import com.sylfie.dto.auth.RegisterDto;
 import com.sylfie.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -23,18 +23,18 @@ public class AuthController {
 
     @GetMapping("login")
     public String getLogin(Model model) {
-        model.addAttribute("userLoginDTO", new UserLoginDTO());
+        model.addAttribute("userLoginDTO", new LoginDto());
         return "authorization/login";
     }
 
     @GetMapping("register")
     public String getRegister(Model model) {
-        model.addAttribute("userRegisterDTO", new UserRegisterDTO());
+        model.addAttribute("userRegisterDTO", new RegisterDto());
         return "authorization/register";
     }
 
     @PostMapping("register")
-    public String doRegister(@Valid @ModelAttribute("userRegisterDTO") UserRegisterDTO regDTO,
+    public String doRegister(@Valid @ModelAttribute("userRegisterDTO") RegisterDto regDTO,
                              BindingResult br, Model model) {
 
         if (br.hasErrors()) {

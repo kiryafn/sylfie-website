@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.dto.mvc.UserTourHistoryDTO;
+import com.sylfie.dto.tour.history.TourHistoryResponseDto;
 import com.sylfie.model.Status;
 import com.sylfie.model.UserTourHistory;
 import com.sylfie.repository.TourHistoryRepository;
@@ -52,9 +52,9 @@ public class TourHistoryService {
 
     //TODO: TO DTO
     @Transactional
-    public List<UserTourHistoryDTO> getByUserName(String username) {
+    public List<TourHistoryResponseDto> getByUserName(String username) {
         return tourHistoryRepository.findAllByUserUsername(username).stream()
-                .map(history -> new UserTourHistoryDTO(
+                .map(history -> new TourHistoryResponseDto(
                         history.getTour().getTemplate().getName(),
                         history.getBookingDate(),
                         history.getPriceAtBooking(),

@@ -1,4 +1,4 @@
-package com.sylfie.dto.mvc;
+package com.sylfie.dto.tour.template;
 
 import com.sylfie.model.Difficulty;
 import com.sylfie.model.Location;
@@ -8,7 +8,7 @@ import com.sylfie.model.TourPicture;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class TourTemplateRequestDTO {
+public class TourTemplateCreateDto {
     private String name;
     private String descriptionHtml;
     private Difficulty difficulty;

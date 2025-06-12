@@ -1,6 +1,6 @@
 package com.sylfie.controller.mvc;
 
-import com.sylfie.dto.mvc.UserInfoDTO;
+import com.sylfie.dto.user.UserDto;
 import com.sylfie.mapper.TourTemplateMapper;
 import com.sylfie.mapper.UserMapper;
 import com.sylfie.security.CustomUserDetails;
@@ -44,7 +44,7 @@ public class UserProfileController {
 
     @PostMapping("update")
     public String updateProfile(@AuthenticationPrincipal CustomUserDetails principal,
-                                @ModelAttribute("userInfo") UserInfoDTO dto) throws IOException {
+                                @ModelAttribute("userInfo") UserDto dto) throws IOException {
         userService.update(dto, principal.getName());
         return "redirect:/profile";
     }

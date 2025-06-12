@@ -1,9 +1,8 @@
 package com.sylfie.controller.api;
 
-import com.sylfie.dto.api.TourApiDTO;
-import com.sylfie.dto.api.TourTemplateApiDTO;
-import com.sylfie.dto.api.TourTemplatePicturesDTO;
-import com.sylfie.dto.mvc.TourTemplateDTO;
+import com.sylfie.dto.tour.tour.TourResponseDto;
+import com.sylfie.dto.tour.template.TourTemplatePicturesResponseDto;
+import com.sylfie.dto.tour.template.TourTemplateResponseDto;
 import com.sylfie.mapper.TourMapper;
 import com.sylfie.mapper.TourTemplateMapper;
 import com.sylfie.model.TourTemplate;
@@ -32,29 +31,29 @@ public class TourTemplateApiController {
 
 
     @GetMapping
-    public ResponseEntity<List<TourTemplateDTO>> getAllTours() {
+    public ResponseEntity<List<TourTemplateResponseDto>> getAllTours() {
         return ResponseEntity.ok(tourTemplateService.getAll().stream().map(tourTemplateMapper::toDto).toList());
     }
 
-    @GetMapping("id/{id}")
-    public ResponseEntity<TourTemplateDTO> getTourBySlug(@PathVariable Long id) {
+    @GetMapping("{id}")
+    public ResponseEntity<TourTemplateResponseDto> getTourBySlug(@PathVariable Long id) {
         return ResponseEntity.ok(tourTemplateMapper.toDto(tourTemplateService.getById(id)));
     }
 
-    @GetMapping("id/{id}/available")
+    @GetMapping("{id}/available")
     public ResponseEntity<TourTemplateApiDTO> getAvailableTours(@PathVariable Long id) {
-        List<TourApiDTO> availableTours = tourService.getAvailableByTemplateId(id).stream().map(tourMapper::toApiDto).toList();
+        List<TourResponseDto> availableTours = tourService.getAvailableByTemplateId(id).stream().map(tourMapper::toApiDto).toList();
         TourTemplate tt = tourTemplateService.getById(id);
 
         return ResponseEntity.ok(tourTemplateMapper.toApiDto(tt, availableTours));
     }
 
-    @GetMapping("id/{id}/pictures")
-    public ResponseEntity<TourTemplatePicturesDTO> addPictures(@PathVariable Long id) {
+    @GetMapping("{id}/pictures")
+    public ResponseEntity<TourTemplatePicturesResponseDto> addPictures(@PathVariable Long id) {
         TourTemplate tt = tourTemplateService.getById(id);
         List<String> picUrls = tt.getPictures().stream().map(p -> p.getPicture().getUrl()).toList();
         String prevPicUrl = tt.getPreviewPicture().getPicture().getUrl();
-        return ResponseEntity.ok(new TourTemplatePicturesDTO(picUrls, prevPicUrl));
+        return ResponseEntity.ok(new TourTemplatePicturesResponseDto(picUrls, prevPicUrl));
     }
 
 
