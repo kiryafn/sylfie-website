@@ -1,10 +1,14 @@
 package com.sylfie.controller.api;
 
+import com.sylfie.dto.auth.AuthResponseDto;
 import com.sylfie.dto.auth.LoginDto;
 import com.sylfie.dto.auth.RegisterDto;
+import com.sylfie.model.User;
+import com.sylfie.security.CustomUserDetails;
 import com.sylfie.security.CustomUserDetailsService;
+import com.sylfie.security.JwtTokenService;
 import com.sylfie.service.UserService;
-import jakarta.servlet.http.HttpSession;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +16,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,30 +28,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthApiController {
 
     private final AuthenticationManager authenticationManager;
-    private final CustomUserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final JwtTokenService jwtTokenService;
+    private final CustomUserDetailsService userDetailsService;
 
     public AuthApiController(AuthenticationManager authenticationManager,
                              CustomUserDetailsService userDetailsService,
-                             PasswordEncoder passwordEncoder, UserService userService) {
+                             UserService userService,
+                             JwtTokenService jwtTokenService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto request, HttpSession session) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginDto request) {
         try {
-            Authentication auth = authenticationManager.authenticate(
+            Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
-            SecurityContextHolder.getContext().setAuthentication(auth);
-            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
-                    SecurityContextHolder.getContext());
 
-            return ResponseEntity.ok().build();
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String token = jwtTokenService.generateToken(userDetails);
+
+            return ResponseEntity.ok(new AuthResponseDto(token));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
@@ -61,10 +65,23 @@ public class AuthApiController {
         }
 
         try {
-            userService.createFromDTO(dto);
-            return ResponseEntity.ok("User registered successfully");
+            User user = userService.createFromDTO(dto);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+            String token = jwtTokenService.generateToken(userDetails);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponseDto(token));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userDetails.getUser();
+        return ResponseEntity.ok(user.getUsername());
     }
 }

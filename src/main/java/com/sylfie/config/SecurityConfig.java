@@ -2,6 +2,7 @@ package com.sylfie.config;
 
 import com.sylfie.security.CustomOAuth2UserService;
 import com.sylfie.security.CustomUserDetailsService;
+import com.sylfie.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -29,11 +31,16 @@ public class SecurityConfig {
     private final CustomUserDetailsService userService;
     private final CustomOAuth2UserService oAuth2UserService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(CustomUserDetailsService userService, CustomOAuth2UserService oAuth2UserService, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(CustomUserDetailsService userService,
+                          CustomOAuth2UserService oAuth2UserService,
+                          PasswordEncoder passwordEncoder,
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userService = userService;
         this.oAuth2UserService = oAuth2UserService;
         this.passwordEncoder = passwordEncoder;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
@@ -41,7 +48,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/css/**", "/js/**", "/img/**", "/api/**").permitAll()
+                        .requestMatchers("/login", "/register", "/css/**", "/js/**", "/img/**", "/api/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -65,6 +72,8 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/login")
                         .permitAll()
                 );
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
