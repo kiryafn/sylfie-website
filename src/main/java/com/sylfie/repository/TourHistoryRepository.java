@@ -7,10 +7,11 @@ import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface TourHistoryRepository extends CrudRepository<UserTourHistory, Long> {
+public interface TourHistoryRepository extends CrudRepository<UserTourHistory, Long>, PagingAndSortingRepository<UserTourHistory, Long>{
     List<UserTourHistory> findAllByUserId(Long userId);
     List<UserTourHistory> findAll();
 

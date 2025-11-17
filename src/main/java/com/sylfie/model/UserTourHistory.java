@@ -9,6 +9,23 @@ import java.time.LocalDateTime;
 @Table(name = "user_tour_history")
 public class UserTourHistory {
 
+    public enum Status {
+        BOOKED("Booked"),
+        COMPLETED( "Completed"),
+        CANCELLED( "Cancelled");
+
+        private String name;
+
+        Status(String name){
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,8 +56,6 @@ public class UserTourHistory {
         this.status = status;
         this.bookingDate = LocalDateTime.now();
     }
-
-    // GETTERS & SETTERS
 
     public Long getId() {
         return id;

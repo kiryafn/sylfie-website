@@ -2,29 +2,40 @@ package com.sylfie.dto.auth;
 
 public class AuthResponseDto {
 
-    private String token;
+    private String accessToken;
+    private String refreshToken;
     private String tokenType;
 
     public AuthResponseDto() {
         this.tokenType = "Bearer";
     }
 
-    public AuthResponseDto(String token) {
-        this.token = token;
+    public AuthResponseDto(String accessToken, String refreshToken) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.tokenType = "Bearer";
     }
 
-    public AuthResponseDto(String token, String tokenType) {
-        this.token = token;
+    public AuthResponseDto(String accessToken, String refreshToken, String tokenType) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         this.tokenType = tokenType;
     }
 
-    public String getToken() {
-        return token;
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public String getTokenType() {
@@ -35,4 +46,3 @@ public class AuthResponseDto {
         this.tokenType = tokenType;
     }
 }
-

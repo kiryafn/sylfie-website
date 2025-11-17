@@ -43,7 +43,7 @@ public class BookingService {
         BigDecimal bonus = price.multiply(BigDecimal.valueOf(0.05)).setScale(2, RoundingMode.HALF_UP);
         user.setBonusBalance(user.getBonusBalance().add(bonus));
 
-        UserTourHistory history = new UserTourHistory(user, tour, Status.BOOKED);
+        UserTourHistory history = new UserTourHistory(user, tour, UserTourHistory.Status.BOOKED);
         history.setPriceAtBooking(price);
         historyService.create(history);
 

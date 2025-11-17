@@ -1,13 +1,16 @@
-package com.sylfie.controller.api;
+package com.sylfie.controller.rest;
 
 import com.sylfie.dto.auth.AuthResponseDto;
 import com.sylfie.dto.auth.LoginDto;
+import com.sylfie.dto.auth.RefreshTokenRequestDto;
 import com.sylfie.dto.auth.RegisterDto;
+import com.sylfie.exception.InvalidJwtException;
 import com.sylfie.model.User;
 import com.sylfie.security.CustomUserDetails;
 import com.sylfie.security.CustomUserDetailsService;
-import com.sylfie.security.JwtTokenService;
+import com.sylfie.jwt.JwtTokenService;
 import com.sylfie.service.UserService;
+import io.jsonwebtoken.JwtException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,6 +25,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -50,11 +55,13 @@ public class AuthApiController {
             );
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtTokenService.generateToken(userDetails);
+            String accessToken = jwtTokenService.generateAccessToken(userDetails);
+            String refreshToken = jwtTokenService.generateRefreshToken(userDetails);
 
-            return ResponseEntity.ok(new AuthResponseDto(token));
+            return ResponseEntity.ok(new AuthResponseDto(accessToken, refreshToken));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "Invalid credentials"));
         }
     }
 
@@ -67,9 +74,10 @@ public class AuthApiController {
         try {
             User user = userService.createFromDTO(dto);
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
-            String token = jwtTokenService.generateToken(userDetails);
+            String accessToken = jwtTokenService.generateAccessToken(userDetails);
+            String refreshToken = jwtTokenService.generateRefreshToken(userDetails);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponseDto(token));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponseDto(accessToken, refreshToken));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -83,5 +91,30 @@ public class AuthApiController {
 
         User user = userDetails.getUser();
         return ResponseEntity.ok(user.getUsername());
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody RefreshTokenRequestDto request) {
+        String refreshToken = request.getRefreshToken();
+
+        if (refreshToken == null || refreshToken.isBlank()) {
+            return ResponseEntity.badRequest().body("Refresh token is required");
+        }
+
+        try {
+            String username = jwtTokenService.extractUsername(refreshToken);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (!jwtTokenService.isRefreshTokenValid(refreshToken, userDetails)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+            }
+
+            String newAccessToken = jwtTokenService.generateAccessToken(userDetails);
+            String newRefreshToken = jwtTokenService.generateRefreshToken(userDetails);
+
+            return ResponseEntity.ok(new AuthResponseDto(newAccessToken, newRefreshToken));
+        } catch (JwtException | InvalidJwtException | IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+        }
     }
 }

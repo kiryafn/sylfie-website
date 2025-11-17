@@ -1,79 +1,75 @@
 package com.sylfie.config;
 
+import com.sylfie.jwt.JwtAuthenticationFilter;
 import com.sylfie.security.CustomOAuth2UserService;
 import com.sylfie.security.CustomUserDetailsService;
-import com.sylfie.security.JwtAuthenticationFilter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ComponentScan;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
-import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
-@EnableWebSecurity
+
 @Configuration
-@ComponentScan("com.sylfie.security")
+@EnableWebSecurity
 public class SecurityConfig {
-
-    @Value("${spring.security.cookie.remember-me}")
-    private String REMEMBER_ME_KEY;
 
     private final CustomUserDetailsService userService;
     private final CustomOAuth2UserService oAuth2UserService;
-    private final PasswordEncoder passwordEncoder;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final PasswordEncoder passwordEncoder;
 
     public SecurityConfig(CustomUserDetailsService userService,
                           CustomOAuth2UserService oAuth2UserService,
-                          PasswordEncoder passwordEncoder,
-                          JwtAuthenticationFilter jwtAuthenticationFilter) {
+                          JwtAuthenticationFilter jwtAuthenticationFilter,
+                          PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.oAuth2UserService = oAuth2UserService;
-        this.passwordEncoder = passwordEncoder;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+
+        http.csrf(AbstractHttpConfigurer::disable)
+
+                // CORS если внешний фронт — нужно
+                .cors(cors -> {})
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register", "/css/**", "/js/**", "/img/**", "/api/auth/**").permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",     // login, register, refresh
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home", true)
-                        .failureUrl("/login?error=true")
-                        .permitAll()
-                )
-                .rememberMe(remember -> remember
-                        .key(REMEMBER_ME_KEY)
-                        .tokenValiditySeconds(60 * 60 * 24 * 60)
-                        .userDetailsService(userService)
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/home", true)
-                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .permitAll()
-                );
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .rememberMe(AbstractHttpConfigurer::disable)
+
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(user -> user.userService(oAuth2UserService))
+                        .successHandler((request, response, authentication) -> {
+                        })
+                        .failureHandler((request, response, exception) -> {
+                            response.setStatus(401);
+                        })
+                )
+
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -82,10 +78,5 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public SpringSecurityDialect springSecurityDialect() {
-        return new SpringSecurityDialect();
     }
 }

@@ -7,8 +7,9 @@ import com.sylfie.dto.tour.template.TourTemplateCreateDto;
 import com.sylfie.model.TourTemplate;
 import com.sylfie.repository.TourHistoryRepository;
 import com.sylfie.repository.TourTemplateRepository;
-import com.sylfie.util.HtmlSanitizer;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,20 +23,14 @@ public class TourTemplateService{
     private final TourTemplateRepository tourTemplateRepository;
     private final TourHistoryRepository tourHistoryRepository;
     private final Slugify slugify;
-    private final HtmlSanitizer htmlSanitizer;
     private final TourTemplateMapper tourTemplateMapper;
 
 
-    public TourTemplateService(TourTemplateRepository tourTemplateRepository, TourHistoryRepository tourHistoryRepository, Slugify slugify, HtmlSanitizer htmlSanitizer, TourTemplateMapper tourTemplateMapper) {
+    public TourTemplateService(TourTemplateRepository tourTemplateRepository, TourHistoryRepository tourHistoryRepository, Slugify slugify, TourTemplateMapper tourTemplateMapper) {
         this.tourTemplateRepository = tourTemplateRepository;
         this.tourHistoryRepository = tourHistoryRepository;
         this.tourTemplateMapper = tourTemplateMapper;
-        this.htmlSanitizer = htmlSanitizer;
         this.slugify = slugify;
-    }
-
-    public List<TourTemplate> getAll() {
-        return tourTemplateRepository.findAll();
     }
 
     public TourTemplate getById(Long id) {
@@ -52,7 +47,6 @@ public class TourTemplateService{
     public TourTemplateResponseDto create(TourTemplateCreateDto templateDTO) {
         TourTemplate template = tourTemplateMapper.toEntity(templateDTO);
         template.setSlug(generateSlug(template));
-        template.setDescription(htmlSanitizer.sanitize(template.getDescription()));
         TourTemplate tt = tourTemplateRepository.save(template);
 
         return tourTemplateMapper.toResponseDto(tt);
@@ -72,6 +66,11 @@ public class TourTemplateService{
     public void delete(Long id) {
         TourTemplate template = getById(id);
         tourTemplateRepository.delete(template);
+    }
+
+    public Page<TourTemplateResponseDto> getPage(Pageable pageable) {
+        return tourTemplateRepository.findAll(pageable)
+                .map(tourTemplateMapper::toResponseDto);
     }
 
     public List<TourTemplateResponseDto> getTop3Popular() {

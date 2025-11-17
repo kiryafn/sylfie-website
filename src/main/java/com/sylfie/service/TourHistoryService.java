@@ -1,10 +1,14 @@
 package com.sylfie.service;
 
 import com.sylfie.dto.tour.history.TourHistoryResponseDto;
+import com.sylfie.dto.tour.tour.TourResponseDto;
+import com.sylfie.mapper.TourHistoryMapper;
 import com.sylfie.model.Status;
 import com.sylfie.model.UserTourHistory;
 import com.sylfie.repository.TourHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +20,11 @@ import java.util.List;
 public class TourHistoryService {
 
     private final TourHistoryRepository tourHistoryRepository;
+    private final TourHistoryMapper tourMapper;
 
-    public TourHistoryService(TourHistoryRepository tourHistoryRepository) {
+    public TourHistoryService(TourHistoryRepository tourHistoryRepository, TourHistoryMapper tourMapper) {
         this.tourHistoryRepository = tourHistoryRepository;
+        this.tourMapper = tourMapper;
     }
 
     public List<UserTourHistory> getAll() {
@@ -34,9 +40,18 @@ public class TourHistoryService {
                 .orElseThrow(() -> new EntityNotFoundException("UserTourHistory not found with id: " + id));
     }
 
+    public Page<TourHistoryResponseDto> getPage(Pageable pageable) {
+        return tourHistoryRepository.findAll(pageable)
+                .map(tourMapper::toResponseDto);
+    }
+
     @Transactional
     public UserTourHistory create(UserTourHistory userTourHistory) {
         return tourHistoryRepository.save(userTourHistory);
+    }
+
+    public List<Long> findTopTourTemplateIds(org.springframework.data.domain.Pageable pageable) {
+        return tourHistoryRepository.findTopTourTemplateIds(pageable);
     }
 
     @Transactional

@@ -1,4 +1,4 @@
-package com.sylfie.controller.api;
+package com.sylfie.controller.rest;
 
 import com.sylfie.dto.tour.template.TourTemplateDetailsDto;
 import com.sylfie.dto.tour.tour.TourListItemDto;
