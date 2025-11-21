@@ -3,7 +3,6 @@ package com.sylfie.dto.tour.template;
 import com.sylfie.dto.tour.tour.TourListItemDto;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TourTemplateDetailsDto {
@@ -23,7 +22,7 @@ public class TourTemplateDetailsDto {
 
     private Integer maxParticipants;
 
-    private List<String> picturesUrls = new ArrayList<>();
+    private List<String> picturesUrls;
 
     private String previewPictureUrl;
 
@@ -33,7 +32,7 @@ public class TourTemplateDetailsDto {
 
     private String location;
 
-    private List<TourListItemDto> availableTours = new ArrayList<>();
+    private List<TourListItemDto> availableTours;
 
     public Long getId() {
         return id;
@@ -83,36 +82,20 @@ public class TourTemplateDetailsDto {
         this.shortDescription = shortDescription;
     }
 
-    public Integer getMaxParticipants() {
-        return maxParticipants;
-    }
-
-    public void setMaxParticipants(Integer maxParticipants) {
-        this.maxParticipants = maxParticipants;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public Integer getDurationDays() {
-        return durationDays;
-    }
-
-    public void setDurationDays(Integer durationDays) {
-        this.durationDays = durationDays;
-    }
-
     public String getDifficulty() {
         return difficulty;
     }
 
     public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public Integer getMaxParticipants() {
+        return maxParticipants;
+    }
+
+    public void setMaxParticipants(Integer maxParticipants) {
+        this.maxParticipants = maxParticipants;
     }
 
     public List<String> getPicturesUrls() {
@@ -129,6 +112,22 @@ public class TourTemplateDetailsDto {
 
     public void setPreviewPictureUrl(String previewPictureUrl) {
         this.previewPictureUrl = previewPictureUrl;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Integer getDurationDays() {
+        return durationDays;
+    }
+
+    public void setDurationDays(Integer durationDays) {
+        this.durationDays = durationDays;
     }
 
     public String getLocation() {

@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface TourTemplateRepository extends CrudRepository<TourTemplate, Long>, PagingAndSortingRepository<TourTemplate, Long> {
     List<TourTemplate> findAllById(Iterable<Long> ids);
+    List<TourTemplate> findAll();
     Optional<TourTemplate> findBySlug(String slug);
     boolean existsBySlug(String slug);
 }

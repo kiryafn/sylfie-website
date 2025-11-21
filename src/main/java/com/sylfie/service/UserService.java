@@ -1,6 +1,6 @@
 package com.sylfie.service;
 
-import com.sylfie.dto.user.UserResponseDto;
+import com.sylfie.dto.auth.MeDto;
 import com.sylfie.exception.EmailTakenException;
 import com.sylfie.exception.InsufficientBalanceException;
 import com.sylfie.exception.UsernameTakenException;
@@ -111,7 +111,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto update(UserResponseDto dto, String username){
+    public MeDto update(MeDto dto, String username){
         User user = getByUsername(username);
         userMapper.toUser(dto, user);
 

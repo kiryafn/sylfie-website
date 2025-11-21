@@ -13,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tour-categories")
-public class TourCategoryApiController {
+public class TourCategoryController {
 
     private final TourCategoryService tourCategoryService;
     private final TourCategoryMapper tourCategoryMapper;
 
-    public TourCategoryApiController(TourCategoryService tourCategoryService, TourCategoryMapper tourCategoryMapper) {
+    public TourCategoryController(TourCategoryService tourCategoryService, TourCategoryMapper tourCategoryMapper) {
         this.tourCategoryService = tourCategoryService;
         this.tourCategoryMapper = tourCategoryMapper;
     }

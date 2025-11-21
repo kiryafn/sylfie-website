@@ -1,10 +1,9 @@
 package com.sylfie.dto.tour.template;
 
-import com.sylfie.model.Difficulty;
 import com.sylfie.model.Location;
 import com.sylfie.model.TourCategory;
 import com.sylfie.model.TourPicture;
-import jakarta.validation.Valid;
+import com.sylfie.model.TourTemplate;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -20,7 +19,7 @@ public class TourTemplateCreateDto {
     private String descriptionHtml;
 
     @NotNull(message = "Difficulty is required")
-    private Difficulty difficulty;
+    private TourTemplate.Difficulty difficulty;
 
     @NotNull(message = "Max participants is required")
     @Min(value = 1, message = "There must be at least 1 participant")
@@ -52,8 +51,8 @@ public class TourTemplateCreateDto {
     public String getDescriptionHtml() { return descriptionHtml; }
     public void setDescriptionHtml(String descriptionHtml) { this.descriptionHtml = descriptionHtml; }
 
-    public Difficulty getDifficulty() { return difficulty; }
-    public void setDifficulty(Difficulty difficulty) { this.difficulty = difficulty; }
+    public TourTemplate.Difficulty getDifficulty() { return difficulty; }
+    public void setDifficulty(TourTemplate.Difficulty difficulty) { this.difficulty = difficulty; }
 
     public Integer getMaxParticipants() { return maxParticipants; }
     public void setMaxParticipants(Integer maxParticipants) { this.maxParticipants = maxParticipants; }

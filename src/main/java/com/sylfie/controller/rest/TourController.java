@@ -15,12 +15,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tours")
-public class TourApiController {
+public class TourController {
 
     private final TourService tourService;
     private final TourMapper tourMapper;
 
-    public TourApiController(TourService tourService, TourMapper tourMapper) {
+    public TourController(TourService tourService, TourMapper tourMapper) {
         this.tourService = tourService;
         this.tourMapper = tourMapper;
     }

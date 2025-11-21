@@ -25,7 +25,9 @@ public class TourTemplateMapper {
         tt.setLocation(dto.getLocation());
         tt.setDurationDays(dto.getDurationDays());
         tt.setShortDescription(dto.getShortDescription());
-        tt.setPictures(dto.getTourPictures());
+        if (dto.getTourPictures() != null && !dto.getTourPictures().isEmpty()) {
+            tt.setPictures(dto.getTourPictures());
+        }
         return tt;
     }
 
@@ -42,8 +44,23 @@ public class TourTemplateMapper {
         dto.setCategory(tt.getCategory().getName());
         dto.setPrice(tt.getPrice());
         dto.setLocation(tt.getLocation().getName());
-        dto.setPicturesUrls(tt.getPictures().stream().map(p -> p.getPicture().getUrl()).toList());
-        dto.setPreviewPictureUrl(tt.getPreviewPicture().getPicture().getUrl());
+        if (tt.getPictures() != null && !tt.getPictures().isEmpty()) {
+            dto.setPicturesUrls(
+                    tt.getPictures().stream()
+                            .filter(p -> p.getPicture() != null)
+                            .map(p -> p.getPicture().getUrl())
+                            .toList()
+            );
+        } else {
+            dto.setPicturesUrls(null);
+        }
+
+        var previewPicture = tt.getPreviewPicture();
+        if (previewPicture != null && previewPicture.getPicture() != null) {
+            dto.setPreviewPictureUrl(previewPicture.getPicture().getUrl());
+        } else {
+            dto.setPreviewPictureUrl(null);
+        }
         dto.setAvailableTours(tourListItems);
 
         return dto;
@@ -61,7 +78,12 @@ public class TourTemplateMapper {
         dto.setCategory(tt.getCategory().getName());
         dto.setPrice(tt.getPrice());
         dto.setLocation(tt.getLocation().getName());
-        dto.setPreviewPictureUrl(tt.getPreviewPicture().getPicture().getUrl());
+        var previewPicture = tt.getPreviewPicture();
+        if (previewPicture != null && previewPicture.getPicture() != null) {
+            dto.setPreviewPictureUrl(previewPicture.getPicture().getUrl());
+        } else {
+            dto.setPreviewPictureUrl(null);
+        }
 
         return dto;
     }

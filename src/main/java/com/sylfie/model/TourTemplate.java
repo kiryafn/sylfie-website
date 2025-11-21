@@ -10,6 +10,21 @@ import java.util.List;
 @Entity
 @Table(name = "tour_templates")
 public class TourTemplate {
+    public enum Difficulty {
+        EASY("Easy"),
+        MEDIUM("Medium"),
+        HARD("Hard");
+
+        private String name;
+
+        Difficulty(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -145,22 +160,31 @@ public class TourTemplate {
     }
 
     public void setPictures(List<TourPicture> pictures) {
-        this.pictures = pictures;
-        for (TourPicture pic : pictures) {
-            if (pic.getTourTemplate() != this) {
-                pic.setTourTemplate(this);
+        if (pictures == null) {
+            this.pictures = new ArrayList<>();
+        } else {
+            this.pictures = pictures;
+            for (TourPicture pic : pictures) {
+                if (pic.getTourTemplate() != this) {
+                    pic.setTourTemplate(this);
+                }
             }
         }
     }
 
     public TourPicture getPreviewPicture() {
-        for (var picture : pictures){
-            if (picture.isPreview() && picture.getTourTemplate() == this) {
+        if (pictures == null || pictures.isEmpty()) {
+            return null;
+        }
+
+        for (TourPicture picture : pictures) {
+            Boolean preview = picture.isPreview();
+            if (Boolean.TRUE.equals(preview) && picture.getTourTemplate() == this) {
                 return picture;
             }
         }
-        if (!pictures.isEmpty()) {return pictures.getFirst();}
-        else return null;
+
+        return pictures.getFirst();
     }
 
     public BigDecimal getPrice() {

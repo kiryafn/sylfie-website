@@ -30,17 +30,17 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthApiController {
+public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenService jwtTokenService;
     private final CustomUserDetailsService userDetailsService;
 
-    public AuthApiController(AuthenticationManager authenticationManager,
-                             CustomUserDetailsService userDetailsService,
-                             UserService userService,
-                             JwtTokenService jwtTokenService) {
+    public AuthController(AuthenticationManager authenticationManager,
+                          CustomUserDetailsService userDetailsService,
+                          UserService userService,
+                          JwtTokenService jwtTokenService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.userService = userService;

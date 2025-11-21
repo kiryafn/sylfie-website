@@ -1,13 +1,11 @@
 package com.sylfie.service;
 
 import com.sylfie.exception.MaximumGroupSizeExcededException;
-import com.sylfie.model.Status;
 import com.sylfie.model.Tour;
 import com.sylfie.model.User;
 import com.sylfie.model.UserTourHistory;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

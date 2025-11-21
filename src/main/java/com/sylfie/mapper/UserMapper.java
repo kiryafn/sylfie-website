@@ -1,10 +1,13 @@
 package com.sylfie.mapper;
 
-import com.sylfie.dto.user.UserResponseDto;
+import com.sylfie.dto.auth.MeDto;
 import com.sylfie.dto.auth.RegisterDto;
+import com.sylfie.model.Role;
 import com.sylfie.model.User;
 import com.sylfie.security.OAuth2UserInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UserMapper {
@@ -33,27 +36,29 @@ public class UserMapper {
         return user;
     }
 
-    public UserResponseDto toInfoDTO(User user){
-        UserResponseDto dto = new UserResponseDto();
-        dto.setUsername(user.getUsername());
-        dto.setEmail(user.getEmail());
-        dto.setFirstName(user.getFirstName());
-        dto.setLastName(user.getLastName());
-        dto.setPhoneNumber(user.getPhoneNumber());
-        dto.setDateOfBirth(user.getDateOfBirth());
-        dto.setBalance(user.getBalance());
-        dto.setBonusBalance(user.getBonusBalance());
-        dto.setAvatarUrl(user.getAvatar().getPicture().getUrl());
-        return dto;
+    public MeDto toInfoDTO(User user){
+        return new MeDto(
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getPhoneNumber(),
+                user.getDateOfBirth(),
+                user.getBalance(),
+                user.getBonusBalance(),
+                user.getAvatar().getPicture().getUrl(),
+                user.getRoles().stream().map(Role::getName).toList()
+        );
+
     }
 
-    public User toUser(UserResponseDto dto, User user){
-        if (dto.getUsername() != null) user.setUsername(dto.getUsername());
-        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
-        if (dto.getFirstName() != null) user.setFirstName(dto.getFirstName());
-        if (dto.getLastName() != null) user.setLastName(dto.getLastName());
-        if (dto.getPhoneNumber() != null) user.setPhoneNumber(dto.getPhoneNumber());
-        if (dto.getDateOfBirth() != null) user.setDateOfBirth(dto.getDateOfBirth());
+    public User toUser(MeDto dto, User user){
+        if (dto.username() != null) user.setUsername(dto.username());
+        if (dto.email() != null) user.setEmail(dto.email());
+        if (dto.firstName() != null) user.setFirstName(dto.firstName());
+        if (dto.lastName() != null) user.setLastName(dto.lastName());
+        if (dto.phoneNumber() != null) user.setPhoneNumber(dto.phoneNumber());
+        if (dto.dateOfBirth() != null) user.setDateOfBirth(dto.dateOfBirth());
         return user;
     }
 }

@@ -2,7 +2,6 @@ package com.sylfie.config;
 
 
 import com.sylfie.model.Avatar;
-import com.sylfie.model.ContentType;
 import com.sylfie.model.Picture;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +17,7 @@ public class PictureConfig {
         Picture picture = new Picture();
         picture.setUrl(defaultAvatarUrl);
         picture.setFilename("default_pfp.jpg");
-        picture.setContentType(ContentType.jpeg);
+        picture.setContentType(Picture.ContentType.jpeg);
         picture.setS3key("avatars/default_pfp.jpg");
 
         Avatar avatar = new Avatar();

@@ -1,9 +1,7 @@
 package com.sylfie.service;
 
 import com.sylfie.dto.tour.history.TourHistoryResponseDto;
-import com.sylfie.dto.tour.tour.TourResponseDto;
 import com.sylfie.mapper.TourHistoryMapper;
-import com.sylfie.model.Status;
 import com.sylfie.model.UserTourHistory;
 import com.sylfie.repository.TourHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -80,13 +78,13 @@ public class TourHistoryService {
 
     @Transactional
     public void markExpiredToursAsCompleted() {
-        List<UserTourHistory> activeBookings = tourHistoryRepository.findAllByStatus(Status.BOOKED);
+        List<UserTourHistory> activeBookings = tourHistoryRepository.findAllByStatus(UserTourHistory.Status.BOOKED);
 
         LocalDateTime now = LocalDateTime.now();
 
         for (UserTourHistory booking : activeBookings) {
             if (booking.getTour().getEndDate().isBefore(now)) {
-                booking.setStatus(Status.COMPLETED);
+                booking.setStatus(UserTourHistory.Status.COMPLETED);
             }
         }
 
