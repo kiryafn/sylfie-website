@@ -1,6 +1,7 @@
 package com.sylfie.jwt;
 
 import com.sylfie.exception.InvalidJwtException;
+import groovy.util.logging.Slf4j;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -18,9 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class JwtTokenService {
-
-    private static final Logger log = LoggerFactory.getLogger(JwtTokenService.class);
-
     public enum TokenType {
         ACCESS, REFRESH
     }
@@ -45,8 +43,6 @@ public class JwtTokenService {
                 .build();
     }
 
-    // ========= GENERATION =========
-
     public String generateAccessToken(UserDetails userDetails) {
         return buildToken(userDetails, TokenType.ACCESS, accessTokenExpirationMs);
     }
@@ -55,9 +51,6 @@ public class JwtTokenService {
         return buildToken(userDetails, TokenType.REFRESH, refreshTokenExpirationMs);
     }
 
-    /**
-     * Backward-compatible alias, treated as access token.
-     */
     public String generateToken(UserDetails userDetails) {
         return generateAccessToken(userDetails);
     }
@@ -83,7 +76,6 @@ public class JwtTokenService {
                 .compact();
     }
 
-    // ========= EXTRACT =========
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -108,8 +100,6 @@ public class JwtTokenService {
         return claimsResolver.apply(claims);
     }
 
-    // ========= VALIDATION =========
-
     public boolean isAccessTokenValid(String token, UserDetails userDetails) {
         return isTokenValidOfType(token, userDetails, TokenType.ACCESS);
     }
@@ -125,7 +115,6 @@ public class JwtTokenService {
         try {
             claims = parseClaims(token);
         } catch (InvalidJwtException e) {
-            log.debug("JWT validation failed: {}", e.getMessage());
             return false;
         }
 
@@ -155,21 +144,12 @@ public class JwtTokenService {
         });
     }
 
-    // ========= REFRESH FLOW =========
-
-    /**
-     * Простой refresh-flow для пет-проекта:
-     * 1) валидируем refresh-токен
-     * 2) возвращаем новый access-токен
-     */
     public String refreshAccessToken(String refreshToken, UserDetails userDetails) {
         if (!isRefreshTokenValid(refreshToken, userDetails)) {
             throw new InvalidJwtException("Refresh token is not valid");
         }
         return generateAccessToken(userDetails);
     }
-
-    // ========= INTERNAL =========
 
     private Claims parseClaims(String token) {
         try {
