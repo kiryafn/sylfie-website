@@ -8,7 +8,9 @@ import com.sylfie.model.TourTemplate;
 import com.sylfie.repository.TourHistoryRepository;
 import com.sylfie.repository.TourTemplateRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
@@ -28,15 +30,18 @@ public class TourTemplateService {
     private final TourHistoryRepository tourHistoryRepository;
     private final TourTemplateMapper tourTemplateMapper;
     private final SlugService slugService;
+    private final CacheManager cacheManager;
 
     public TourTemplateService(TourTemplateRepository tourTemplateRepository,
-                               TourHistoryRepository tourHistoryRepository,
-                               TourTemplateMapper tourTemplateMapper,
-                               SlugService slugService) {
+            TourHistoryRepository tourHistoryRepository,
+            TourTemplateMapper tourTemplateMapper,
+            SlugService slugService,
+            CacheManager cacheManager) {
         this.tourTemplateRepository = tourTemplateRepository;
         this.tourHistoryRepository = tourHistoryRepository;
         this.tourTemplateMapper = tourTemplateMapper;
         this.slugService = slugService;
+        this.cacheManager = cacheManager;
     }
 
     public TourTemplate getById(Long id) {
@@ -63,10 +68,7 @@ public class TourTemplateService {
         return tourTemplateMapper.toResponseDto(getBySlug(slug));
     }
 
-    @Cacheable(
-            value = "tourTemplatePages",
-            key = "'page=' + #pageable.pageNumber + ':size=' + #pageable.pageSize + ':sort=' + #pageable.sort.toString()"
-    )
+    @Cacheable(value = "tourTemplatePages", key = "'page=' + #pageable.pageNumber + ':size=' + #pageable.pageSize + ':sort=' + #pageable.sort.toString()")
     public Page<TourTemplateResponseDto> getPage(Pageable pageable) {
         return tourTemplateRepository.findAll(pageable)
                 .map(tourTemplateMapper::toResponseDto);
@@ -102,14 +104,13 @@ public class TourTemplateService {
 
     @Transactional
     @Caching(evict = {
-            @CacheEvict(value = "tourTemplateById", key = "#template.id"),
-            @CacheEvict(value = "tourTemplateBySlug", key = "#oldSlug"),
-            @CacheEvict(value = "tourTemplateBySlug", key = "#result"),
             @CacheEvict(value = "tourTemplatePages", allEntries = true),
             @CacheEvict(value = "tourTemplateTop3Popular", allEntries = true)
+    }, put = {
+            @CachePut(value = "tourTemplateById", key = "#result.id"),
+            @CachePut(value = "tourTemplateBySlug", key = "#result.slug")
     })
-    public String update(TourTemplate template) {
-
+    public TourTemplateResponseDto update(TourTemplate template) {
         TourTemplate existing = getById(template.getId());
         String oldSlug = existing.getSlug();
 
@@ -117,14 +118,19 @@ public class TourTemplateService {
             template.setSlug(slugService.generateSlug(template));
         }
 
-        tourTemplateRepository.save(template);
+        TourTemplate saved = tourTemplateRepository.save(template);
 
-        return template.getSlug();
+        // Manual eviction for old slug if it changed
+        if (!oldSlug.equals(saved.getSlug())) {
+            evictCache("tourTemplateBySlug", oldSlug);
+        }
+
+        return tourTemplateMapper.toResponseDto(saved);
     }
+
     @Transactional
     @Caching(evict = {
             @CacheEvict(value = "tourTemplateById", key = "#id"),
-            @CacheEvict(value = "tourTemplateBySlug", key = "#result"),
             @CacheEvict(value = "tourTemplatePages", allEntries = true),
             @CacheEvict(value = "tourTemplateTop3Popular", allEntries = true)
     })
@@ -134,6 +140,17 @@ public class TourTemplateService {
 
         tourTemplateRepository.delete(template);
 
+        // Manual eviction for slug since we can't use key="#result" (result is just
+        // slug string, but we need to be sure)
+        // Actually we can just evict by the known slug
+        evictCache("tourTemplateBySlug", slug);
+
         return slug;
+    }
+
+    private void evictCache(String cacheName, Object key) {
+        if (key != null) {
+            Objects.requireNonNull(cacheManager.getCache(cacheName)).evict(key);
+        }
     }
 }

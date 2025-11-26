@@ -71,20 +71,20 @@ public class TourTemplate {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-
-    public TourTemplate() {}
+    public TourTemplate() {
+    }
 
     public TourTemplate(TourCategory category,
-                        String name,
-                        String description,
-                        Difficulty difficulty,
-                        Integer maxParticipants) {
-        this.category        = category;
-        this.name            = name;
-        this.description     = description;
-        this.difficulty      = difficulty;
+            String name,
+            String description,
+            Difficulty difficulty,
+            Integer maxParticipants) {
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.difficulty = difficulty;
         this.maxParticipants = maxParticipants;
-        this.createdAt       = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public void addPicture(TourPicture picture) {
@@ -106,9 +106,13 @@ public class TourTemplate {
         picture.setTourTemplate(null);
     }
 
-    //GETTERS AND SETTERS
+    // GETTERS AND SETTERS
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public TourCategory getCategory() {
