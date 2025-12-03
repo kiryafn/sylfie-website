@@ -1,6 +1,7 @@
 package com.sylfie.config;
 
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 @Configuration
 @EnableCaching
-@org.springframework.boot.autoconfigure.condition.ConditionalOnProperty(value = "app.caching.redis.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(value = "app.caching.redis.enabled", havingValue = "true", matchIfMissing = true)
 public class CacheConfig {
 
     @Bean

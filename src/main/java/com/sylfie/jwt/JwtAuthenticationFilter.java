@@ -62,8 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (InvalidJwtException | IllegalArgumentException | JwtException ex) {
-            // Log the exception if needed, or just ignore to allow anonymous access
-            // logger.debug("JWT processing failed: {}", ex.getMessage());
+
         }
 
         filterChain.doFilter(request, response);
