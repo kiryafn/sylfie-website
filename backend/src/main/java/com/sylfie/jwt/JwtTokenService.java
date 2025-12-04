@@ -31,9 +31,9 @@ public class JwtTokenService {
     private final long refreshTokenExpirationMs;
     private final JwtParser jwtParser;
 
-    public JwtTokenService(@Value("${security.jwt.secret}") String secret,
-                           @Value("${security.jwt.access-duration-ms}") long accessTokenExpirationMs,
-                           @Value("${security.jwt.refresh-duration-ms}") long refreshTokenExpirationMs) {
+    public JwtTokenService(@Value("${security.jwt.secret:23112313ffowernglenrglkejrgnergnlernglerglekrgnlekrgjeklrgjekgjrlkjgelkrgjeklgjeklrgjelkgrjlgkg}") String secret,
+                           @Value("${security.jwt.access-duration-ms:1234}") long accessTokenExpirationMs,
+                           @Value("${security.jwt.refresh-duration-ms:2342423424}") long refreshTokenExpirationMs) {
         this.signingKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.accessTokenExpirationMs = accessTokenExpirationMs;
         this.refreshTokenExpirationMs = refreshTokenExpirationMs;

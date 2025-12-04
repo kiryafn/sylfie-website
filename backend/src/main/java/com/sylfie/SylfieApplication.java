@@ -1,4 +1,4 @@
-package main.java.com.sylfie;
+package com.sylfie;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

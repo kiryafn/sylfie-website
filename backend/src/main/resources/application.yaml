@@ -69,8 +69,8 @@ server:
 security:
     jwt:
         secret: ${JWT_SECRET}
-        access-duration-ms: ${JWT_ACCESS_DURATION:900000}
-        refresh-duration-ms: ${JWT_REFRESH_DURATION:1209600000}
+        access-duration-ms: ${JWT_ACCESS_DURATION}
+        refresh-duration-ms: ${JWT_REFRESH_DURATION}
 
 cloud:
     aws:
